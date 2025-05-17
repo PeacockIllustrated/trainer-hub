@@ -1,0 +1,165 @@
+/* --- Base Component Styles --- */
+
+/* General inherited styles (applied via body in main.css or theme wrappers) */
+/* .themed body provides the overall background, text color, and font */
+
+/* --- Card --- */
+.pt-card {
+  background-color: var(--surface-color);
+  color: var(--text-color-on-surface);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.pt-card-title {
+  font-family: var(--font-family-headings);
+  color: var(--heading-color-on-surface);
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.pt-card-content {
+  font-size: 1em;
+  margin-bottom: var(--spacing-md);
+}
+
+/* --- Buttons --- */
+.pt-button {
+  font-family: var(--font-family-primary);
+  font-weight: bold; /* Consider making this a variable: --button-font-weight */
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.4;
+  text-align: center;
+}
+.pt-button:hover {
+  opacity: 0.9; /* Default hover opacity, can be overridden by specific button styles */
+}
+.pt-button:active {
+  transform: translateY(1px);
+  opacity: 1;
+}
+
+.pt-button--primary {
+  background-color: var(--primary-color);
+  color: var(--text-color-on-primary);
+  border-color: var(--primary-color);
+}
+.pt-button--primary:hover {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+  opacity: 1;
+}
+
+.pt-button--secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-color-on-secondary);
+  border-color: var(--secondary-color);
+}
+.pt-button--secondary:hover {
+  background-color: var(--secondary-color-dark);
+  border-color: var(--secondary-color-dark);
+  opacity: 1;
+}
+/* Secondary Outline Style (Example - can be a modifier) */
+.pt-button--secondary.pt-button--outline {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+.pt-button--secondary.pt-button--outline:hover {
+  background-color: var(--secondary-color-light);
+  color: var(--text-color-on-secondary); /* Check contrast if secondary-color-light is very light */
+  border-color: var(--secondary-color);
+}
+
+
+.pt-button--accent {
+  background-color: var(--accent-color);
+  color: var(--text-color-on-accent);
+  border-color: var(--accent-color);
+}
+.pt-button--accent:hover {
+  background-color: var(--accent-color-dark);
+  border-color: var(--accent-color-dark);
+  opacity: 1;
+}
+
+.pt-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+/* --- Inputs --- */
+.pt-input-group {
+  margin-bottom: var(--spacing-md);
+}
+.pt-input-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: bold;
+  color: var(--text-color-on-surface); /* Label color related to its background */
+}
+.pt-input {
+  width: 100%;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--background-color); /* Or var(--surface-color-alt) for contrast */
+  color: var(--text-color);
+  font-family: var(--font-family-primary);
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pt-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 30%, transparent); /* Subtle focus ring */
+}
+
+/* --- Alerts --- */
+.pt-alert {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-left: var(--border-width-bold) solid transparent; /* Often a thicker left border */
+    border-radius: var(--border-radius-md);
+    /* Default background and text, specific alerts will override */
+    background-color: var(--surface-color-alt);
+    color: var(--text-color-on-surface);
+}
+.pt-alert strong {
+    font-weight: bold;
+}
+
+.pt-alert--success {
+    background-color: var(--success-color-light);
+    color: var(--text-color-on-success);
+    border-left-color: var(--success-color);
+}
+.pt-alert--warning {
+    background-color: var(--warning-color-light);
+    color: var(--text-color-on-warning);
+    border-left-color: var(--warning-color);
+}
+.pt-alert--error {
+    background-color: var(--error-color-light);
+    color: var(--text-color-on-error);
+    border-left-color: var(--error-color);
+}
+.pt-alert--info {
+    background-color: var(--info-color-light);
+    color: var(--text-color-on-info);
+    border-left-color: var(--info-color);
+}

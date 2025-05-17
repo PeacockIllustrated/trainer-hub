@@ -1,0 +1,55 @@
+/* --- Theme: Energetic Bold --- */
+/* theme-energetic-bold.css */
+.theme-energetic-bold { /* Apply this class to a wrapper element */
+  /* Color Palette */
+  --primary-color: #FF6B6B;   /* Coral Red */
+  --primary-color-dark: #e05252;
+  --primary-color-light: #ff8c8c;
+  --text-color-on-primary: #FFFFFF;
+  --secondary-color: #FFA94D; /* Orange */
+  --secondary-color-dark: #e59238;
+  --secondary-color-light: #ffc079;
+  --text-color-on-secondary: #1E1E1E; /* Dark text on orange button */
+  --accent-color: #4D96FF;    /* Bright Blue */
+  --accent-color-dark: #3377e0;
+  --accent-color-light: #79b0ff;
+  --text-color-on-accent: #FFFFFF;
+
+  /* Background & Surface Colors */
+  --background-color: #1E1E1E; /* Dark Background */
+  --surface-color: #2C2C2C;   /* Slightly Lighter Dark for Cards */
+  --surface-color-alt: #3A3A3A;/* Even Lighter for nested surfaces */
+
+  /* Text Colors */
+  --text-color: #E0E0E0;      /* Light Gray for text */
+  --text-color-muted: #A0A0A0; /* Muted Light Gray */
+  --text-color-on-surface: #E0E0E0; /* Text on dark surfaces */
+  --heading-color: #FF6B6B; /* Primary color for headings */
+  --heading-color-on-surface: #FF6B6B;
+  --link-color: var(--accent-color);
+  --link-color-hover: var(--accent-color-light); /* Lighter accent for hover on dark */
+
+  /* Borders & Dividers */
+  --border-color: #444444; /* Dark gray border */
+  --border-color-light: #555555;
+  --border-radius-sm: 2px; /* Sharper edges */
+  --border-radius-md: 4px;
+  --border-radius-lg: 4px;
+  --border-radius-pill: 50rem;
+
+  /* Shadows - can be subtle on dark themes or use light highlights */
+  --shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow base, less visible */
+  /* For dark themes, sometimes lighter "glows" can work better than dark shadows */
+  /* --shadow-md: 0 1px 3px 0 rgba(255, 255, 255, 0.05); */
+
+
+  /* Typography */
+  --font-family-primary: 'Bebas Neue', var(--font-family-sans);
+  --font-family-headings: 'Anton', var(--font-family-sans);
+
+  /* Alert text colors might need adjustment for dark theme if defaults are for light bgs */
+  --text-color-on-success: #C8E6C9; /* Lighter Green text on dark alert bg if needed */
+  --text-color-on-warning: #FFECB3;
+  --text-color-on-error:   #FFCDD2;
+  --text-color-on-info:    #BBDEFB;
+}

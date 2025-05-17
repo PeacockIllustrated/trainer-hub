@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Trainer Component Showcase</title>
+    <!-- Google Fonts (Example - adjust as per theme needs) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Quicksand:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Link all theme files for the showcase -->
+    <link rel="stylesheet" href="assets/css/themes/theme-sharp-modern.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-soft-friendly.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-bold.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-minimalist-clean.css">
+    <style>
+        body { margin: 0; padding: 20px; background-color: #f0f0f0; }
+        .showcase-section {
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            /* Default background for sections before theme is applied through wrapper */
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .showcase-section h2 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .component-group {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+         /* Use body variables for overall page within a theme context */
+        body.themed {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-family-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Personal Trainer UI Component Showcase</h1>
+
+    <!-- Helper function to get component HTML to avoid repetition -->
+    <script>
+        const getSampleComponentsHTML = () => `
+            <div class="pt-card">
+                <h3 class="pt-card-title">Client Onboarding</h3>
+                <p class="pt-card-content">Complete these steps for new clients.</p>
+                <div class="pt-input-group">
+                    <label for="clientName-${Math.random().toString(36).substring(7)}">Client Name:</label>
+                    <input type="text" id="clientName-${Math.random().toString(36).substring(7)}" class="pt-input" placeholder="e.g., Alex Ray">
+                </div>
+                <div class="pt-button-group">
+                    <button class="pt-button pt-button--primary">Save</button>
+                    <button class="pt-button pt-button--secondary">Details</button>
+                    <button class="pt-button pt-button--accent">Remind</button>
+                </div>
+            </div>
+
+            <div class="pt-alert pt-alert--success">
+                <strong>Success!</strong> Profile updated.
+            </div>
+            <div class="pt-alert pt-alert--warning">
+                <strong>Careful:</strong> Session quota nearly full.
+            </div>
+            <div class="pt-alert pt-alert--error">
+                <strong>Error!</strong> Payment failed.
+            </div>
+            <div class="pt-alert pt-alert--info">
+                <strong>Info:</strong> New workout plan assigned.
+            </div>
+        `;
+    </script>
+
+    <section id="showcase-sharp-modern" class="showcase-section">
+        <div class="theme-sharp-modern"> <!-- Theme wrapper -->
+            <body class="themed"> <!-- Apply body vars within this scope -->
+                <h2>Theme: Sharp Modern</h2>
+                <div class="component-group" id="sharp-modern-components">
+                    <!-- Components will be injected here by script -->
+                </div>
+            </body>
+        </div>
+    </section>
+
+    <section id="showcase-soft-friendly" class="showcase-section">
+        <div class="theme-soft-friendly">
+             <body class="themed">
+                <h2>Theme: Soft Friendly</h2>
+                <div class="component-group" id="soft-friendly-components">
+                    <!-- Components will be injected here by script -->
+                </div>
+            </body>
+        </div>
+    </section>
+
+    <section id="showcase-energetic-bold" class="showcase-section">
+        <div class="theme-energetic-bold">
+            <body class="themed">
+                <h2>Theme: Energetic Bold</h2>
+                <div class="component-group" id="energetic-bold-components">
+                    <!-- Components will be injected here by script -->
+                </div>
+            </body>
+        </div>
+    </section>
+
+    <section id="showcase-minimalist-clean" class="showcase-section">
+        <div class="theme-minimalist-clean">
+            <body class="themed">
+                <h2>Theme: Minimalist Clean</h2>
+                <div class="component-group" id="minimalist-clean-components">
+                    <!-- Components will be injected here by script -->
+                </div>
+            </body>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sharp-modern-components').innerHTML = getSampleComponentsHTML();
+            document.getElementById('soft-friendly-components').innerHTML = getSampleComponentsHTML();
+            document.getElementById('energetic-bold-components').innerHTML = getSampleComponentsHTML();
+            document.getElementById('minimalist-clean-components').innerHTML = getSampleComponentsHTML();
+        });
+    </script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

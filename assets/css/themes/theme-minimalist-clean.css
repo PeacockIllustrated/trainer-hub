@@ -1,0 +1,49 @@
+/* --- Theme: Minimalist Clean --- */
+/* theme-minimalist-clean.css */
+.theme-minimalist-clean { /* Apply this class to a wrapper element */
+  /* Color Palette */
+  --primary-color: #343A40;   /* Dark Gray / Almost Black */
+  --primary-color-dark: #23272B;
+  --primary-color-light: #495057;
+  --text-color-on-primary: #FFFFFF;
+  --secondary-color: #6C757D; /* Medium Gray */
+  --secondary-color-dark: #5A6268;
+  --secondary-color-light: #CED4DA; /* Light gray for borders or subtle elements */
+  --text-color-on-secondary: #FFFFFF;
+  --accent-color: #007BFF;    /* Standard Blue for actionable items */
+  --accent-color-dark: #0056b3;
+  --accent-color-light: #3da0ff;
+  --text-color-on-accent: #FFFFFF;
+
+  /* Background & Surface Colors */
+  --background-color: #FFFFFF;
+  --surface-color: #FFFFFF;
+  --surface-color-alt: #F8F9FA; /* Very light gray for subtle separation */
+
+  /* Text Colors */
+  --text-color: #212529;      /* Standard dark text */
+  --text-color-muted: #6C757D; /* Muted gray */
+  --text-color-on-surface: #212529;
+  --heading-color: #343A40; /* Dark gray for headings */
+  --heading-color-on-surface: #343A40;
+  --link-color: var(--accent-color);
+  --link-color-hover: var(--accent-color-dark);
+
+  /* Borders & Dividers */
+  --border-color: #E9ECEF; /* Light gray border */
+  --border-color-light: #F1F3F5;
+  --border-radius-sm: 2px; /* Minimal rounding */
+  --border-radius-md: 3px;
+  --border-radius-lg: 4px;
+  --border-radius-pill: 50rem;
+  --border-width: 1px;
+
+  /* Shadows */
+  --shadow-color: rgba(0, 0, 0, 0.05); /* Very subtle shadows */
+  --shadow-md: 0 2px 4px 0 var(--shadow-color); /* Simplified shadow */
+
+
+  /* Typography */
+  --font-family-primary: 'Roboto', var(--font-family-sans);
+  --font-family-headings: 'Roboto Slab', var(--font-family-serif);
+}

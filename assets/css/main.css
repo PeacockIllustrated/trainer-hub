@@ -1,0 +1,27 @@
+/* Import Base Styles */
+@import url('base/_reset.css');
+@import url('base/_variables.css'); /* Defines the default :root variables */
+@import url('base/_components.css');
+
+/* 
+  Global styles for the application can go here,
+  or this file can be kept minimal if themes handle everything.
+  For the showcase, index.html links themes directly.
+  In a real app, you might @import a default theme here:
+  @import url('themes/theme-sharp-modern.css'); 
+*/
+
+body {
+    /* These will be overridden by theme-specific body.themed if a theme wrapper is used */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family-primary);
+    margin: 0; /* Reset is more thorough, but ensure it's here or in reset */
+    padding: var(--spacing-lg); /* Example padding */
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-headings);
+    color: var(--heading-color);
+}

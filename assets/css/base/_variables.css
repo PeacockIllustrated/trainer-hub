@@ -1,0 +1,94 @@
+/* --- MASTER THEME VARIABLES (Defaults for :root) --- */
+:root {
+  /* Color Palette */
+  --primary-color: #007bff;
+  --primary-color-dark: #0056b3;
+  --primary-color-light: #66b3ff;
+  --text-color-on-primary: #ffffff;
+  --secondary-color: #6c757d;
+  --secondary-color-dark: #545b62;
+  --secondary-color-light: #adb5bd;
+  --text-color-on-secondary: #ffffff;
+  --accent-color: #198754; /* Changed from Bootstrap's #28a745 (success green) */
+  --accent-color-dark: #12653f; /* Adjusted from #1e7e34 */
+  --accent-color-light: #52a57e; /* Adjusted from #8fd19e */
+  --text-color-on-accent: #ffffff;
+
+  /* Background & Surface Colors */
+  --background-color: #ffffff;
+  --surface-color: #ffffff;
+  --surface-color-alt: #f8f9fa;
+
+  /* Text Colors */
+  --text-color: #212529;
+  --text-color-muted: #6c757d;
+  --text-color-on-surface: var(--text-color); /* Text on general surfaces */
+  --heading-color: #343a40;
+  --heading-color-on-surface: var(--heading-color); /* Headings on general surfaces */
+  --link-color: var(--accent-color); /* Link color often accent or primary */
+  --link-color-hover: var(--accent-color-dark);
+
+  /* Borders & Dividers */
+  --border-color: #dee2e6;
+  --border-color-light: #f1f3f5;
+  --border-radius-sm: 0.2rem;
+  --border-radius-md: 0.25rem;
+  --border-radius-lg: 0.3rem;
+  --border-radius-pill: 50rem;
+  --border-width: 1px;
+  --border-width-bold: 2px;
+
+  /* Shadows */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Base shadow color */
+  --shadow-xs: 0 1px 2px 0 var(--shadow-color);
+  --shadow-sm: 0 1px 3px 0 var(--shadow-color), 0 1px 2px -1px var(--shadow-color);
+  --shadow-md: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+  --shadow-xl: 0 20px 25px -5px var(--shadow-color), 0 8px 10px -6px var(--shadow-color);
+  --shadow-inner: inset 0 2px 4px 0 var(--shadow-color);
+
+  /* Typography */
+  --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-family-mono: "Courier New", Courier, monospace;
+  --font-family-primary: var(--font-family-sans);
+  --font-family-headings: var(--font-family-sans);
+
+  /* Spacing */
+  --spacing-unit: 4px;
+  --spacing-xs: calc(var(--spacing-unit) * 1);  /* 4px */
+  --spacing-sm: calc(var(--spacing-unit) * 2);  /* 8px */
+  --spacing-md: calc(var(--spacing-unit) * 4);  /* 16px */
+  --spacing-lg: calc(var(--spacing-unit) * 6);  /* 24px */
+  --spacing-xl: calc(var(--spacing-unit) * 8);  /* 32px */
+  --spacing-xxl: calc(var(--spacing-unit) * 12); /* 48px */
+
+  /* Component Specific (Defaults - can be overridden by components or themes) */
+  --button-padding-y: var(--spacing-sm);
+  --button-padding-x: var(--spacing-md);
+  --card-padding: var(--spacing-md);
+  --input-padding-y: var(--spacing-sm);
+  --input-padding-x: var(--spacing-sm);
+
+  /* Alert Colors (Using Tailwind CSS v3 default color shades for guidance) */
+  /* Green */
+  --success-color: #10B981;
+  --success-color-light: #D1FAE5;
+  --success-color-dark: #059669;
+  --text-color-on-success: #065F46; /* Text for light success background */
+  /* Amber/Yellow */
+  --warning-color: #F59E0B;
+  --warning-color-light: #FEF3C7;
+  --warning-color-dark: #D97706;
+  --text-color-on-warning: #92400E; /* Text for light warning background */
+  /* Red */
+  --error-color: #EF4444;
+  --error-color-light: #FEE2E2;
+  --error-color-dark: #DC2626;
+  --text-color-on-error: #991B1B;   /* Text for light error background */
+  /* Blue */
+  --info-color: #3B82F6;
+  --info-color-light: #DBEAFE;
+  --info-color-dark: #2563EB;
+  --text-color-on-info: #1E40AF;    /* Text for light info background */
+}
