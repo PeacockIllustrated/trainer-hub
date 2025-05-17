@@ -1,5 +1,5 @@
 /* --- Theme: Modern & Professional --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&display=swap');
 
 .theme-modern-professional {
   /* Core Palette */
@@ -58,8 +58,8 @@
   --border-width-bold: 2px;
 
   /* Typography */
-  --font-family-primary: 'Inter', var(--font-family-sans);
-  --font-family-headings: 'Roboto Condensed', var(--font-family-sans); /* Modern, slightly condensed heading */
+  --font-family-primary: 'Open Sans', var(--font-family-sans);      /* UPDATED */
+  --font-family-headings: 'Poppins', var(--font-family-sans);      /* UPDATED */
   --button-font-weight: 600;
 
   /* Shadows - Subtle and professional */
@@ -103,15 +103,16 @@
 }
 
 .theme-modern-professional .pt-card-title {
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 700;
+  /* text-transform: uppercase; Poppins is strong enough without it */
+  letter-spacing: 0.2px;  /* Less spacing for Poppins */
+  font-weight: 700;     /* Poppins Bold for titles */
 }
 
 .theme-modern-professional .pt-button {
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  font-weight: var(--button-font-weight);
+  /* text-transform: uppercase; Not strictly needed with Poppins for buttons */
+  font-family: 'Poppins', var(--font-family-sans); /* Use Poppins for buttons for impact */
+  letter-spacing: 0.5px;
+  font-weight: var(--button-font-weight); /* Poppins SemiBold or Medium */
   padding: calc(var(--button-padding-y) * 1.1) calc(var(--button-padding-x) * 1.1); /* Slightly larger buttons */
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transitions */
 }
@@ -164,7 +165,7 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 20%, transparent);
 }
 .theme-modern-professional .pt-input-group label {
-    font-weight: 500; /* Slightly less bold labels */
+    font-weight: 600; /* Open Sans SemiBold for labels */
     color: var(--neutral-medium);
 }
 
@@ -173,8 +174,7 @@
     border-left-width: 3px; /* Thinner side border */
     box-shadow: var(--shadow-xs);
 }
-/* Alerts already defined to use theme variables like --success-color-light etc. */
-/* Text on light alerts needs to be dark for this theme */
+
 .theme-modern-professional .pt-alert--success,
 .theme-modern-professional .pt-alert--warning,
 .theme-modern-professional .pt-alert--error,
@@ -185,7 +185,9 @@
 .theme-modern-professional .pt-alert--warning strong,
 .theme-modern-professional .pt-alert--error strong,
 .theme-modern-professional .pt-alert--info strong {
-    color: var(--neutral-dark);
+    color: var(--neutral-dark); /* Ensure strong tag is also clearly visible */
+    font-family: 'Poppins', var(--font-family-sans); /* Use Poppins for the strong part */
+    font-weight: 600;
 }
 /* Ensure text color is dark enough on the specific alert background colors if they are light */
 .theme-modern-professional .pt-alert--success { background-color: var(--success-color-light); color: var(--success-color-dark); }
