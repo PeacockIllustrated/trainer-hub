@@ -1,5 +1,5 @@
 /* --- Theme: Friendly & Supportive --- */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&display=swap');
 
 .theme-friendly-supportive {
   /* Core Palette */
@@ -57,9 +57,9 @@
   --border-width: 1px;
 
   /* Typography */
-  --font-family-primary: 'Nunito', var(--font-family-sans);
-  --font-family-headings: 'Lora', var(--font-family-serif); /* Elegant, readable serif for headings */
-  --button-font-weight: 600;
+  --font-family-primary: 'Karla', var(--font-family-sans);      /* UPDATED */
+  --font-family-headings: 'Comfortaa', var(--font-family-sans);  /* UPDATED */
+  --button-font-weight: 700; /* Comfortaa bold is good for buttons */
 
   /* Shadows - Softer, more diffuse */
   --shadow-color: rgba(92, 85, 82, 0.12); /* Based on neutral-dark */
@@ -103,16 +103,18 @@
 }
 
 .theme-friendly-supportive .pt-card-title {
-  font-style: italic; /* Lora italic for headings */
-  font-weight: 600;
+  font-weight: 700; /* Comfortaa bold */
   color: var(--primary-brand-dark);
+  /* Comfortaa is quite distinctive, no need for italic here */
 }
 
 .theme-friendly-supportive .pt-button {
+  font-family: 'Comfortaa', var(--font-family-sans); /* Comfortaa for buttons for thematic consistency */
   font-weight: var(--button-font-weight);
   border-radius: var(--border-radius-pill); /* Pill-shaped buttons by default */
   padding: var(--button-padding-y) calc(var(--button-padding-x) * 1.2); /* Slightly wider */
   transition: all 0.2s ease-in-out;
+  letter-spacing: 0.3px;
 }
 .theme-friendly-supportive .pt-button:hover {
     transform: translateY(-1px) scale(1.02);
@@ -164,9 +166,8 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 15%, transparent);
 }
 .theme-friendly-supportive .pt-input-group label {
-    font-weight: 600;
+    font-weight: 700; /* Karla bold for labels */
     color: var(--neutral-medium);
-    font-family: var(--font-family-primary); /* Ensure label uses Nunito for consistency */
 }
 
 
@@ -177,6 +178,10 @@
     padding: var(--spacing-md) calc(var(--spacing-md) * 1.5);
 }
 /* Ensure alert text color contrast */
+.theme-friendly-supportive .pt-alert strong {
+    font-family: 'Comfortaa', var(--font-family-sans);
+    font-weight: 700;
+}
 .theme-friendly-supportive .pt-alert--success { background-color: var(--success-color-light); color: var(--success-color-dark); }
 .theme-friendly-supportive .pt-alert--warning { background-color: var(--warning-color-light); color: var(--warning-color-dark); }
 .theme-friendly-supportive .pt-alert--error { background-color: var(--error-color-light); color: var(--error-color-dark); }
