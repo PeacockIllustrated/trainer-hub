@@ -23,23 +23,24 @@
         body {
             margin: 0;
             color: #333; /* Fallback */
+            /* body padding for mobile nav is in main.css */
         }
 
         .page-header {
             padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
-            background-color: #f0f0f0; /* Neutral header background */
+            background-color: #f0f0f0; 
             border-bottom: 1px solid #ddd;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky; /* Make header sticky */
+            position: sticky; 
             top: 0;
-            z-index: 1010;
+            z-index: 1010; 
         }
         h1.page-title {
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            font-size: 1.5em;
+            font-size: 1.5em; 
             color: #333;
             margin: 0;
             padding: 0;
@@ -61,17 +62,20 @@
             background-color: #fff;
         }
 
-        #themed-area { /* This div will get the theme class */
+        #themed-area { 
             min-height: 100vh; 
             box-sizing: border-box;
             transition: background-color 0.3s ease, color 0.3s ease;
-            background: var(--background-color); /* Applied by JS but good fallback */
-            color: var(--text-color);  /* Applied by JS but good fallback */
+            /* These will be dynamically updated by JS when theme changes */
+            background-color: var(--background-color); 
+            color: var(--text-color); 
         }
 
         .theme-showcase-layout {
             display: flex;
-            min-height: calc(100vh - 60px); /* Adjust 60px based on header height */
+            /* Calculate min-height based on viewport minus sticky header */
+            /* Assuming header is roughly 60px, adjust if different */
+            min-height: calc(100vh - 60px); 
         }
         
         .theme-showcase-content {
@@ -85,7 +89,8 @@
             padding: var(--spacing-lg, 24px);
             max-width: 800px;
             border-radius: var(--border-radius-lg, 8px);
-            background-color: var(--surface-color);
+            /* These rely on theme variables set on #themed-area */
+            background-color: var(--surface-color); 
             box-shadow: var(--shadow-lg);
         }
 
@@ -108,16 +113,16 @@
             }
             .theme-selector-container { width: 100%; }
             #theme-switcher { width: 100%; }
-            .theme-showcase-layout .pt-sidebar { display: none !important; }
-            .theme-showcase-layout { flex-direction: column; }
+            .theme-showcase-layout .pt-sidebar { display: none !important; } /* Hide desktop sidebar */
+            .theme-showcase-layout { flex-direction: column; } /* Stack content area */
             .theme-showcase-content { padding: var(--spacing-md); }
             .component-group { max-width: 100%; padding: var(--spacing-md); }
         }
         @media (min-width: 769px) {
-            .theme-showcase-layout .pt-sidebar {
-                height: calc(100vh - 60px); /* Header height adjustment */
+            #sidebar-container .pt-sidebar { /* More specific selector for the sidebar itself */
+                height: calc(100vh - 60px); /* Adjust if header height changes */
                 position: sticky;
-                top: 60px; /* Stick below sticky header */
+                top: 60px; /* Stick below sticky header; ensure header has fixed height or get dynamically */
                 flex-shrink: 0;
             }
         }
@@ -133,16 +138,22 @@
         </div>
     </header>
 
-    <div id="themed-area">
-        <div class="theme-showcase-layout">
-            <div id="sidebar-container"></div>
+    <div id="themed-area"> <!-- This div gets the main theme class -->
+        <div class="theme-showcase-layout"> <!-- This div handles the sidebar + content layout -->
+            <div id="sidebar-container">
+                <!-- Sidebar HTML will be injected here by JS -->
+            </div>
             <main class="theme-showcase-content">
-                <div class="component-group" id="main-components-container"></div>
+                <div class="component-group" id="main-components-container">
+                    <!-- Main components will be injected here by JS -->
+                </div>
             </main>
         </div>
     </div>
 
-    <div id="mobile-nav-global-container"></div>
+    <div id="mobile-nav-global-container">
+        <!-- Global Mobile Nav HTML will be injected here by JS -->
+    </div>
 
     <script>
         const themes = [
@@ -154,7 +165,7 @@
             { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
         ];
 
-        // FUNCTION DEFINITIONS FIRST
+        // --- FUNCTION DEFINITIONS ---
         const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => {
             return `
             <aside class="pt-sidebar">
@@ -185,7 +196,7 @@
             </div>`;
         };
 
-        const getMainContentHTML = (themeId) => {
+        const getMainContentHTML = (themeId) => { // themeId for potential unique IDs in content
             return `
             <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
             <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
@@ -198,39 +209,53 @@
             `;
         };
         
-        function applyTheme(themeValue, elements) {
-            const { themedArea, sidebarContainer, mobileNavGlobalContainer } = elements;
+        function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
+            const { themedArea, sidebarContainer, mainComponentsContainer, mobileNavGlobalContainer } = elements;
             
-            themedArea.className = ''; 
-            if (mobileNavGlobalContainer.firstChild) {
-                 mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner';
+            // Reset classes before applying new one
+            themedArea.className = ''; // Clear all classes from #themed-area
+            
+            // Ensure mobileNavGlobalContainer and its child exist before trying to modify class
+            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
+                 mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset only banner class
             }
 
-            themedArea.classList.add(themeValue);
-            if (mobileNavGlobalContainer.firstChild) {
+            // Apply new theme class
+            themedArea.classList.add(themeValue); 
+            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
                 mobileNavGlobalContainer.firstChild.classList.add(themeValue);
             }
 
             const currentTheme = themes.find(t => t.value === themeValue);
-            if (currentTheme && sidebarContainer) {
-                sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
+            if (currentTheme) {
+                if (sidebarContainer) {
+                    sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
+                }
+                if (isInitialLoad && mainComponentsContainer) { // Only inject main content on initial load
+                     mainComponentsContainer.innerHTML = getMainContentHTML(currentTheme.value);
+                }
             }
             
-            themedArea.style.background = ''; // Let class define
-            themedArea.style.color = ''; // Let class define
+            // These ensure the background/text color from the new theme are immediately applied
+            // by forcing the browser to re-evaluate the CSS variables from the theme class.
+            themedArea.style.backgroundColor = 'var(--background-color)';
+            themedArea.style.color = 'var(--text-color)';
 
-            if (mobileNavGlobalContainer.firstChild) {
-                mobileNavGlobalContainer.firstChild.style.display = 'none';
-                mobileNavGlobalContainer.firstChild.offsetHeight; // Trigger reflow
-                mobileNavGlobalContainer.firstChild.style.display = '';
+            // Reflow for mobile nav for good measure, especially if theme variables deeply affect it.
+            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
+                const mobileNavBanner = mobileNavGlobalContainer.firstChild;
+                // mobileNavBanner.style.display = 'none'; // This can cause a flicker
+                // mobileNavBanner.offsetHeight; 
+                // mobileNavBanner.style.display = '';
             }
         }
 
         function setupActiveLinkSwitcher() {
-            document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link').forEach(link => {
-                // Remove old event listeners if any (simple way for this demo)
-                const newLink = link.cloneNode(true);
-                link.parentNode.replaceChild(newLink, link);
+            const allNavLinks = document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link');
+            
+            allNavLinks.forEach(link => {
+                const newLink = link.cloneNode(true); // Create a fresh copy
+                link.parentNode.replaceChild(newLink, link); // Replace old link with new one (clears old listeners)
 
                 newLink.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -248,7 +273,7 @@
             });
         }
 
-        // DOMContentLoaded LISTENER - ALL FUNCTION CALLS HAPPEN INSIDE HERE
+        // --- DOMContentLoaded LISTENER ---
         document.addEventListener('DOMContentLoaded', () => {
             const elements = {
                 themeSwitcher: document.getElementById('theme-switcher'),
@@ -264,25 +289,26 @@
                 option.textContent = theme.name;
                 elements.themeSwitcher.appendChild(option);
             });
-
-            if (themes.length > 0) {
-                if (elements.mainComponentsContainer) {
-                    elements.mainComponentsContainer.innerHTML = getMainContentHTML(themes[0].value);
-                }
-                if (elements.mobileNavGlobalContainer) {
-                    elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
-                }
-                applyTheme(themes[0].value, elements);
+            
+            // Inject mobile nav HTML first
+            if (elements.mobileNavGlobalContainer) {
+                 elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
             }
 
+            // Apply initial theme and content
+            if (themes.length > 0) {
+                applyThemeAndContent(themes[0].value, elements, true); // true for initial load
+            }
+
+            // Event listener for theme switcher
             elements.themeSwitcher.addEventListener('change', (event) => {
-                applyTheme(event.target.value, elements);
+                applyThemeAndContent(event.target.value, elements, false); // false for subsequent changes
                 setupActiveLinkSwitcher(); 
             });
             
-            setupActiveLinkSwitcher();
+            setupActiveLinkSwitcher(); // Call once after initial content and navs are rendered
         });
     </script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script> <!-- Optional: for any other global JS -->
 </body>
 </html>
