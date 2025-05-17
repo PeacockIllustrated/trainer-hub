@@ -1,0 +1,183 @@
+/* --- Theme: Friendly & Supportive --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+.theme-friendly-supportive {
+  /* Core Palette */
+  --primary-brand-color: #609966;  /* Soft Sage Green */
+  --primary-brand-dark: #407950;
+  --primary-brand-light: #80b990;
+  --accent-color-main: #ffb380;    /* Warm Peach/Coral */
+  --accent-color-dark: #ff9955;
+  --accent-color-light: #ffccaa;
+
+  --neutral-dark: #5c5552;   /* Warm Dark Gray/Brown */
+  --neutral-medium: #8c8582; /* Warm Medium Gray/Brown */
+  --neutral-light: #d9d5d2;  /* Warm Light Gray/Brown */
+  --neutral-extralight: #f5f2f0; /* Very Soft Beige */
+  --background-main: #fdfaf7; /* Creamy Off-White */
+  --surface-main: #ffffff;
+
+  --text-on-primary-brand: #ffffff;
+  --text-on-accent: #5c3e2e; /* Darker brown text for peach accent */
+
+  /* Overriding Base Variables from _variables.css */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium);
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: var(--neutral-light);
+  --text-color-on-secondary: #ffffff;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight);
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--primary-brand-dark); /* Darker shade of green for headings */
+  --heading-color-on-surface: var(--primary-brand-dark);
+  --link-color: var(--primary-brand-color); /* Links use primary green */
+  --link-color-hover: var(--primary-brand-dark);
+
+  --border-color: var(--neutral-light);
+  --border-color-light: color-mix(in srgb, var(--neutral-light) 40%, var(--background-main));
+  --border-radius-sm: 8px;  /* Softer, more rounded */
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-pill: 30px; /* Softer pill shape */
+  --border-width: 1px;
+
+  /* Typography */
+  --font-family-primary: 'Nunito', var(--font-family-sans);
+  --font-family-headings: 'Lora', var(--font-family-serif); /* Elegant, readable serif for headings */
+  --button-font-weight: 600;
+
+  /* Shadows - Softer, more diffuse */
+  --shadow-color: rgba(92, 85, 82, 0.12); /* Based on neutral-dark */
+  --shadow-xs: 0 1px 3px 0 var(--shadow-color);
+  --shadow-sm: 0 3px 6px -1px var(--shadow-color);
+  --shadow-md: 0 6px 12px -2px var(--shadow-color);
+  --shadow-lg: 0 12px 20px -3px var(--shadow-color);
+
+  /* Alert Colors */
+  --success-color: #a3cca3; /* Lighter, softer green for success */
+  --success-color-light: color-mix(in srgb, var(--success-color) 20%, white);
+  --success-color-dark: color-mix(in srgb, var(--success-color) 70%, #407950);
+  --text-color-on-success: var(--primary-brand-dark);
+
+  --warning-color: #ffd699; /* Soft yellow/orange for warning */
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 25%, white);
+  --warning-color-dark: #e6994d;
+  --text-color-on-warning: var(--neutral-dark);
+
+  --error-color: #ffaaa7;   /* Soft red/pink for error */
+  --error-color-light: color-mix(in srgb, var(--error-color) 25%, white);
+  --error-color-dark: #cc776f;
+  --text-color-on-error: #5c2e2e; /* Darker red text for contrast */
+
+  --info-color: #abc4ff;    /* Soft blue for info */
+  --info-color-light: color-mix(in srgb, var(--info-color) 25%, white);
+  --info-color-dark: #5a7bcc;
+  --text-color-on-info: #2e3d5c;
+
+  /* A very subtle texture for the body background */
+  background-image: var(--background-main) url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d9d5d2' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+
+/* --- Friendly & Supportive Specific Component Styling Adjustments --- */
+
+.theme-friendly-supportive .pt-card {
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg); /* More pronounced rounding */
+}
+
+.theme-friendly-supportive .pt-card-title {
+  font-style: italic; /* Lora italic for headings */
+  font-weight: 600;
+  color: var(--primary-brand-dark);
+}
+
+.theme-friendly-supportive .pt-button {
+  font-weight: var(--button-font-weight);
+  border-radius: var(--border-radius-pill); /* Pill-shaped buttons by default */
+  padding: var(--button-padding-y) calc(var(--button-padding-x) * 1.2); /* Slightly wider */
+  transition: all 0.2s ease-in-out;
+}
+.theme-friendly-supportive .pt-button:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: var(--shadow-sm);
+}
+.theme-friendly-supportive .pt-button:active {
+    transform: translateY(0px) scale(1);
+    box-shadow: none;
+}
+
+.theme-friendly-supportive .pt-button--primary {
+  background-color: var(--primary-brand-color);
+  color: var(--text-on-primary-brand);
+  border: 2px solid transparent;
+}
+.theme-friendly-supportive .pt-button--primary:hover {
+  background-color: var(--primary-brand-dark);
+}
+
+.theme-friendly-supportive .pt-button--secondary {
+  background-color: var(--surface-main);
+  color: var(--primary-brand-color);
+  border: 2px solid var(--primary-brand-light);
+}
+.theme-friendly-supportive .pt-button--secondary:hover {
+  background-color: var(--neutral-extralight);
+  border-color: var(--primary-brand-color);
+  color: var(--primary-brand-dark);
+}
+
+.theme-friendly-supportive .pt-button--accent {
+  background-color: var(--accent-color-main);
+  color: var(--text-on-accent);
+  border: 2px solid transparent;
+}
+.theme-friendly-supportive .pt-button--accent:hover {
+  background-color: var(--accent-color-dark);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color-main) 30%, transparent);
+}
+
+.theme-friendly-supportive .pt-input {
+  background-color: var(--surface-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: calc(var(--input-padding-y) * 1.1) calc(var(--input-padding-x) * 1.1);
+}
+.theme-friendly-supportive .pt-input:focus {
+  border-color: var(--primary-brand-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 15%, transparent);
+}
+.theme-friendly-supportive .pt-input-group label {
+    font-weight: 600;
+    color: var(--neutral-medium);
+    font-family: var(--font-family-primary); /* Ensure label uses Nunito for consistency */
+}
+
+
+.theme-friendly-supportive .pt-alert {
+    border-radius: var(--border-radius-md); /* Match card rounding */
+    border-left-width: 4px;
+    box-shadow: none; /* Cleaner alerts */
+    padding: var(--spacing-md) calc(var(--spacing-md) * 1.5);
+}
+/* Ensure alert text color contrast */
+.theme-friendly-supportive .pt-alert--success { background-color: var(--success-color-light); color: var(--success-color-dark); }
+.theme-friendly-supportive .pt-alert--warning { background-color: var(--warning-color-light); color: var(--warning-color-dark); }
+.theme-friendly-supportive .pt-alert--error { background-color: var(--error-color-light); color: var(--error-color-dark); }
+.theme-friendly-supportive .pt-alert--info { background-color: var(--info-color-light); color: var(--info-color-dark); }
