@@ -374,3 +374,85 @@
     font-size: 0.9em; /* Adjust as needed */
     /* Letter spacing might need to be reduced for smaller buttons if globally applied */
 }
+
+/* --- Mobile Navigation Banner (in _components.css) --- */
+.pt-mobile-nav-banner {
+    display: none; /* Hidden by default, shown on mobile via media query */
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--surface-color); /* Themed background */
+    border-top: var(--border-width) solid var(--border-color);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1); /* Shadow above the banner */
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 0 var(--spacing-sm); /* Some horizontal padding for the container itself */
+}
+
+.pt-mobile-nav-banner__scroll-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap; /* Prevents wrapping of links */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scrollbar-width: none; /* Firefox: hide scrollbar */
+}
+.pt-mobile-nav-banner__scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge: hide scrollbar */
+}
+
+.pt-mobile-nav-banner__link {
+    display: inline-block; /* Or flex: 0 0 auto; */
+    padding: var(--spacing-md) var(--spacing-sm); /* Taller tap height, decent side padding */
+    text-decoration: none;
+    color: var(--text-color-muted); /* Use theme's muted text color */
+    font-size: 0.9em;
+    font-weight: 500;
+    text-align: center;
+    border-bottom: 3px solid transparent; /* For active state indicator */
+    transition: color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0; /* Important for flex container */
+}
+.pt-mobile-nav-banner__link:not(:last-child) {
+    margin-right: var(--spacing-xs); /* Minimal spacing between items */
+}
+
+
+.pt-mobile-nav-banner__link:hover {
+    color: var(--primary-color); /* Use theme's primary color for hover */
+}
+
+.pt-mobile-nav-banner__link.is-active {
+    color: var(--primary-color); /* Or a specific active link color */
+    font-weight: 700;
+    border-bottom-color: var(--primary-color); /* Active indicator line */
+}
+
+/* Media Query to Show Mobile Nav and Hide Sidebar */
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+    .pt-sidebar {
+        display: none !important; /* Hide the desktop sidebar */
+    }
+    .pt-mobile-nav-banner {
+        display: block; /* Show the mobile banner */
+    }
+    .theme-showcase-layout {
+        flex-direction: column; /* Stack content if sidebar was part of flex */
+    }
+    .theme-showcase-content {
+        /* Adjust padding if needed when sidebar is gone */
+        padding: var(--spacing-md);
+    }
+     /* If the main component group is too wide on mobile, constrain it further */
+    .component-group {
+        max-width: 100%;
+        padding: var(--spacing-md);
+    }
+    h1.page-title {
+        font-size: 2em;
+        padding: 20px 10px 10px;
+    }
+    .theme-showcase-content h2.theme-section-title {
+        font-size: 1.8em;
+        margin-bottom: var(--spacing-md);
+    }
+}
