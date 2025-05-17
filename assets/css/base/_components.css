@@ -375,24 +375,22 @@
     /* Letter spacing might need to be reduced for smaller buttons if globally applied */
 }
 
-/* assets/css/base/_components.css */
-
-/* ... other components ... */
 
 /* --- Mobile Navigation Banner --- */
 .pt-mobile-nav-banner {
-    display: none; /* Hidden by default, shown on mobile via media query in index.html <style> */
-    position: sticky;
-    bottom: 0;      /* Stick to the bottom of its containing block or viewport */
+    display: none; /* Hidden by default, shown on mobile via media query */
+    position: fixed; /* MODIFIED: Always fixed to viewport bottom */
+    bottom: 0;
     left: 0;
     right: 0;
     background-color: var(--surface-color);
     border-top: var(--border-width) solid var(--border-color);
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.1); /* Soft shadow */
-    z-index: 1000; 
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
     padding: 0 var(--spacing-sm);
 }
 
+/* ... rest of .pt-mobile-nav-banner styles remain the same ... */
 .pt-mobile-nav-banner__scroll-container {
     display: flex;
     overflow-x: auto;
@@ -403,7 +401,6 @@
 .pt-mobile-nav-banner__scroll-container::-webkit-scrollbar {
     display: none; 
 }
-
 .pt-mobile-nav-banner__link {
     display: inline-block; 
     padding: var(--spacing-md) var(--spacing-sm);
@@ -419,16 +416,22 @@
 .pt-mobile-nav-banner__link:not(:last-child) {
     margin-right: var(--spacing-xs); 
 }
-
-
 .pt-mobile-nav-banner__link:hover {
     color: var(--primary-color); 
 }
-
 .pt-mobile-nav-banner__link.is-active {
     color: var(--primary-color); 
     font-weight: 700;
     border-bottom-color: var(--primary-color);
 }
+
+
+/* --- MEDIA QUERY for showing mobile nav (can be in index.html or here) --- */
+@media (max-width: 768px) {
+    .pt-mobile-nav-banner {
+        display: block; /* Show the mobile banner */
+    }
+}
+
 
 /* ... other component styles below ... */
