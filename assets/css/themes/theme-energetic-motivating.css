@@ -2,23 +2,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700;800&display=swap');
 
 .theme-energetic-motivating {
-  /* Core Palette */
-  --primary-brand-color: #FF4E00;  /* Vibrant Orange */
-  --primary-brand-dark: #D94400;
-  --primary-brand-light: #FF7433;
-  --accent-color-main: #00F0B5;    /* Bright Teal/Mint */
+  /* Core Palette - NEW: Yellow is primary */
+  --primary-brand-color: #FFFF00;  /* Vibrant Yellow (was accent) */
+  --primary-brand-dark: #D9D900;
+  --primary-brand-light: #FFFF33;
+  --accent-color-main: #00F0B5;    /* Bright Teal/Mint (remains for some pop if needed) */
   --accent-color-dark: #00C99A;
   --accent-color-light: #33F3C4;
 
-  --neutral-dark: #1A1A1A;   /* Very Dark Gray / Near Black */
+  /* Original orange now secondary or for specific highlights if needed */
+  --orange-highlight: #FF4E00; 
+
+  --neutral-dark: #1A1A1A;
   --neutral-medium: #4D4D4D;
   --neutral-light: #CCCCCC;
   --neutral-extralight: #E5E5E5;
-  --background-main: #262626;  /* Dark background for high contrast */
-  --surface-main: #3D3D3D;      /* Slightly lighter surface for cards */
+  --background-main: #262626;
+  --surface-main: #3D3D3D;
 
-  --text-on-primary-brand: #FFFFFF;
-  --text-on-accent: #1A1A1A;
+  --text-on-primary-brand: #1A1A1A; /* Dark text on yellow */
+  --text-on-accent: #1A1A1A; /* Dark text on teal/mint */
 
   /* Base Variable Overrides */
   --primary-color: var(--primary-brand-color);
@@ -26,49 +29,44 @@
   --primary-color-light: var(--primary-brand-light);
   --text-color-on-primary: var(--text-on-primary-brand);
 
-  --secondary-color: var(--accent-color-main); /* Using accent as secondary for buttons */
-  --secondary-color-dark: var(--accent-color-dark);
-  --secondary-color-light: var(--accent-color-light);
-  --text-color-on-secondary: var(--text-on-accent);
+  /* Secondary buttons will now use the new primary (Yellow) for stronger CTA feel */
+  /* OR we can make secondary buttons use the orange-highlight for variety */
+  --secondary-color: var(--orange-highlight); /* Secondary buttons are now orange */
+  --secondary-color-dark: color-mix(in srgb, var(--orange-highlight) 80%, black);
+  --secondary-color-light: color-mix(in srgb, var(--orange-highlight) 80%, white);
+  --text-color-on-secondary: #FFFFFF; /* White text on orange */
 
-  --accent-color: #FFFF00; /* Bright Yellow for a tertiary pop */
-  --accent-color-dark: #D9D900;
-  --accent-color-light: #FFFF33;
-  --text-color-on-accent: #1A1A1A;
+  --accent-color: var(--accent-color-main); /* Teal/Mint remains as accent */
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
 
   --background-color: var(--background-main);
   --surface-color: var(--surface-main);
   --surface-color-alt: color-mix(in srgb, var(--surface-main) 80%, var(--background-main));
 
-  --text-color: #F0F0F0; /* Light text on dark background */
+  --text-color: #F0F0F0;
   --text-color-muted: var(--neutral-light);
   --text-color-on-surface: #F0F0F0;
-  --heading-color: var(--primary-brand-color);
+  --heading-color: var(--primary-brand-color); /* Headings are now Yellow */
   --heading-color-on-surface: var(--primary-brand-color);
-  --link-color: var(--accent-color-main);
+  --link-color: var(--accent-color-main); /* Links remain Teal/Mint */
   --link-color-hover: var(--accent-color-light);
 
+  /* ... rest of the variables (borders, typography, shadows, alerts) can largely remain the same ... */
+  /* ... or adjust alert colors if the yellow/orange swap impacts them negatively ... */
   --border-color: var(--neutral-medium);
   --border-color-light: color-mix(in srgb, var(--neutral-medium) 50%, var(--background-main));
-  --border-radius-sm: 3px; /* Sharper edges */
-  --border-radius-md: 5px;
-  --border-radius-lg: 6px;
-  --border-radius-pill: 25px;
-  --border-width: 1px;
-  --border-width-bold: 2px;
-
-  /* Typography */
+  --border-radius-sm: 3px; --border-radius-md: 5px; --border-radius-lg: 6px; --border-radius-pill: 25px;
+  --border-width: 1px; --border-width-bold: 2px;
   --font-family-primary: 'Barlow', var(--font-family-sans);
-  --font-family-headings: 'Anton', var(--font-family-sans); /* Very bold, impactful heading font */
-  --button-font-weight: 700; /* Barlow Bold */
-
-  /* Shadows - Can be subtle on dark themes or more pronounced */
+  --font-family-headings: 'Anton', var(--font-family-sans);
+  --button-font-weight: 700;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --shadow-md: 0 5px 10px var(--shadow-color);
 
-  /* Alert Colors */
-  --success-color: #00C851; --text-on-alert: #1A1A1A;
-  --warning-color: #ffbb33;
+  --success-color: #00C851; --text-on-alert-bg: #1A1A1A; /* Text on light alert backgrounds */
+  --warning-color: #ffbb33; /* This yellow might be too close to new primary, consider a more distinct warning */
   --error-color:   #ff3547;
   --info-color:    #33b5e5;
 
@@ -77,83 +75,51 @@
   --error-color-light:   color-mix(in srgb, var(--error-color) 80%, white);
   --info-color-light:    color-mix(in srgb, var(--info-color) 80%, white);
 
-  --text-color-on-success: var(--text-on-alert);
-  --text-color-on-warning: var(--text-on-alert);
-  --text-color-on-error:   var(--text-on-alert);
-  --text-color-on-info:    var(--text-on-alert);
+  --text-color-on-success: var(--text-on-alert-bg);
+  --text-color-on-warning: var(--text-on-alert-bg);
+  --text-color-on-error:   var(--text-on-alert-bg); /* Or white if error-color-light is dark enough */
+  --text-color-on-info:    var(--text-on-alert-bg);
 }
+
+/* ... specific component overrides for .theme-energetic-motivating ... */
+/* The button color logic will automatically pick up the new --primary-color and --secondary-color */
+/* .pt-button--primary will be yellow, .pt-button--secondary will be orange */
+/* .pt-button--accent will be teal/mint */
 
 .theme-energetic-motivating {
-    /* Optional: subtle pattern or gradient for background */
     background-image: linear-gradient(45deg, var(--background-main) 0%, color-mix(in srgb, var(--background-main) 85%, #000) 100%);
 }
-
 .theme-energetic-motivating .pt-card-title,
 .theme-energetic-motivating .pt-client-list-item__name {
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-transform: uppercase; letter-spacing: 1px;
 }
-
-.theme-energetic-motivating .pt-button {
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-weight: var(--button-font-weight);
+.theme-energetic-motivating .pt-button { /* ... existing button styles ... */
+    text-transform: uppercase; letter-spacing: 0.8px; font-weight: var(--button-font-weight);
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Default shadow for buttons */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.theme-energetic-motivating .pt-button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-.theme-energetic-motivating .pt-button:active {
-    transform: translateY(0px) scale(1);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}
+.theme-energetic-motivating .pt-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+.theme-energetic-motivating .pt-button:active { transform: translateY(0px) scale(1); box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-.theme-energetic-motivating .pt-button--primary {
-    color: var(--text-on-primary-brand); /* Explicitly set from vars */
-}
-.theme-energetic-motivating .pt-button--secondary {
-    color: var(--text-on-secondary);
-}
-.theme-energetic-motivating .pt-button--accent {
-    background-color: var(--accent-color);
-    color: var(--text-color-on-accent);
-}
-.theme-energetic-motivating .pt-button--accent:hover {
-     background-color: var(--accent-color-dark);
-}
-
-
-.theme-energetic-motivating .pt-input {
+.theme-energetic-motivating .pt-input { /* ... existing input styles ... */
     background-color: color-mix(in srgb, var(--surface-main) 80%, black);
-    border-color: var(--neutral-medium);
-    color: var(--text-color);
+    border-color: var(--neutral-medium); color: var(--text-color);
 }
 .theme-energetic-motivating .pt-input:focus {
-    border-color: var(--primary-brand-color);
+    border-color: var(--primary-brand-color); /* Yellow focus */
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 40%, transparent);
 }
 .theme-energetic-motivating .pt-input-group label {
-    color: var(--primary-brand-light);
-    text-transform: uppercase;
-    font-size: 0.8em;
-    letter-spacing: 0.5px;
+    color: var(--primary-brand-light); /* Light yellow labels */
+    text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px;
 }
-
-
-.theme-energetic-motivating .pt-alert {
-    border-left-width: 4px;
-    font-weight: 600;
-}
-/* Alerts are now configured to use their specific background colors (e.g., --success-color-light) */
-/* And their specific text colors (e.g., --text-color-on-success) */
-/* Need to ensure text on the LIGHT alert BG is dark enough */
-.theme-energetic-motivating .pt-alert--success { background-color: var(--success-color-light); color: var(--text-on-alert); border-left-color: var(--success-color); }
-.theme-energetic-motivating .pt-alert--warning { background-color: var(--warning-color-light); color: var(--text-on-alert); border-left-color: var(--warning-color); }
-.theme-energetic-motivating .pt-alert--error { background-color: var(--error-color-light); color: var(--text-on-alert); border-left-color: var(--error-color); }
-.theme-energetic-motivating .pt-alert--info { background-color: var(--info-color-light); color: var(--text-on-alert); border-left-color: var(--info-color); }
-
-.theme-energetic-motivating .pt-sidebar__logo {
-    font-size: 2em;
+.theme-energetic-motivating .pt-alert { border-left-width: 4px; font-weight: 600; }
+.theme-energetic-motivating .pt-alert--success { background-color: var(--success-color-light); color: var(--text-on-alert-bg); border-left-color: var(--success-color); }
+.theme-energetic-motivating .pt-alert--warning { background-color: var(--warning-color-light); color: var(--text-on-alert-bg); border-left-color: var(--warning-color); }
+.theme-energetic-motivating .pt-alert--error { background-color: var(--error-color-light); color: var(--text-on-alert-bg); border-left-color: var(--error-color); }
+.theme-energetic-motivating .pt-alert--info { background-color: var(--info-color-light); color: var(--text-on-alert-bg); border-left-color: var(--info-color); }
+.theme-energetic-motivating .pt-sidebar__logo { font-size: 2em; }
+/* Showcase title adjustments if needed */
+.theme-energetic-motivating .showcase-section__title {
+    border-bottom: 2px solid var(--primary-brand-color); /* Yellow underline */
 }
