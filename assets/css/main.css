@@ -25,3 +25,30 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-headings);
     color: var(--heading-color);
 }
+
+/* assets/css/main.css */
+@import url('base/_reset.css');
+@import url('base/_variables.css');
+@import url('base/_components.css');
+
+body {
+    /* background-color: var(--background-color); Now handled by #themed-area */
+    /* color: var(--text-color); Now handled by #themed-area */
+    font-family: var(--font-family-primary);
+    margin: 0;
+    line-height: 1.6;
+    padding: 0;
+}
+
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+    body {
+        /* Add padding at the bottom of the body to prevent
+           content from being hidden by the fixed mobile nav banner */
+        padding-bottom: 60px; /* Adjust this value based on mobile nav height */
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-headings);
+    color: var(--heading-color); /* Fallback - actual color will be from theme */
+}
