@@ -3,133 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Trainer Component Showcase</title>
+    <title>Personal Trainer Component Showcase - SHOCK & AWE Edition</title>
     <!-- Google Fonts (Example - adjust as per theme needs) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Quicksand:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Include all fonts that might be used by themes -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;700&family=Anton&family=Bebas+Neue&family=Inter:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Quicksand:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;700&family=Press+Start+2P&family=Monoton&family=Sacramento&family=Major+Mono+Display&display=swap" rel="stylesheet">
+
 
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Link all theme files for the showcase -->
-    <link rel="stylesheet" href="assets/css/themes/theme-sharp-modern.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-soft-friendly.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-energetic-bold.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-minimalist-clean.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-neon-cyberscape.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-ethereal-bloom.css">   <!-- Create this file -->
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-arcade-pop.css"> <!-- Create this file -->
+    <link rel="stylesheet" href="assets/css/themes/theme-brutalist-impact.css"> <!-- Create this file -->
     <style>
-        body { margin: 0; padding: 20px; background-color: #f0f0f0; }
-        .showcase-section {
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            /* Default background for sections before theme is applied through wrapper */
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        body {
+            margin: 0;
+            /* A neutral fallback for space between theme sections */
+            background-color: #111;
+            color: #eee; /* Default text color for un-themed parts of the page */
         }
-        .showcase-section h2 {
-            margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
+        .showcase-outer-wrapper {
+            padding: 40px 20px; /* Spacing around each theme demo */
+            min-height: 100vh; /* Ensure each theme can show off its background */
+            box-sizing: border-box;
+        }
+        .showcase-outer-wrapper h2.theme-title { /* Styling for the H2 inside the theme wrapper */
+            font-family: var(--font-family-headings, 'Orbitron', sans-serif); /* Fallback font */
+            color: var(--heading-color, #fff); /* Fallback color */
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: var(--spacing-xl, 40px);
+            text-shadow: 0 0 10px currentColor; /* Subtle glow for titles */
         }
         .component-group {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
+            margin: 20px auto; /* Center the component group */
+            padding: var(--spacing-lg, 24px);
+            max-width: 800px; /* Constrain width for better viewing */
+            border-radius: var(--border-radius-lg, 8px); /* Use theme's radius */
+            /* For themes without full-page bg, this ensures some containment */
+            background-color: var(--surface-color-alt, rgba(255,255,255,0.05));
+            box-shadow: var(--shadow-lg, 0 5px 25px rgba(0,0,0,0.2));
         }
-         /* Use body variables for overall page within a theme context */
-        body.themed {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: var(--font-family-primary);
+        h1.page-title {
+            text-align: center;
+            font-family: 'Monoton', cursive;
+            font-size: 3em;
+            color: #fff;
+            padding: 40px 20px;
+            background: linear-gradient(45deg, #ff00ff, #00f2ff, #39ff14);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Personal Trainer UI Component Showcase</h1>
+    <h1 class="page-title">PT Component Themes: Shock & Awe</h1>
 
-    <!-- Helper function to get component HTML to avoid repetition -->
+    <!-- Helper function to get component HTML -->
     <script>
-        const getSampleComponentsHTML = () => `
+        const getSampleComponentsHTML = (themeName) => `
             <div class="pt-card">
-                <h3 class="pt-card-title">Client Onboarding</h3>
-                <p class="pt-card-content">Complete these steps for new clients.</p>
+                <h3 class="pt-card-title ${themeName === 'neon-cyberscape' ? 'glitch-text' : ''}">SYSTEM ONLINE // Client Intake</h3>
+                <p class="pt-card-content">Data stream active. Input required for operative: Alex Ryder. Designate training protocol.</p>
                 <div class="pt-input-group">
-                    <label for="clientName-${Math.random().toString(36).substring(7)}">Client Name:</label>
-                    <input type="text" id="clientName-${Math.random().toString(36).substring(7)}" class="pt-input" placeholder="e.g., Alex Ray">
+                    <label for="clientName-${themeName}">Operative ID:</label>
+                    <input type="text" id="clientName-${themeName}" class="pt-input" placeholder="e.g., UNIT_734">
                 </div>
                 <div class="pt-button-group">
-                    <button class="pt-button pt-button--primary">Save</button>
-                    <button class="pt-button pt-button--secondary">Details</button>
-                    <button class="pt-button pt-button--accent">Remind</button>
+                    <button class="pt-button pt-button--primary">Engage Protocol</button>
+                    <button class="pt-button pt-button--secondary">Query Databanks</button>
+                    <button class="pt-button pt-button--accent">Purge Record</button>
                 </div>
             </div>
 
             <div class="pt-alert pt-alert--success">
-                <strong>Success!</strong> Profile updated.
+                <strong>CONNECTION ESTABLISHED:</strong> Profile synced with mainframe.
             </div>
             <div class="pt-alert pt-alert--warning">
-                <strong>Careful:</strong> Session quota nearly full.
+                <strong>SECURITY ALERT:</strong> Unauthorised access detected. Level 3 lockdown?
             </div>
             <div class="pt-alert pt-alert--error">
-                <strong>Error!</strong> Payment failed.
+                <strong>CRITICAL FAILURE:</strong> Neural interface offline. Reboot required.
             </div>
             <div class="pt-alert pt-alert--info">
-                <strong>Info:</strong> New workout plan assigned.
+                <strong>SYSTEM UPDATE:</strong> New training subroutines available.
             </div>
         `;
     </script>
 
-    <section id="showcase-sharp-modern" class="showcase-section">
-        <div class="theme-sharp-modern"> <!-- Theme wrapper -->
-            <body class="themed"> <!-- Apply body vars within this scope -->
-                <h2>Theme: Sharp Modern</h2>
-                <div class="component-group" id="sharp-modern-components">
-                    <!-- Components will be injected here by script -->
-                </div>
-            </body>
+    <section id="showcase-neon-cyberscape" class="showcase-outer-wrapper theme-neon-cyberscape">
+        <h2 class="theme-title">Theme: Neon Cyberscape</h2>
+        <div class="component-group" id="neon-cyberscape-components">
+            <!-- Components will be injected here by script -->
         </div>
     </section>
 
-    <section id="showcase-soft-friendly" class="showcase-section">
-        <div class="theme-soft-friendly">
-             <body class="themed">
-                <h2>Theme: Soft Friendly</h2>
-                <div class="component-group" id="soft-friendly-components">
-                    <!-- Components will be injected here by script -->
-                </div>
-            </body>
+    <section id="showcase-ethereal-bloom" class="showcase-outer-wrapper theme-ethereal-bloom">
+        <!-- placeholder for now, actual theme CSS file not yet created -->
+        <h2 class="theme-title" style="color:#ffc0cb;">Theme: Ethereal Bloom (WIP)</h2>
+        <div class="component-group" id="ethereal-bloom-components" style="background:rgba(255,240,245,0.8);">
+             <!-- Placeholder content -->
+             Preview of components will appear here once theme is developed.
         </div>
     </section>
 
-    <section id="showcase-energetic-bold" class="showcase-section">
-        <div class="theme-energetic-bold">
-            <body class="themed">
-                <h2>Theme: Energetic Bold</h2>
-                <div class="component-group" id="energetic-bold-components">
-                    <!-- Components will be injected here by script -->
-                </div>
-            </body>
+    <section id="showcase-retro-arcade-pop" class="showcase-outer-wrapper theme-retro-arcade-pop">
+        <!-- placeholder -->
+        <h2 class="theme-title" style="color:#ffeb3b;">Theme: Retro Arcade Pop (WIP)</h2>
+        <div class="component-group" id="retro-arcade-pop-components" style="background:rgba(50,50,50,0.8);">
+            Preview of components will appear here once theme is developed.
         </div>
     </section>
 
-    <section id="showcase-minimalist-clean" class="showcase-section">
-        <div class="theme-minimalist-clean">
-            <body class="themed">
-                <h2>Theme: Minimalist Clean</h2>
-                <div class="component-group" id="minimalist-clean-components">
-                    <!-- Components will be injected here by script -->
-                </div>
-            </body>
+    <section id="showcase-brutalist-impact" class="showcase-outer-wrapper theme-brutalist-impact">
+        <!-- placeholder -->
+        <h2 class="theme-title" style="color:#000; background: #fff;">Theme: Brutalist Impact (WIP)</h2>
+        <div class="component-group" id="brutalist-impact-components" style="background:#e0e0e0; border: 2px solid #000;">
+            Preview of components will appear here once theme is developed.
         </div>
     </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('sharp-modern-components').innerHTML = getSampleComponentsHTML();
-            document.getElementById('soft-friendly-components').innerHTML = getSampleComponentsHTML();
-            document.getElementById('energetic-bold-components').innerHTML = getSampleComponentsHTML();
-            document.getElementById('minimalist-clean-components').innerHTML = getSampleComponentsHTML();
+            // Inject Neon Cyberscape components
+            const neonCyberscapeContainer = document.getElementById('neon-cyberscape-components');
+            if (neonCyberscapeContainer) {
+                neonCyberscapeContainer.innerHTML = getSampleComponentsHTML('neon-cyberscape');
+            }
+            // For other themes, you'd call:
+            // const etherealBloomContainer = document.getElementById('ethereal-bloom-components');
+            // if (etherealBloomContainer) etherealBloomContainer.innerHTML = getSampleComponentsHTML('ethereal-bloom');
+            // ...and so on
         });
     </script>
     <script src="assets/js/main.js"></script>
