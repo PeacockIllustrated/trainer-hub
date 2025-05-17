@@ -1,0 +1,194 @@
+/* --- Theme: Modern & Professional --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&display=swap');
+
+.theme-modern-professional {
+  /* Core Palette */
+  --primary-brand-color: #005f73;  /* Deep Teal */
+  --primary-brand-dark: #00404f;
+  --primary-brand-light: #007f99;
+  --accent-color-main: #ff8c00;    /* Vibrant Orange for CTAs */
+  --accent-color-dark: #cc7000;
+  --accent-color-light: #ffa333;
+
+  --neutral-dark: #2d3a3a;   /* Dark Gray for text, almost black */
+  --neutral-medium: #5f6a6a; /* Medium Gray for secondary text */
+  --neutral-light: #bac4c4;  /* Light Gray for borders, subtle dividers */
+  --neutral-extralight: #e8ebeb; /* Very Light Gray for backgrounds, input fields */
+  --background-main: #f4f7f7; /* Slightly off-white, clean */
+  --surface-main: #ffffff;     /* Pure white for cards, modals */
+
+  --text-on-primary-brand: #ffffff;
+  --text-on-accent: #000000; /* Or #FFFFFF if accent is darker */
+
+
+  /* Overriding Base Variables from _variables.css */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium); /* Using a neutral as secondary for buttons etc. */
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: var(--neutral-light);
+  --text-color-on-secondary: #ffffff; /* Assuming secondary buttons will be darker neutrals */
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight); /* For slightly differentiated surfaces */
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--primary-brand-color); /* Headings take the brand color */
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-dark);
+
+  --border-color: var(--neutral-light);
+  --border-color-light: color-mix(in srgb, var(--neutral-light) 50%, var(--background-main));
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --border-width: 1px;
+  --border-width-bold: 2px;
+
+  /* Typography */
+  --font-family-primary: 'Inter', var(--font-family-sans);
+  --font-family-headings: 'Roboto Condensed', var(--font-family-sans); /* Modern, slightly condensed heading */
+  --button-font-weight: 600;
+
+  /* Shadows - Subtle and professional */
+  --shadow-color: rgba(45, 58, 58, 0.1); /* Based on neutral-dark */
+  --shadow-xs: 0 1px 2px 0 var(--shadow-color);
+  --shadow-sm: 0 2px 4px -1px var(--shadow-color), 0 1px 2px -1px var(--shadow-color);
+  --shadow-md: 0 4px 8px -2px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+
+
+  /* Alert Colors using palette */
+  --success-color: #2a9d8f; /* Muted Green */
+  --success-color-light: color-mix(in srgb, var(--success-color) 15%, white);
+  --success-color-dark: color-mix(in srgb, var(--success-color) 80%, black);
+  --text-color-on-success: #ffffff;
+
+  --warning-color: #e76f51; /* Muted Orange/Red */
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 15%, white);
+  --warning-color-dark: color-mix(in srgb, var(--warning-color) 80%, black);
+  --text-color-on-warning: #ffffff;
+
+  --error-color: #d00000;   /* Clear Red */
+  --error-color-light: color-mix(in srgb, var(--error-color) 15%, white);
+  --error-color-dark: color-mix(in srgb, var(--error-color) 80%, black);
+  --text-color-on-error: #ffffff;
+
+  --info-color: var(--primary-brand-light); /* Light version of primary brand */
+  --info-color-light: color-mix(in srgb, var(--info-color) 20%, white);
+  --info-color-dark: var(--primary-brand-color);
+  --text-color-on-info: var(--primary-brand-dark);
+
+  /* Optional: Add a very subtle texture or gradient to the body */
+  background: var(--background-color) linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.03) 100%);
+}
+
+/* --- Modern & Professional Specific Component Styling Adjustments --- */
+
+.theme-modern-professional .pt-card {
+  border: 1px solid var(--border-color-light); /* Softer border for cards */
+  box-shadow: var(--shadow-md);
+}
+
+.theme-modern-professional .pt-card-title {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.theme-modern-professional .pt-button {
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: var(--button-font-weight);
+  padding: calc(var(--button-padding-y) * 1.1) calc(var(--button-padding-x) * 1.1); /* Slightly larger buttons */
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transitions */
+}
+
+.theme-modern-professional .pt-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+.theme-modern-professional .pt-button:active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+
+
+.theme-modern-professional .pt-button--primary {
+  background-color: var(--primary-brand-color);
+  color: var(--text-on-primary-brand);
+}
+.theme-modern-professional .pt-button--primary:hover {
+  background-color: var(--primary-brand-dark);
+}
+
+.theme-modern-professional .pt-button--secondary {
+  background-color: var(--surface-main); /* White secondary button */
+  color: var(--primary-brand-color);
+  border: 1px solid var(--primary-brand-light);
+}
+.theme-modern-professional .pt-button--secondary:hover {
+  background-color: var(--neutral-extralight);
+  border-color: var(--primary-brand-color);
+}
+
+
+.theme-modern-professional .pt-button--accent {
+  background-color: var(--accent-color-main);
+  color: var(--text-on-accent);
+}
+.theme-modern-professional .pt-button--accent:hover {
+  background-color: var(--accent-color-dark);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-color-main) 40%, transparent);
+}
+
+.theme-modern-professional .pt-input {
+  background-color: var(--surface-main);
+  border: 1px solid var(--border-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.theme-modern-professional .pt-input:focus {
+  border-color: var(--primary-brand-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 20%, transparent);
+}
+.theme-modern-professional .pt-input-group label {
+    font-weight: 500; /* Slightly less bold labels */
+    color: var(--neutral-medium);
+}
+
+
+.theme-modern-professional .pt-alert {
+    border-left-width: 3px; /* Thinner side border */
+    box-shadow: var(--shadow-xs);
+}
+/* Alerts already defined to use theme variables like --success-color-light etc. */
+/* Text on light alerts needs to be dark for this theme */
+.theme-modern-professional .pt-alert--success,
+.theme-modern-professional .pt-alert--warning,
+.theme-modern-professional .pt-alert--error,
+.theme-modern-professional .pt-alert--info {
+    color: color-mix(in srgb, var(--neutral-dark) 90%, white); /* Ensure good contrast on light backgrounds */
+}
+.theme-modern-professional .pt-alert--success strong,
+.theme-modern-professional .pt-alert--warning strong,
+.theme-modern-professional .pt-alert--error strong,
+.theme-modern-professional .pt-alert--info strong {
+    color: var(--neutral-dark);
+}
+/* Ensure text color is dark enough on the specific alert background colors if they are light */
+.theme-modern-professional .pt-alert--success { background-color: var(--success-color-light); color: var(--success-color-dark); }
+.theme-modern-professional .pt-alert--warning { background-color: var(--warning-color-light); color: var(--warning-color-dark); }
+.theme-modern-professional .pt-alert--error { background-color: var(--error-color-light); color: var(--error-color-dark); }
+.theme-modern-professional .pt-alert--info { background-color: var(--info-color-light); color: var(--info-color-dark); }
