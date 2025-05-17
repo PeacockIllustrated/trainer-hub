@@ -163,3 +163,139 @@
     color: var(--text-color-on-info);
     border-left-color: var(--info-color);
 }
+
+/* --- Sidebar Navigation --- */
+.pt-sidebar {
+    background-color: var(--surface-color); /* Or a specific --sidebar-bg-color if defined in themes */
+    color: var(--text-color-on-surface); /* Or --sidebar-text-color */
+    width: 260px; /* Example width, can be a CSS variable */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg) 0;
+    border-right: var(--border-width) solid var(--border-color);
+    box-shadow: var(--shadow-sm); /* Subtle shadow */
+    transition: width 0.3s ease; /* For potential collapse functionality */
+}
+
+.pt-sidebar__header {
+    padding: 0 var(--spacing-md) var(--spacing-lg);
+    text-align: center; /* Or left, depending on design */
+    border-bottom: var(--border-width) solid var(--border-color-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.pt-sidebar__logo {
+    font-family: var(--font-family-headings);
+    font-size: 1.8em; /* Example size */
+    color: var(--heading-color); /* Or a specific --logo-color */
+    margin: 0;
+}
+.pt-sidebar__logo-img {
+    max-height: 50px; /* Example */
+    width: auto;
+}
+
+.pt-sidebar__nav {
+    flex-grow: 1;
+    overflow-y: auto; /* If many nav items */
+}
+
+.pt-sidebar__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pt-sidebar__nav-item {
+    margin-bottom: var(--spacing-xs);
+}
+
+.pt-sidebar__nav-link {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--text-color-muted); /* Default link color in sidebar */
+    text-decoration: none;
+    border-radius: var(--border-radius-md); /* Rounded effect on hover/active */
+    margin: 0 var(--spacing-sm); /* Give some horizontal margin */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: 500; /* Slightly bolder than base text */
+}
+
+.pt-sidebar__nav-link:hover {
+    background-color: var(--surface-color-alt); /* Subtle hover */
+    color: var(--primary-color); /* Or specific --sidebar-link-hover-color */
+}
+
+.pt-sidebar__nav-link.is-active {
+    background-color: var(--primary-color-light); /* Use theme's primary-light */
+    color: var(--primary-color-dark); /* Or --text-color-on-primary if primary-light is dark enough */
+    font-weight: 700;
+}
+.pt-sidebar__nav-link.is-active .pt-sidebar__nav-icon {
+    color: var(--primary-color); /* Or specific active icon color */
+}
+
+
+.pt-sidebar__nav-icon {
+    margin-right: var(--spacing-sm);
+    display: inline-block;
+    width: 24px; /* Fixed width for icon alignment */
+    text-align: center;
+    font-style: normal; /* If using letter placeholders */
+}
+
+.pt-sidebar__nav-text {
+    flex-grow: 1;
+}
+
+.pt-sidebar__footer {
+    padding: var(--spacing-md) var(--spacing-md) 0;
+    border-top: var(--border-width) solid var(--border-color-light);
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+.pt-sidebar__user-profile {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    text-decoration: none;
+    color: var(--text-color-on-surface);
+    border-radius: var(--border-radius-md);
+}
+.pt-sidebar__user-profile:hover {
+    background-color: var(--surface-color-alt);
+}
+
+.pt-sidebar__user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--neutral-light); /* Placeholder background */
+    color: var(--neutral-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-sm);
+    font-weight: bold;
+}
+
+.pt-sidebar__user-name {
+    font-weight: 600;
+}
+
+.pt-sidebar__logout-link {
+    display: flex; /* Same styling as nav links for consistency */
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--text-color-muted);
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+    margin: 0 var(--spacing-sm);
+}
+.pt-sidebar__logout-link:hover {
+    background-color: var(--surface-color-alt);
+    color: var(--error-color, #d00000); /* Typically red for logout/destructive */
+}
