@@ -693,3 +693,126 @@ table.pt-table {
     font-size: 0.9em;
     padding: var(--spacing-xs);
 }
+
+/* === APPEND TO YOUR EXISTING _components.css === */
+
+/* --- Stepper Component --- */
+.pt-stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to start for label below indicator */
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color-light); /* Softer line */
+}
+.pt-stepper__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: var(--text-color-muted);
+    flex: 1; /* Make steps take equal width */
+    position: relative; /* For the connector line */
+    padding: 0 var(--spacing-xs); /* Some space around step content */
+}
+/* Connector line - improved */
+.pt-stepper__step:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 15px; /* Align with center of indicator */
+    right: 50%; /* Start from center of current step */
+    width: 100%; /* Span to the center of the previous step */
+    height: 2px;
+    background-color: var(--border-color-light);
+    z-index: 0; /* Behind indicator */
+    transform: translateX(-15px); /* Adjust to clear current indicator */
+}
+.pt-stepper__indicator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--surface-color-alt);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: var(--spacing-xs);
+    z-index: 1; /* Above connector line */
+    position: relative; /* Ensure z-index works */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.pt-stepper__label {
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+}
+.pt-stepper__step.is-active .pt-stepper__indicator {
+    background-color: var(--primary-color);
+    color: var(--text-color-on-primary);
+    border-color: var(--primary-color);
+}
+.pt-stepper__step.is-active .pt-stepper__label {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+.pt-stepper__step.is-complete .pt-stepper__indicator {
+    background-color: var(--success-color);
+    color: var(--text-color-on-success, #fff);
+    border-color: var(--success-color);
+}
+.pt-stepper__step.is-complete .pt-stepper__label {
+    color: var(--text-color); /* Or --success-color if preferred */
+}
+/* Connector line for completed steps */
+.pt-stepper__step.is-complete:not(:first-child)::before {
+    background-color: var(--success-color);
+}
+.pt-stepper__step.is-active:not(:first-child)::before { /* Line leading to active step is also active */
+    background-color: var(--success-color); /* Or primary-color if preferred */
+}
+
+
+.pt-form-step { display: none; }
+.pt-form-step.is-active { display: block; animation: ptFadeIn 0.5s ease-out; }
+.pt-form-navigation {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align buttons if different heights */
+}
+@keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Profile Header (if not already global, ensure it's here) --- */
+.pt-profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg, 24px); 
+    padding-bottom: var(--spacing-lg, 24px);
+    border-bottom: var(--border-width) solid var(--border-color-light);
+    margin-bottom: var(--spacing-lg, 24px);
+}
+.pt-profile-header__avatar {
+    width: 80px; height: 80px; /* Default size for this context */
+    border-radius: 50%;
+    background-color: var(--primary-color-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8em; 
+    color: var(--primary-color-dark);
+    font-weight: bold; flex-shrink: 0; overflow: hidden; 
+}
+.pt-profile-header__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pt-profile-header__info h2 {
+    margin: 0 0 var(--spacing-xs, 4px) 0;
+    font-size: 1.5em; 
+    font-family: var(--font-family-headings);
+    color: var(--heading-color);
+}
+.pt-profile-header__info p {
+    margin: 0 0 var(--spacing-xs, 4px) 0;
+    font-size: 0.9em;
+    color: var(--text-color-muted);
+}
+.pt-profile-header__actions .pt-button:not(:last-child) {
+    margin-right: var(--spacing-sm, 8px);
+}
