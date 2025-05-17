@@ -22,9 +22,9 @@
             color: #333;
         }
         .showcase-outer-wrapper {
-            min-height: 100vh; /* To see full backgrounds if any */
+            min-height: 100vh;
             box-sizing: border-box;
-            position: relative; /* Needed for the mobile nav to stick correctly within its section */
+            position: relative; /* Crucial for sticky children within this scope */
         }
         /* Apply theme's background and text color to the outer wrapper */
         .showcase-outer-wrapper.theme-modern-professional { background: var(--background-color); color: var(--text-color); }
@@ -35,26 +35,13 @@
 
         .theme-showcase-layout {
             display: flex;
-            min-height: inherit; /* Inherit min-height from parent */
+            min-height: inherit;
         }
-        /* DESKTOP SIDEBAR: Styles from _components.css will apply. */
-        /* Ensure sticky sidebar is only for larger screens if there's a conflict. */
-        @media (min-width: 769px) {
-            .theme-showcase-layout .pt-sidebar {
-                height: 100vh;
-                position: sticky;
-                top: 0;
-                flex-shrink: 0;
-            }
-        }
-
-
-        .theme-showcase-content {
+        
+        .theme-showcase-content { /* Default for desktop */
             flex-grow: 1;
-            padding: var(--spacing-xl, 40px); /* Use theme's spacing */
-            overflow-y: auto; /* Allow content area to scroll independently if needed */
-             /* Ensure content has enough padding at the bottom if mobile nav is present */
-            padding-bottom: calc(var(--spacing-xl, 40px) + 60px); /* Add space for mobile nav height */
+            padding: var(--spacing-xl, 40px); 
+            overflow-y: auto; 
         }
         .theme-showcase-content h2.theme-section-title {
             font-family: var(--font-family-headings, sans-serif);
@@ -83,11 +70,51 @@
             background-color: #e9e9e9;
         }
 
-        .pt-sidebar__nav-icon, .pt-sidebar__user-avatar { /* Keep for desktop */
+        .pt-sidebar__nav-icon, .pt-sidebar__user-avatar {
             font-style: normal;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* --- MOBILE OVERRIDES --- */
+        @media (max-width: 768px) {
+            .theme-showcase-layout .pt-sidebar { /* Hide desktop sidebar on mobile */
+                 display: none !important;
+            }
+            .pt-mobile-nav-banner { /* Show mobile nav */
+                display: block;
+            }
+            .theme-showcase-layout { /* Adjust layout for mobile */
+                flex-direction: column;
+            }
+            .theme-showcase-content { /* Adjust padding and add margin for mobile nav */
+                padding: var(--spacing-md); /* Mobile specific padding */
+                /* Add margin at the bottom of the content area to make space for the sticky nav banner */
+                /* This assumes mobile nav is approx 50-60px high including its border/shadow */
+                margin-bottom: 60px; 
+            }
+            .component-group {
+                max-width: 100%; /* Allow component group to be full width on mobile */
+                padding: var(--spacing-md);
+            }
+            h1.page-title {
+                font-size: 2em;
+                padding: 20px 10px 10px;
+            }
+            .theme-showcase-content h2.theme-section-title {
+                font-size: 1.8em;
+                margin-bottom: var(--spacing-md);
+            }
+        }
+        /* --- DESKTOP SIDEBAR STICKY --- */
+        @media (min-width: 769px) {
+            .theme-showcase-layout .pt-sidebar {
+                height: 100vh;
+                position: sticky;
+                top: 0;
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
