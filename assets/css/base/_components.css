@@ -432,6 +432,264 @@
         display: block; /* Show the mobile banner */
     }
 }
-
-
 /* ... other component styles below ... */
+
+/* --- ADD THESE TO _components.css --- */
+
+/* Profile Header (can be expanded from pt-card style) */
+.pt-profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg, 24px); /* Use theme variable */
+    padding-bottom: var(--spacing-lg, 24px);
+    border-bottom: var(--border-width) solid var(--border-color-light);
+    margin-bottom: var(--spacing-lg, 24px);
+}
+.pt-profile-header__avatar {
+    width: 100px; height: 100px; /* Example size */
+    border-radius: 50%;
+    background-color: var(--primary-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em; /* Larger initials */
+    color: var(--primary-color-dark);
+    font-weight: bold;
+    flex-shrink: 0;
+    overflow: hidden; /* For actual images */
+}
+.pt-profile-header__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pt-profile-header__info h2 {
+    margin: 0 0 var(--spacing-xs, 4px) 0;
+    font-size: 1.8em; /* Larger name */
+    font-family: var(--font-family-headings);
+    color: var(--heading-color);
+}
+.pt-profile-header__info p {
+    margin: 0 0 var(--spacing-xs, 4px) 0;
+    font-size: 0.95em;
+    color: var(--text-color-muted);
+}
+.pt-profile-header__actions .pt-button:not(:last-child) {
+    margin-right: var(--spacing-sm, 8px);
+}
+
+/* Tabs */
+.pt-tabs {
+    border-bottom: var(--border-width) solid var(--border-color);
+    margin-bottom: var(--spacing-md);
+}
+.pt-tabs__list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: var(--spacing-xs);
+}
+.pt-tabs__tab button {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    color: var(--text-color-muted);
+    font-weight: 600; /* Bolder tab text */
+    font-family: var(--font-family-primary);
+    font-size: 1em;
+    border-bottom: 3px solid transparent;
+    margin-bottom: calc(-1 * var(--border-width)); /* Overlap bottom border of .pt-tabs */
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+.pt-tabs__tab button:hover {
+    color: var(--primary-color);
+}
+.pt-tabs__tab button.is-active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+.pt-tabs__panel {
+    padding: var(--spacing-md) var(--spacing-xs); /* Add some padding to panels */
+}
+.pt-tabs__panel:not(.is-active) { /* Using class to show/hide for better transitions if needed */
+    display: none;
+}
+
+/* Accordion */
+.pt-accordion__item + .pt-accordion__item {
+    margin-top: var(--spacing-xs);
+}
+.pt-accordion__button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: var(--surface-color-alt);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-color-on-surface); /* Ensure text color matches surface */
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+.pt-accordion__button:hover {
+    background-color: var(--border-color-light);
+}
+.pt-accordion__button::after {
+    content: '+';
+    font-size: 1.4em; /* Larger icon */
+    transition: transform 0.2s ease-out;
+    font-weight: normal; /* Avoid double bolding */
+}
+.pt-accordion__button[aria-expanded="true"]::after {
+    transform: rotate(45deg);
+}
+.pt-accordion__content {
+    padding: var(--spacing-md);
+    border: var(--border-width) solid var(--border-color);
+    border-top: 0;
+    border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+    background-color: var(--surface-color);
+}
+.pt-accordion__content[hidden] { display:none; }
+
+
+/* Progress Bar */
+.pt-progress-bar {
+    width: 100%;
+    height: 20px; /* Example height */
+    background-color: var(--neutral-extralight);
+    border-radius: var(--border-radius-pill);
+    overflow: hidden;
+    border: 1px solid var(--border-color-light);
+}
+.pt-progress-bar__fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    /* width: set by inline style or JS */
+    border-radius: var(--border-radius-pill); /* Match parent */
+    text-align: center;
+    color: var(--text-color-on-primary);
+    font-size: 0.8em;
+    line-height: 20px; /* Match height */
+    transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    white-space: nowrap;
+}
+
+/* Modal */
+.pt-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Darker backdrop */
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: var(--spacing-md);
+}
+.pt-modal.is-active { display: flex; }
+.pt-modal__content {
+    background-color: var(--surface-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg); /* Larger radius for modals */
+    max-width: 600px; /* Max width */
+    width: 95%;
+    box-shadow: var(--shadow-xl);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.pt-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: var(--border-width) solid var(--border-color-light);
+}
+.pt-modal__title {
+    font-size: 1.5em; /* Larger modal title */
+    margin: 0;
+    color: var(--heading-color);
+    font-family: var(--font-family-headings);
+}
+.pt-modal__close {
+    background: none; border: none;
+    font-size: 1.8em; /* Larger close button */
+    cursor: pointer;
+    color: var(--text-color-muted);
+    padding: 0 var(--spacing-xs);
+    line-height: 1;
+}
+.pt-modal__close:hover { color: var(--text-color); }
+.pt-modal__body { margin-bottom: var(--spacing-lg); }
+.pt-modal__footer {
+    text-align: right;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: var(--border-width) solid var(--border-color-light);
+}
+.pt-modal__footer .pt-button:not(:last-child) {
+    margin-right: var(--spacing-sm);
+}
+
+
+/* Loading Spinner */
+.pt-loading-spinner {
+    border: 4px solid var(--neutral-extralight);
+    border-top-color: var(--primary-color); /* Use top color for spinner effect */
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    animation: ptSpin 0.8s linear infinite;
+    margin: var(--spacing-lg) auto; /* Center if on its own */
+}
+@keyframes ptSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* File Upload */
+.pt-file-upload {
+    display: flex;
+    align-items: center;
+}
+.pt-file-upload label.pt-button { /* Style the label like a button */
+    /* padding, background-color, color, border-radius, cursor are inherited from .pt-button */
+    display: inline-block; /* Ensure it behaves like a button */
+}
+.pt-file-upload input[type="file"] {
+    display: none; /* Hide the actual input */
+}
+.pt-file-upload__name {
+    margin-left: var(--spacing-md);
+    font-style: italic;
+    color: var(--text-color-muted);
+    font-size: 0.9em;
+}
+
+/* Table */
+table.pt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.95em;
+}
+.pt-table th, .pt-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: var(--border-width) solid var(--border-color);
+    text-align: left;
+    vertical-align: middle;
+}
+.pt-table thead th {
+    background-color: var(--surface-color-alt);
+    font-weight: 600;
+    color: var(--heading-color-on-surface); /* Ensure heading color for th */
+    font-family: var(--font-family-headings);
+}
+.pt-table tbody tr:nth-child(even) {
+    background-color: var(--neutral-extralight);
+}
+.pt-table tbody tr:hover {
+    background-color: var(--border-color-light);
+}
+.pt-table .pt-input--small { /* For inputs inside tables */
+    font-size: 0.9em;
+    padding: var(--spacing-xs);
+}
