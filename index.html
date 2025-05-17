@@ -3,71 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Trainer Component Showcase - Wellness Edition</title>
+    <title>Personal Trainer UI Kit Showcase</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Link all theme files for the showcase -->
+    <!-- Link ALL theme files that will be switchable -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
     <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css"> <!-- Placeholder -->
-    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">   <!-- Placeholder -->
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css"> <!-- Create this file -->
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">   <!-- Create this file -->
     <style>
         body {
             margin: 0;
-            background-color: #e9e9e9; /* Neutral fallback for space between sections */
-            color: #333;
+            /* background-color: #e9e9e9; Now handled by the #themed-area wrapper */
+            color: #333; /* Fallback */
+            /* Padding for fixed mobile nav will be in main.css */
         }
-        .showcase-outer-wrapper {
-            min-height: 100vh;
-            box-sizing: border-box;
-            position: relative; /* Crucial for sticky children within this scope */
-        }
-        /* Apply theme's background and text color to the outer wrapper */
-        .showcase-outer-wrapper.theme-modern-professional { background: var(--background-color); color: var(--text-color); }
-        .showcase-outer-wrapper.theme-friendly-supportive { background: var(--background-color); color: var(--text-color); }
-        .showcase-outer-wrapper.theme-energetic-motivating { background: var(--background-color, #222); color: var(--text-color, #fff); }
-        .showcase-outer-wrapper.theme-natural-grounded { background: var(--background-color, #f0f0f0); color: var(--text-color, #333); }
 
+        .page-header {
+            padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+            background-color: #f0f0f0; /* Neutral header background */
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 1010; /* Above mobile nav if it ever overlaps */
+        }
+        h1.page-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.5em; /* Smaller for a header bar */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .theme-selector-container {
+            display: flex;
+            align-items: center;
+        }
+        .theme-selector-container label {
+            margin-right: var(--spacing-sm, 8px);
+            font-size: 0.9em;
+            color: #555;
+        }
+        #theme-switcher {
+            padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+            border-radius: var(--border-radius-sm, 4px);
+            border: 1px solid #ccc;
+            font-size: 0.9em;
+            background-color: #fff;
+        }
+
+        #themed-area { /* This div will get the theme class */
+            min-height: 100vh; /* Ensure it takes at least full height */
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+             /* Apply theme's background and text color */
+            background: var(--background-color);
+            color: var(--text-color);
+        }
 
         .theme-showcase-layout {
             display: flex;
-            min-height: inherit;
+            min-height: calc(100vh - 60px); /* Adjust 60px based on header height */
         }
         
-        .theme-showcase-content { /* Default for desktop */
+        .theme-showcase-content {
             flex-grow: 1;
-            padding: var(--spacing-xl, 40px); 
-            overflow-y: auto; 
+            padding: var(--spacing-xl, 40px);
+            overflow-y: auto;
         }
         .theme-showcase-content h2.theme-section-title {
-            font-family: var(--font-family-headings, sans-serif);
-            color: var(--heading-color, #111);
-            text-align: left;
-            font-size: 2.2em;
-            margin-top: 0;
-            margin-bottom: var(--spacing-lg, 30px);
+            /* This title is less relevant now or needs a new purpose */
+            display: none; /* Hide for now, can repurpose */
         }
         .component-group {
             margin: 0 0 var(--spacing-xl, 40px) 0;
             padding: var(--spacing-lg, 24px);
             max-width: 800px;
             border-radius: var(--border-radius-lg, 8px);
-            background-color: var(--surface-color, #fff);
-            box-shadow: var(--shadow-lg, 0 5px 15px rgba(0,0,0,0.1));
-        }
-        h1.page-title {
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 2.8em;
-            color: #444;
-            padding: 40px 20px 20px;
-            margin-bottom: 0px;
-            background-color: #e9e9e9;
+            background-color: var(--surface-color);
+            box-shadow: var(--shadow-lg);
         }
 
         .pt-sidebar__nav-icon, .pt-sidebar__user-avatar {
@@ -77,42 +98,45 @@
             justify-content: center;
         }
 
-        /* --- MOBILE OVERRIDES --- */
+        /* --- MOBILE OVERRIDES (general, specific mobile nav style in _components.css) --- */
         @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: var(--spacing-sm);
+            }
+            h1.page-title {
+                font-size: 1.2em;
+                margin-bottom: var(--spacing-sm);
+            }
+            .theme-selector-container {
+                width: 100%;
+            }
+            #theme-switcher {
+                width: 100%;
+            }
+
             .theme-showcase-layout .pt-sidebar { /* Hide desktop sidebar on mobile */
                  display: none !important;
             }
-            .pt-mobile-nav-banner { /* Show mobile nav */
-                display: block;
-            }
-            .theme-showcase-layout { /* Adjust layout for mobile */
+            .theme-showcase-layout {
                 flex-direction: column;
             }
-            .theme-showcase-content { /* Adjust padding and add margin for mobile nav */
-                padding: var(--spacing-md); /* Mobile specific padding */
-                /* Add margin at the bottom of the content area to make space for the sticky nav banner */
-                /* This assumes mobile nav is approx 50-60px high including its border/shadow */
-                margin-bottom: 60px; 
+            .theme-showcase-content {
+                padding: var(--spacing-md);
+                /* No margin-bottom needed here, body will have padding-bottom for fixed mobile nav */
             }
             .component-group {
-                max-width: 100%; /* Allow component group to be full width on mobile */
+                max-width: 100%;
                 padding: var(--spacing-md);
-            }
-            h1.page-title {
-                font-size: 2em;
-                padding: 20px 10px 10px;
-            }
-            .theme-showcase-content h2.theme-section-title {
-                font-size: 1.8em;
-                margin-bottom: var(--spacing-md);
             }
         }
         /* --- DESKTOP SIDEBAR STICKY --- */
         @media (min-width: 769px) {
             .theme-showcase-layout .pt-sidebar {
-                height: 100vh;
+                height: calc(100vh - 60px); /* Adjust 60px if header height changes */
                 position: sticky;
-                top: 0;
+                top: 60px; /* Stick below the sticky header */
                 flex-shrink: 0;
             }
         }
@@ -120,10 +144,45 @@
 </head>
 <body>
 
-    <h1 class="page-title">PT Component Themes: Wellness Focused</h1>
+    <header class="page-header">
+        <h1 class="page-title">PT UI Kit</h1>
+        <div class="theme-selector-container">
+            <label for="theme-switcher">Theme:</label>
+            <select id="theme-switcher">
+                <!-- Options will be populated by JS -->
+            </select>
+        </div>
+    </header>
+
+    <div id="themed-area"> <!-- Default theme class will be applied by JS -->
+        <div class="theme-showcase-layout">
+            <div id="sidebar-container">
+                <!-- Sidebar HTML will be injected here -->
+            </div>
+            <main class="theme-showcase-content">
+                <!-- <h2 class="theme-section-title">Components Showcase</h2> NO LONGER NEEDED PER SECTION -->
+                <div class="component-group" id="main-components-container">
+                    <!-- Main components will be injected here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="mobile-nav-global-container">
+        <!-- Global Mobile Nav HTML will be injected here -->
+    </div>
 
     <script>
-        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => `
+        const themes = [
+            { value: 'theme-modern-professional', name: 'Modern & Professional', sidebarLogo: 'ProTrain', sidebarUser: 'Alex P.' },
+            { value: 'theme-friendly-supportive', name: 'Friendly & Supportive', sidebarLogo: 'WellFit', sidebarUser: 'Sam K.' },
+            // Add WIP themes once their CSS is ready
+            // { value: 'theme-energetic-motivating', name: 'Energetic (WIP)', sidebarLogo: 'GoActive!', sidebarUser: 'Chris G.' },
+            // { value: 'theme-natural-grounded', name: 'Natural (WIP)', sidebarLogo: 'RootFit', sidebarUser: 'Jamie R.' }
+        ];
+
+        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => {
+            return `
             <aside class="pt-sidebar">
                 <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
                 <nav class="pt-sidebar__nav"><ul class="pt-sidebar__nav-list">
@@ -133,11 +192,12 @@
                     <li class="pt-sidebar__nav-item"><a href="#schedule" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">S</span><span class="pt-sidebar__nav-text">Schedule</span></a></li>
                     <li class="pt-sidebar__nav-item"><a href="#settings" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">⚙</span><span class="pt-sidebar__nav-text">Settings</span></a></li>
                 </ul></nav>
-                <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">T</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
-            </aside>
-        `;
+                <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">${userName.charAt(0)}</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
+            </aside>`;
+        };
 
-        const getMobileNavHTML = () => `
+        const getMobileNavHTML = () => {
+            return `
             <div class="pt-mobile-nav-banner">
                 <nav class="pt-mobile-nav-banner__scroll-container">
                     <a href="#dashboard" class="pt-mobile-nav-banner__link is-active">Dashboard</a>
@@ -147,113 +207,96 @@
                     <a href="#settings" class="pt-mobile-nav-banner__link">Settings</a>
                     <a href="#profile" class="pt-mobile-nav-banner__link">Profile</a>
                     <a href="#messages" class="pt-mobile-nav-banner__link">Messages</a>
-                    <a href="#progress" class="pt-mobile-nav-banner__link">Progress</a>
-                    <a href="#logout" class="pt-mobile-nav-banner__link">Logout</a>
                 </nav>
-            </div>
-        `;
+            </div>`;
+        };
 
-        const getMainContentHTML = (themeName) => `
-            <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Card, Buttons, Inputs</h3>
-            <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeName}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeName}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
+        const getMainContentHTML = (themeId) => { // themeId might be useful for unique element IDs if needed
+            return `
+            <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
+            <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
             <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Alerts</h3>
             <div class="pt-alert pt-alert--success"><strong>Great job!</strong> Workout logged successfully.</div><div class="pt-alert pt-alert--warning"><strong>Heads up:</strong> Upcoming session in 2 hours.</div><div class="pt-alert pt-alert--error"><strong>Oops!</strong> We couldn't save your food log. Please try again.</div><div class="pt-alert pt-alert--info"><strong>Tip:</strong> Remember to warm up before each session!</div>
             <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Client List</h3>
             <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>AD</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Alice Davis</h4><p class="pt-client-list-item__meta">Next Up: Cardio Blast, Tomorrow 9 AM</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
             <div class="pt-client-list-item pt-client-list-item--active"><div class="pt-client-list-item__avatar"><span>BE</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Bob Evans</h4><p class="pt-client-list-item__meta">Active Plan: Full Body Strength</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--primary pt-button--small">Chat</a></div></div>
             <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>CH</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Carol Hayes</h4><p class="pt-client-list-item__meta">Goal: Weight Loss - 5kg Target</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
-        `;
-    </script>
+            `;
+        };
 
-    <section id="showcase-modern-professional" class="showcase-outer-wrapper theme-modern-professional">
-        <div class="theme-showcase-layout">
-            <div id="sidebar-modern-professional-container"></div>
-            <main class="theme-showcase-content">
-                <h2 class="theme-section-title">Theme: Modern & Professional</h2>
-                <div class="component-group" id="modern-professional-components"></div>
-            </main>
-        </div>
-        <div id="mobile-nav-modern-professional-container"></div> <!-- Mobile nav for this section -->
-    </section>
-
-    <section id="showcase-friendly-supportive" class="showcase-outer-wrapper theme-friendly-supportive">
-        <div class="theme-showcase-layout">
-            <div id="sidebar-friendly-supportive-container"></div>
-            <main class="theme-showcase-content">
-                <h2 class="theme-section-title">Theme: Friendly & Supportive</h2>
-                <div class="component-group" id="friendly-supportive-components"></div>
-            </main>
-        </div>
-        <div id="mobile-nav-friendly-supportive-container"></div> <!-- Mobile nav for this section -->
-    </section>
-
-    <section id="showcase-energetic-motivating" class="showcase-outer-wrapper theme-energetic-motivating">
-        <div class="theme-showcase-layout">
-            <div id="sidebar-energetic-motivating-container" style="background:#333; width:260px; color:#fff; padding:20px; display:none /*Hidden by default by media query too*/ ;">Energetic Sidebar (WIP)</div>
-            <main class="theme-showcase-content">
-                <h2 class="theme-section-title" style="color:#FF6B6B;">Theme: Energetic & Motivating (WIP)</h2>
-                <div class="component-group" id="energetic-motivating-components" style="background:rgba(50,50,50,0.8); color:#fff;">
-                    Main content area for Energetic & Motivating components (WIP).
-                </div>
-            </main>
-        </div>
-        <div id="mobile-nav-energetic-motivating-container"></div> <!-- Mobile nav for this section -->
-    </section>
-
-    <section id="showcase-natural-grounded" class="showcase-outer-wrapper theme-natural-grounded">
-        <div class="theme-showcase-layout">
-            <div id="sidebar-natural-grounded-container" style="background:#e5e0d5; width:260px; color:#556b2f; padding:20px; display:none /*Hidden by default by media query too*/ ;">Natural Sidebar (WIP)</div>
-            <main class="theme-showcase-content">
-                <h2 class="theme-section-title" style="color:#556B2F;">Theme: Natural & Grounded (WIP)</h2>
-                <div class="component-group" id="natural-grounded-components" style="background:#f5f5dc;">
-                     Main content area for Natural & Grounded components (WIP).
-                </div>
-            </main>
-        </div>
-        <div id="mobile-nav-natural-grounded-container"></div> <!-- Mobile nav for this section -->
-    </section>
-
-    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const sections = [
-                { id: 'modern-professional', sidebarLogo: 'ProTrain', sidebarUser: 'Alex P.' },
-                { id: 'friendly-supportive', sidebarLogo: 'WellFit', sidebarUser: 'Sam K.' },
-                { id: 'energetic-motivating', sidebarLogo: 'GoActive!', sidebarUser: 'Chris G.' }, // WIP
-                { id: 'natural-grounded', sidebarLogo: 'RootFit', sidebarUser: 'Jamie R.' } // WIP
-            ];
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const themedArea = document.getElementById('themed-area');
+            const sidebarContainer = document.getElementById('sidebar-container');
+            const mainComponentsContainer = document.getElementById('main-components-container');
+            const mobileNavGlobalContainer = document.getElementById('mobile-nav-global-container');
 
-            sections.forEach(section => {
-                const sidebarContainer = document.getElementById(`sidebar-${section.id}-container`);
-                if (sidebarContainer) sidebarContainer.innerHTML = getSidebarHTML(section.sidebarLogo, section.sidebarUser);
-
-                const mainContentContainer = document.getElementById(`${section.id}-components`);
-                if (mainContentContainer) mainContentContainer.innerHTML = getMainContentHTML(section.id);
-
-                const mobileNavContainer = document.getElementById(`mobile-nav-${section.id}-container`);
-                if (mobileNavContainer) mobileNavContainer.innerHTML = getMobileNavHTML();
+            // Populate theme switcher
+            themes.forEach(theme => {
+                const option = document.createElement('option');
+                option.value = theme.value;
+                option.textContent = theme.name;
+                themeSwitcher.appendChild(option);
             });
 
+            // Function to apply theme and content
+            function applyTheme(themeValue) {
+                // Remove old theme class
+                themedArea.className = ''; // Clear all classes first
+                // Add new theme class
+                themedArea.classList.add(themeValue);
 
-            // Combined Active link switcher for both sidebar and mobile nav
-            document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent actual navigation for demo
-                    
-                    let parentNavList;
-                    if (this.classList.contains('pt-sidebar__nav-link')) {
-                        parentNavList = this.closest('.pt-sidebar__nav-list');
-                    } else if (this.classList.contains('pt-mobile-nav-banner__link')) {
-                        parentNavList = this.closest('.pt-mobile-nav-banner__scroll-container');
+                // Find theme object
+                const currentTheme = themes.find(t => t.value === themeValue);
+                if (currentTheme) {
+                    if (sidebarContainer) {
+                       sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
                     }
+                }
+                // Re-apply base class for styling from _variables and body vars
+                themedArea.style.background = 'var(--background-color)';
+                themedArea.style.color = 'var(--text-color)';
+            }
 
-                    if (parentNavList) {
-                        parentNavList.querySelectorAll('.is-active').forEach(el => el.classList.remove('is-active'));
-                        this.classList.add('is-active');
-                    }
+            // Set initial theme and content
+            if (themes.length > 0) {
+                applyTheme(themes[0].value); // Apply the first theme by default
+                if (mainComponentsContainer) mainComponentsContainer.innerHTML = getMainContentHTML(themes[0].value);
+                if (mobileNavGlobalContainer) mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
+            }
+
+
+            // Event listener for theme switcher
+            themeSwitcher.addEventListener('change', (event) => {
+                applyTheme(event.target.value);
+                // Content in mainComponentsContainer and mobileNavGlobalContainer doesn't need to change with theme,
+                // unless you specifically want it to (e.g. theme-specific demo text).
+                // If so, re-inject them:
+                // if (mainComponentsContainer) mainComponentsContainer.innerHTML = getMainContentHTML(event.target.value);
+                // Active link switcher might need to be re-applied if sidebar/mobile nav is completely re-rendered
+                setupActiveLinkSwitcher();
+            });
+
+            function setupActiveLinkSwitcher() {
+                document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        let parentNavList;
+                        if (this.classList.contains('pt-sidebar__nav-link')) {
+                            parentNavList = this.closest('.pt-sidebar__nav-list');
+                        } else if (this.classList.contains('pt-mobile-nav-banner__link')) {
+                            parentNavList = this.closest('.pt-mobile-nav-banner__scroll-container');
+                        }
+                        if (parentNavList) {
+                            parentNavList.querySelectorAll('.is-active').forEach(el => el.classList.remove('is-active'));
+                            this.classList.add('is-active');
+                        }
+                    });
                 });
-            });
+            }
+            setupActiveLinkSwitcher(); // Initial setup
         });
     </script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script> <!-- Keep your global JS link -->
 </body>
 </html>
