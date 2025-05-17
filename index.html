@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
-
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Link ALL theme files that will be switchable -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
@@ -23,7 +22,6 @@
         body {
             margin: 0;
             color: #333; /* Fallback */
-            /* body padding for mobile nav is in main.css */
         }
 
         .page-header {
@@ -66,16 +64,13 @@
             min-height: 100vh; 
             box-sizing: border-box;
             transition: background-color 0.3s ease, color 0.3s ease;
-            /* These will be dynamically updated by JS when theme changes */
             background-color: var(--background-color); 
             color: var(--text-color); 
         }
 
         .theme-showcase-layout {
             display: flex;
-            /* Calculate min-height based on viewport minus sticky header */
-            /* Assuming header is roughly 60px, adjust if different */
-            min-height: calc(100vh - 60px); 
+            min-height: calc(100vh - 60px); /* Header height adjustment */
         }
         
         .theme-showcase-content {
@@ -89,7 +84,6 @@
             padding: var(--spacing-lg, 24px);
             max-width: 800px;
             border-radius: var(--border-radius-lg, 8px);
-            /* These rely on theme variables set on #themed-area */
             background-color: var(--surface-color); 
             box-shadow: var(--shadow-lg);
         }
@@ -113,16 +107,16 @@
             }
             .theme-selector-container { width: 100%; }
             #theme-switcher { width: 100%; }
-            .theme-showcase-layout .pt-sidebar { display: none !important; } /* Hide desktop sidebar */
-            .theme-showcase-layout { flex-direction: column; } /* Stack content area */
+            .theme-showcase-layout .pt-sidebar { display: none !important; } 
+            .theme-showcase-layout { flex-direction: column; } 
             .theme-showcase-content { padding: var(--spacing-md); }
             .component-group { max-width: 100%; padding: var(--spacing-md); }
         }
         @media (min-width: 769px) {
-            #sidebar-container .pt-sidebar { /* More specific selector for the sidebar itself */
+            #sidebar-container .pt-sidebar { 
                 height: calc(100vh - 60px); /* Adjust if header height changes */
                 position: sticky;
-                top: 60px; /* Stick below sticky header; ensure header has fixed height or get dynamically */
+                top: 60px; /* Stick below sticky header */
                 flex-shrink: 0;
             }
         }
@@ -138,22 +132,16 @@
         </div>
     </header>
 
-    <div id="themed-area"> <!-- This div gets the main theme class -->
-        <div class="theme-showcase-layout"> <!-- This div handles the sidebar + content layout -->
-            <div id="sidebar-container">
-                <!-- Sidebar HTML will be injected here by JS -->
-            </div>
+    <div id="themed-area"> 
+        <div class="theme-showcase-layout"> 
+            <div id="sidebar-container"></div>
             <main class="theme-showcase-content">
-                <div class="component-group" id="main-components-container">
-                    <!-- Main components will be injected here by JS -->
-                </div>
+                <div class="component-group" id="main-components-container"></div>
             </main>
         </div>
     </div>
 
-    <div id="mobile-nav-global-container">
-        <!-- Global Mobile Nav HTML will be injected here by JS -->
-    </div>
+    <div id="mobile-nav-global-container"></div>
 
     <script>
         const themes = [
@@ -165,8 +153,7 @@
             { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
         ];
 
-        // --- FUNCTION DEFINITIONS ---
-        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => {
+        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => { /* ... same as previous full version ... */
             return `
             <aside class="pt-sidebar">
                 <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
@@ -181,7 +168,7 @@
             </aside>`;
         };
 
-        const getMobileNavHTML = () => {
+        const getMobileNavHTML = () => { /* ... same as previous full version ... */
             return `
             <div class="pt-mobile-nav-banner">
                 <nav class="pt-mobile-nav-banner__scroll-container">
@@ -196,7 +183,7 @@
             </div>`;
         };
 
-        const getMainContentHTML = (themeId) => { // themeId for potential unique IDs in content
+        const getMainContentHTML = (themeId) => { /* ... same as previous full version ... */
             return `
             <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
             <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
@@ -209,52 +196,47 @@
             `;
         };
         
-                function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
+        function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
             const { themedArea, sidebarContainer, mainComponentsContainer, mobileNavGlobalContainer } = elements;
+
+            if (!themedArea) {
+                console.error("CRITICAL: #themed-area element not found. Theme application aborted.");
+                return;
+            }
             
-            // Reset classes before applying new one
-            themedArea.className = ''; // Clear all classes from #themed-area
-            
-            // Apply new theme class to #themed-area
+            themedArea.className = ''; // Clear all classes from #themed-area (it will only have the theme class)
             themedArea.classList.add(themeValue); 
 
-            // Theme the mobile navigation banner IF it has been created and has a first child
             if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset its class
-                mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Add current theme class
+                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset base class
+                mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Add new theme class
+            } else if (mobileNavGlobalContainer && !mobileNavGlobalContainer.firstChild && !isInitialLoad) {
+                // This case handles if mobile nav wasn't there initially but should be themed on subsequent changes
+                // Though our current setup injects it once.
+                console.warn("Mobile nav container exists but has no child to theme.");
             }
+
 
             const currentTheme = themes.find(t => t.value === themeValue);
             if (currentTheme) {
                 if (sidebarContainer) {
                     sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
                 }
-                // Inject Main Components HTML only on initial load
                 if (isInitialLoad && mainComponentsContainer) {
                      mainComponentsContainer.innerHTML = getMainContentHTML(currentTheme.value);
                 }
             }
             
-            // These ensure the background/text color from the new theme are immediately applied
+            // Force browser to re-evaluate CSS variables from the newly applied theme class
             themedArea.style.backgroundColor = 'var(--background-color)';
             themedArea.style.color = 'var(--text-color)';
-
-            // Optional reflow for mobile nav (often not strictly needed if classes apply correctly)
-            // if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-            //     const mobileNavBanner = mobileNavGlobalContainer.firstChild;
-            //     mobileNavBanner.style.display = 'none';
-            //     mobileNavBanner.offsetHeight; 
-            //     mobileNavBanner.style.display = '';
-            // }
         }
 
-        function setupActiveLinkSwitcher() {
+        function setupActiveLinkSwitcher() { /* ... same as previous full version ... */
             const allNavLinks = document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link');
-            
             allNavLinks.forEach(link => {
-                const newLink = link.cloneNode(true); // Create a fresh copy
-                link.parentNode.replaceChild(newLink, link); // Replace old link with new one (clears old listeners)
-
+                const newLink = link.cloneNode(true); 
+                link.parentNode.replaceChild(newLink, link); 
                 newLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     let parentNavList;
@@ -271,7 +253,6 @@
             });
         }
 
-               // --- DOMContentLoaded LISTENER ---
         document.addEventListener('DOMContentLoaded', () => {
             const elements = {
                 themeSwitcher: document.getElementById('theme-switcher'),
@@ -281,7 +262,11 @@
                 mobileNavGlobalContainer: document.getElementById('mobile-nav-global-container')
             };
 
-            // 1. Populate Theme Switcher
+            if (!elements.themedArea || !elements.themeSwitcher || !elements.sidebarContainer || !elements.mainComponentsContainer || !elements.mobileNavGlobalContainer) {
+                console.error("One or more critical page elements could not be found. Please check HTML IDs.");
+                return; 
+            }
+
             themes.forEach(theme => {
                 const option = document.createElement('option');
                 option.value = theme.value;
@@ -289,31 +274,22 @@
                 elements.themeSwitcher.appendChild(option);
             });
             
-            // 2. Inject Initial HTML for main content and mobile nav
-            if (themes.length > 0) { // Ensure there's at least one theme
-                if (elements.mainComponentsContainer) {
-                    elements.mainComponentsContainer.innerHTML = getMainContentHTML(themes[0].value);
-                }
-                if (elements.mobileNavGlobalContainer) {
-                     elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
-                }
+            if (elements.mobileNavGlobalContainer) {
+                 elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
             }
 
-            // 3. Apply Initial Theme (NOW mobileNavGlobalContainer.firstChild should exist)
             if (themes.length > 0) {
-                applyThemeAndContent(themes[0].value, elements, true); // true for initial load
+                applyThemeAndContent(themes[0].value, elements, true);
             }
 
-            // 4. Setup Event Listener for Theme Switcher
             elements.themeSwitcher.addEventListener('change', (event) => {
-                applyThemeAndContent(event.target.value, elements, false); // false for subsequent changes
+                applyThemeAndContent(event.target.value, elements, false); 
                 setupActiveLinkSwitcher(); 
             });
             
-            // 5. Setup Active Link Switcher for initially rendered navs
             setupActiveLinkSwitcher(); 
         });
     </script>
-    <script src="assets/js/main.js"></script> <!-- Optional: for any other global JS -->
+    <script src="assets/js/main.js"></script> 
 </body>
 </html>
