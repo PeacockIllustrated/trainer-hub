@@ -22,9 +22,9 @@
             color: #333;
         }
         .showcase-outer-wrapper {
-            /* padding: 50px 0px; Removed padding to let theme wrapper control all space */
             min-height: 100vh; /* To see full backgrounds if any */
             box-sizing: border-box;
+            position: relative; /* Needed for the mobile nav to stick correctly within its section */
         }
         /* Apply theme's background and text color to the outer wrapper */
         .showcase-outer-wrapper.theme-modern-professional { background: var(--background-color); color: var(--text-color); }
@@ -37,32 +37,39 @@
             display: flex;
             min-height: inherit; /* Inherit min-height from parent */
         }
-        .theme-showcase-layout .pt-sidebar {
-            height: 100vh; /* Sidebar takes full viewport height and is sticky-like */
-            position: sticky; /* Makes sidebar stick on scroll of its parent if parent scrolls */
-            top: 0;
-            flex-shrink: 0;
-            /* Sidebar's background and text color are set by its own variables or theme variables */
+        /* DESKTOP SIDEBAR: Styles from _components.css will apply. */
+        /* Ensure sticky sidebar is only for larger screens if there's a conflict. */
+        @media (min-width: 769px) {
+            .theme-showcase-layout .pt-sidebar {
+                height: 100vh;
+                position: sticky;
+                top: 0;
+                flex-shrink: 0;
+            }
         }
+
+
         .theme-showcase-content {
             flex-grow: 1;
             padding: var(--spacing-xl, 40px); /* Use theme's spacing */
             overflow-y: auto; /* Allow content area to scroll independently if needed */
+             /* Ensure content has enough padding at the bottom if mobile nav is present */
+            padding-bottom: calc(var(--spacing-xl, 40px) + 60px); /* Add space for mobile nav height */
         }
-        .theme-showcase-content h2.theme-section-title { /* Different class for clarity */
+        .theme-showcase-content h2.theme-section-title {
             font-family: var(--font-family-headings, sans-serif);
             color: var(--heading-color, #111);
-            text-align: left; /* Usually left-aligned in app content */
+            text-align: left;
             font-size: 2.2em;
-            margin-top: 0; /* Reset margin if it's first element */
+            margin-top: 0;
             margin-bottom: var(--spacing-lg, 30px);
         }
         .component-group {
-            margin: 0 0 var(--spacing-xl, 40px) 0; /* Bottom margin, no top/auto if title above */
+            margin: 0 0 var(--spacing-xl, 40px) 0;
             padding: var(--spacing-lg, 24px);
-            max-width: 800px; /* Max width for content readability */
+            max-width: 800px;
             border-radius: var(--border-radius-lg, 8px);
-            background-color: var(--surface-color, #fff); /* Use theme surface for component group */
+            background-color: var(--surface-color, #fff);
             box-shadow: var(--shadow-lg, 0 5px 15px rgba(0,0,0,0.1));
         }
         h1.page-title {
@@ -72,12 +79,11 @@
             font-size: 2.8em;
             color: #444;
             padding: 40px 20px 20px;
-            margin-bottom: 0px; /* Remove bottom margin to flow into first theme section */
-            background-color: #e9e9e9; /* Match body background */
+            margin-bottom: 0px;
+            background-color: #e9e9e9;
         }
 
-        /* Helper for icon placeholders, ensure these are styled or replaced with actual icons */
-        .pt-sidebar__nav-icon, .pt-sidebar__user-avatar {
+        .pt-sidebar__nav-icon, .pt-sidebar__user-avatar { /* Keep for desktop */
             font-style: normal;
             display: inline-flex;
             align-items: center;
@@ -92,153 +98,71 @@
     <script>
         const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => `
             <aside class="pt-sidebar">
-                <div class="pt-sidebar__header">
-                    <h1 class="pt-sidebar__logo">${logoText}</h1>
-                </div>
-                <nav class="pt-sidebar__nav">
-                    <ul class="pt-sidebar__nav-list">
-                        <li class="pt-sidebar__nav-item">
-                            <a href="#dashboard" class="pt-sidebar__nav-link is-active">
-                                <span class="pt-sidebar__nav-icon">D</span>
-                                <span class="pt-sidebar__nav-text">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="pt-sidebar__nav-item">
-                            <a href="#clients" class="pt-sidebar__nav-link">
-                                <span class="pt-sidebar__nav-icon">C</span>
-                                <span class="pt-sidebar__nav-text">Clients</span>
-                            </a>
-                        </li>
-                        <li class="pt-sidebar__nav-item">
-                            <a href="#workouts" class="pt-sidebar__nav-link">
-                                <span class="pt-sidebar__nav-icon">W</span>
-                                <span class="pt-sidebar__nav-text">Workouts</span>
-                            </a>
-                        </li>
-                        <li class="pt-sidebar__nav-item">
-                            <a href="#schedule" class="pt-sidebar__nav-link">
-                                <span class="pt-sidebar__nav-icon">S</span>
-                                <span class="pt-sidebar__nav-text">Schedule</span>
-                            </a>
-                        </li>
-                        <li class="pt-sidebar__nav-item">
-                            <a href="#settings" class="pt-sidebar__nav-link">
-                                <span class="pt-sidebar__nav-icon">⚙</span>
-                                <span class="pt-sidebar__nav-text">Settings</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="pt-sidebar__footer">
-                    <a href="#profile" class="pt-sidebar__user-profile">
-                        <span class="pt-sidebar__user-avatar">T</span>
-                        <span class="pt-sidebar__user-name">${userName}</span>
-                    </a>
-                    <a href="#logout" class="pt-sidebar__logout-link">
-                        <span class="pt-sidebar__nav-icon">→</span>
-                        <span class="pt-sidebar__nav-text">Logout</span>
-                    </a>
-                </div>
+                <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
+                <nav class="pt-sidebar__nav"><ul class="pt-sidebar__nav-list">
+                    <li class="pt-sidebar__nav-item"><a href="#dashboard" class="pt-sidebar__nav-link is-active"><span class="pt-sidebar__nav-icon">D</span><span class="pt-sidebar__nav-text">Dashboard</span></a></li>
+                    <li class="pt-sidebar__nav-item"><a href="#clients" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">C</span><span class="pt-sidebar__nav-text">Clients</span></a></li>
+                    <li class="pt-sidebar__nav-item"><a href="#workouts" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">W</span><span class="pt-sidebar__nav-text">Workouts</span></a></li>
+                    <li class="pt-sidebar__nav-item"><a href="#schedule" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">S</span><span class="pt-sidebar__nav-text">Schedule</span></a></li>
+                    <li class="pt-sidebar__nav-item"><a href="#settings" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">⚙</span><span class="pt-sidebar__nav-text">Settings</span></a></li>
+                </ul></nav>
+                <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">T</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
             </aside>
+        `;
+
+        const getMobileNavHTML = () => `
+            <div class="pt-mobile-nav-banner">
+                <nav class="pt-mobile-nav-banner__scroll-container">
+                    <a href="#dashboard" class="pt-mobile-nav-banner__link is-active">Dashboard</a>
+                    <a href="#clients" class="pt-mobile-nav-banner__link">Clients</a>
+                    <a href="#workouts" class="pt-mobile-nav-banner__link">Workouts</a>
+                    <a href="#schedule" class="pt-mobile-nav-banner__link">Schedule</a>
+                    <a href="#settings" class="pt-mobile-nav-banner__link">Settings</a>
+                    <a href="#profile" class="pt-mobile-nav-banner__link">Profile</a>
+                    <a href="#messages" class="pt-mobile-nav-banner__link">Messages</a>
+                    <a href="#progress" class="pt-mobile-nav-banner__link">Progress</a>
+                    <a href="#logout" class="pt-mobile-nav-banner__link">Logout</a>
+                </nav>
+            </div>
         `;
 
         const getMainContentHTML = (themeName) => `
             <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Card, Buttons, Inputs</h3>
-            <div class="pt-card">
-                <h3 class="pt-card-title">Your Weekly Workout Plan</h3>
-                <p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p>
-                <div class="pt-input-group">
-                    <label for="goalInput-${themeName}">Set a Mini-Goal for this Week:</label>
-                    <input type="text" id="goalInput-${themeName}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily">
-                </div>
-                <div class="pt-button-group">
-                    <button class="pt-button pt-button--primary">Log Workout</button>
-                    <button class="pt-button pt-button--secondary">View Progress</button>
-                    <button class="pt-button pt-button--accent">Share Update</button>
-                </div>
-            </div>
-
+            <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeName}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeName}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
             <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Alerts</h3>
-            <div class="pt-alert pt-alert--success">
-                <strong>Great job!</strong> Workout logged successfully.
-            </div>
-            <div class="pt-alert pt-alert--warning">
-                <strong>Heads up:</strong> Upcoming session in 2 hours.
-            </div>
-            <div class="pt-alert pt-alert--error">
-                <strong>Oops!</strong> We couldn't save your food log. Please try again.
-            </div>
-            <div class="pt-alert pt-alert--info">
-                <strong>Tip:</strong> Remember to warm up before each session!
-            </div>
-
+            <div class="pt-alert pt-alert--success"><strong>Great job!</strong> Workout logged successfully.</div><div class="pt-alert pt-alert--warning"><strong>Heads up:</strong> Upcoming session in 2 hours.</div><div class="pt-alert pt-alert--error"><strong>Oops!</strong> We couldn't save your food log. Please try again.</div><div class="pt-alert pt-alert--info"><strong>Tip:</strong> Remember to warm up before each session!</div>
             <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Client List</h3>
-            <div class="pt-client-list-item">
-                <div class="pt-client-list-item__avatar"><span>AD</span></div>
-                <div class="pt-client-list-item__info">
-                    <h4 class="pt-client-list-item__name">Alice Davis</h4>
-                    <p class="pt-client-list-item__meta">Next Up: Cardio Blast, Tomorrow 9 AM</p>
-                </div>
-                <div class="pt-client-list-item__actions">
-                    <a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a>
-                </div>
-            </div>
-            <div class="pt-client-list-item pt-client-list-item--active">
-                <div class="pt-client-list-item__avatar"><span>BE</span></div>
-                <div class="pt-client-list-item__info">
-                    <h4 class="pt-client-list-item__name">Bob Evans</h4>
-                    <p class="pt-client-list-item__meta">Active Plan: Full Body Strength</p>
-                </div>
-                <div class="pt-client-list-item__actions">
-                    <a href="#" class="pt-button pt-button--primary pt-button--small">Chat</a>
-                </div>
-            </div>
-            <div class="pt-client-list-item">
-                <div class="pt-client-list-item__avatar"><span>CH</span></div>
-                <div class="pt-client-list-item__info">
-                    <h4 class="pt-client-list-item__name">Carol Hayes</h4>
-                    <p class="pt-client-list-item__meta">Goal: Weight Loss - 5kg Target</p>
-                </div>
-                <div class="pt-client-list-item__actions">
-                    <a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a>
-                </div>
-            </div>
+            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>AD</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Alice Davis</h4><p class="pt-client-list-item__meta">Next Up: Cardio Blast, Tomorrow 9 AM</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
+            <div class="pt-client-list-item pt-client-list-item--active"><div class="pt-client-list-item__avatar"><span>BE</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Bob Evans</h4><p class="pt-client-list-item__meta">Active Plan: Full Body Strength</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--primary pt-button--small">Chat</a></div></div>
+            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>CH</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Carol Hayes</h4><p class="pt-client-list-item__meta">Goal: Weight Loss - 5kg Target</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
         `;
     </script>
 
     <section id="showcase-modern-professional" class="showcase-outer-wrapper theme-modern-professional">
         <div class="theme-showcase-layout">
-            <!-- Sidebar for Modern & Professional -->
             <div id="sidebar-modern-professional-container"></div>
-
             <main class="theme-showcase-content">
                 <h2 class="theme-section-title">Theme: Modern & Professional</h2>
-                <div class="component-group" id="modern-professional-components">
-                    <!-- Main components will be injected here -->
-                </div>
+                <div class="component-group" id="modern-professional-components"></div>
             </main>
         </div>
+        <div id="mobile-nav-modern-professional-container"></div> <!-- Mobile nav for this section -->
     </section>
 
     <section id="showcase-friendly-supportive" class="showcase-outer-wrapper theme-friendly-supportive">
         <div class="theme-showcase-layout">
-            <!-- Sidebar for Friendly & Supportive -->
             <div id="sidebar-friendly-supportive-container"></div>
-
             <main class="theme-showcase-content">
                 <h2 class="theme-section-title">Theme: Friendly & Supportive</h2>
-                <div class="component-group" id="friendly-supportive-components">
-                    <!-- Main components will be injected here -->
-                </div>
+                <div class="component-group" id="friendly-supportive-components"></div>
             </main>
         </div>
+        <div id="mobile-nav-friendly-supportive-container"></div> <!-- Mobile nav for this section -->
     </section>
 
     <section id="showcase-energetic-motivating" class="showcase-outer-wrapper theme-energetic-motivating">
         <div class="theme-showcase-layout">
-            <!-- Sidebar for Energetic & Motivating -->
-            <div id="sidebar-energetic-motivating-container" style="background:#333; width:260px; color:#fff; padding:20px;">Energetic Sidebar (WIP)</div>
-
+            <div id="sidebar-energetic-motivating-container" style="background:#333; width:260px; color:#fff; padding:20px; display:none /*Hidden by default by media query too*/ ;">Energetic Sidebar (WIP)</div>
             <main class="theme-showcase-content">
                 <h2 class="theme-section-title" style="color:#FF6B6B;">Theme: Energetic & Motivating (WIP)</h2>
                 <div class="component-group" id="energetic-motivating-components" style="background:rgba(50,50,50,0.8); color:#fff;">
@@ -246,13 +170,12 @@
                 </div>
             </main>
         </div>
+        <div id="mobile-nav-energetic-motivating-container"></div> <!-- Mobile nav for this section -->
     </section>
 
     <section id="showcase-natural-grounded" class="showcase-outer-wrapper theme-natural-grounded">
         <div class="theme-showcase-layout">
-            <!-- Sidebar for Natural & Grounded -->
-            <div id="sidebar-natural-grounded-container" style="background:#e5e0d5; width:260px; color:#556b2f; padding:20px;">Natural Sidebar (WIP)</div>
-
+            <div id="sidebar-natural-grounded-container" style="background:#e5e0d5; width:260px; color:#556b2f; padding:20px; display:none /*Hidden by default by media query too*/ ;">Natural Sidebar (WIP)</div>
             <main class="theme-showcase-content">
                 <h2 class="theme-section-title" style="color:#556B2F;">Theme: Natural & Grounded (WIP)</h2>
                 <div class="component-group" id="natural-grounded-components" style="background:#f5f5dc;">
@@ -260,47 +183,50 @@
                 </div>
             </main>
         </div>
+        <div id="mobile-nav-natural-grounded-container"></div> <!-- Mobile nav for this section -->
     </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Modern & Professional
-            const sidebarMPContainer = document.getElementById('sidebar-modern-professional-container');
-            if (sidebarMPContainer) sidebarMPContainer.innerHTML = getSidebarHTML("ProTrain", "Alex P.");
-            const modernProfessionalContainer = document.getElementById('modern-professional-components');
-            if (modernProfessionalContainer) modernProfessionalContainer.innerHTML = getMainContentHTML('modern-professional');
+            const sections = [
+                { id: 'modern-professional', sidebarLogo: 'ProTrain', sidebarUser: 'Alex P.' },
+                { id: 'friendly-supportive', sidebarLogo: 'WellFit', sidebarUser: 'Sam K.' },
+                { id: 'energetic-motivating', sidebarLogo: 'GoActive!', sidebarUser: 'Chris G.' }, // WIP
+                { id: 'natural-grounded', sidebarLogo: 'RootFit', sidebarUser: 'Jamie R.' } // WIP
+            ];
 
-            // Friendly & Supportive
-            const sidebarFSContainer = document.getElementById('sidebar-friendly-supportive-container');
-            if (sidebarFSContainer) sidebarFSContainer.innerHTML = getSidebarHTML("WellFit", "Sam K.");
-            const friendlySupportiveContainer = document.getElementById('friendly-supportive-components');
-            if (friendlySupportiveContainer) friendlySupportiveContainer.innerHTML = getMainContentHTML('friendly-supportive');
+            sections.forEach(section => {
+                const sidebarContainer = document.getElementById(`sidebar-${section.id}-container`);
+                if (sidebarContainer) sidebarContainer.innerHTML = getSidebarHTML(section.sidebarLogo, section.sidebarUser);
 
-            // Placeholder for future themes
-            // const sidebarEMContainer = document.getElementById('sidebar-energetic-motivating-container');
-            // if (sidebarEMContainer) sidebarEMContainer.innerHTML = getSidebarHTML("GoActive!", "Chris G.");
-            // const energeticContainer = document.getElementById('energetic-motivating-components');
-            // if(energeticContainer) energeticContainer.innerHTML = getMainContentHTML('energetic-motivating');
+                const mainContentContainer = document.getElementById(`${section.id}-components`);
+                if (mainContentContainer) mainContentContainer.innerHTML = getMainContentHTML(section.id);
 
-            // const sidebarNGContainer = document.getElementById('sidebar-natural-grounded-container');
-            // if (sidebarNGContainer) sidebarNGContainer.innerHTML = getSidebarHTML("RootFit", "Jamie R.");
-            // const naturalContainer = document.getElementById('natural-grounded-components');
-            // if(naturalContainer) naturalContainer.innerHTML = getMainContentHTML('natural-grounded');
+                const mobileNavContainer = document.getElementById(`mobile-nav-${section.id}-container`);
+                if (mobileNavContainer) mobileNavContainer.innerHTML = getMobileNavHTML();
+            });
 
-            // Basic active link switcher for demo (can be improved)
-            document.querySelectorAll('.pt-sidebar__nav-link').forEach(link => {
+
+            // Combined Active link switcher for both sidebar and mobile nav
+            document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault(); // Prevent actual navigation for demo
-                    // Find the closest sidebar nav list to operate within this sidebar only
-                    const currentSidebarNav = this.closest('.pt-sidebar__nav-list');
-                    if (currentSidebarNav) {
-                        currentSidebarNav.querySelectorAll('.pt-sidebar__nav-link').forEach(el => el.classList.remove('is-active'));
+                    
+                    let parentNavList;
+                    if (this.classList.contains('pt-sidebar__nav-link')) {
+                        parentNavList = this.closest('.pt-sidebar__nav-list');
+                    } else if (this.classList.contains('pt-mobile-nav-banner__link')) {
+                        parentNavList = this.closest('.pt-mobile-nav-banner__scroll-container');
+                    }
+
+                    if (parentNavList) {
+                        parentNavList.querySelectorAll('.is-active').forEach(el => el.classList.remove('is-active'));
                         this.classList.add('is-active');
                     }
                 });
             });
         });
     </script>
-    <script src="assets/js/main.js"></script> <!-- Keep your global JS link -->
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
