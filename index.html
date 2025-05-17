@@ -209,21 +209,19 @@
             `;
         };
         
-        function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
+                function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
             const { themedArea, sidebarContainer, mainComponentsContainer, mobileNavGlobalContainer } = elements;
             
             // Reset classes before applying new one
             themedArea.className = ''; // Clear all classes from #themed-area
             
-            // Ensure mobileNavGlobalContainer and its child exist before trying to modify class
-            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                 mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset only banner class
-            }
-
-            // Apply new theme class
+            // Apply new theme class to #themed-area
             themedArea.classList.add(themeValue); 
+
+            // Theme the mobile navigation banner IF it has been created and has a first child
             if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                mobileNavGlobalContainer.firstChild.classList.add(themeValue);
+                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset its class
+                mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Add current theme class
             }
 
             const currentTheme = themes.find(t => t.value === themeValue);
@@ -231,23 +229,23 @@
                 if (sidebarContainer) {
                     sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
                 }
-                if (isInitialLoad && mainComponentsContainer) { // Only inject main content on initial load
+                // Inject Main Components HTML only on initial load
+                if (isInitialLoad && mainComponentsContainer) {
                      mainComponentsContainer.innerHTML = getMainContentHTML(currentTheme.value);
                 }
             }
             
             // These ensure the background/text color from the new theme are immediately applied
-            // by forcing the browser to re-evaluate the CSS variables from the theme class.
             themedArea.style.backgroundColor = 'var(--background-color)';
             themedArea.style.color = 'var(--text-color)';
 
-            // Reflow for mobile nav for good measure, especially if theme variables deeply affect it.
-            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                const mobileNavBanner = mobileNavGlobalContainer.firstChild;
-                // mobileNavBanner.style.display = 'none'; // This can cause a flicker
-                // mobileNavBanner.offsetHeight; 
-                // mobileNavBanner.style.display = '';
-            }
+            // Optional reflow for mobile nav (often not strictly needed if classes apply correctly)
+            // if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
+            //     const mobileNavBanner = mobileNavGlobalContainer.firstChild;
+            //     mobileNavBanner.style.display = 'none';
+            //     mobileNavBanner.offsetHeight; 
+            //     mobileNavBanner.style.display = '';
+            // }
         }
 
         function setupActiveLinkSwitcher() {
@@ -273,7 +271,7 @@
             });
         }
 
-        // --- DOMContentLoaded LISTENER ---
+               // --- DOMContentLoaded LISTENER ---
         document.addEventListener('DOMContentLoaded', () => {
             const elements = {
                 themeSwitcher: document.getElementById('theme-switcher'),
@@ -283,6 +281,7 @@
                 mobileNavGlobalContainer: document.getElementById('mobile-nav-global-container')
             };
 
+            // 1. Populate Theme Switcher
             themes.forEach(theme => {
                 const option = document.createElement('option');
                 option.value = theme.value;
@@ -290,23 +289,29 @@
                 elements.themeSwitcher.appendChild(option);
             });
             
-            // Inject mobile nav HTML first
-            if (elements.mobileNavGlobalContainer) {
-                 elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
+            // 2. Inject Initial HTML for main content and mobile nav
+            if (themes.length > 0) { // Ensure there's at least one theme
+                if (elements.mainComponentsContainer) {
+                    elements.mainComponentsContainer.innerHTML = getMainContentHTML(themes[0].value);
+                }
+                if (elements.mobileNavGlobalContainer) {
+                     elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
+                }
             }
 
-            // Apply initial theme and content
+            // 3. Apply Initial Theme (NOW mobileNavGlobalContainer.firstChild should exist)
             if (themes.length > 0) {
                 applyThemeAndContent(themes[0].value, elements, true); // true for initial load
             }
 
-            // Event listener for theme switcher
+            // 4. Setup Event Listener for Theme Switcher
             elements.themeSwitcher.addEventListener('change', (event) => {
                 applyThemeAndContent(event.target.value, elements, false); // false for subsequent changes
                 setupActiveLinkSwitcher(); 
             });
             
-            setupActiveLinkSwitcher(); // Call once after initial content and navs are rendered
+            // 5. Setup Active Link Switcher for initially rendered navs
+            setupActiveLinkSwitcher(); 
         });
     </script>
     <script src="assets/js/main.js"></script> <!-- Optional: for any other global JS -->
