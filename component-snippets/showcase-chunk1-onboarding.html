@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Components - Chunk 1: Onboarding & Profile</title>
+    <!-- Google Fonts (ensure all used fonts are linked) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css"> <!-- Root-relative path -->
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
+
+    <style>
+        /* Styles from pt-showcase-dashboard.html can be reused, with minor adjustments if needed */
+        body { margin: 0; color: #333; }
+        .page-header { padding: 16px 24px; background-color: #f0f0f0; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1010; }
+        h1.page-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5em; color: #333; margin: 0; }
+        .theme-selector-container label { margin-right: 8px; font-size: 0.9em; color: #555; }
+        #theme-switcher { padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; background-color: #fff; }
+
+        #themed-chunk-area { /* Main wrapper for theming this page */
+            min-height: 100vh; box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: var(--background-color); 
+            color: var(--text-color);
+            padding: var(--spacing-xl, 40px);
+        }
+        .chunk-section { /* Replaces .showcase-section for clarity */
+            margin-bottom: var(--spacing-xxl, 48px);
+            padding: var(--spacing-lg, 24px);
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color-light);
+            border-radius: var(--border-radius-lg, 8px);
+            box-shadow: var(--shadow-md);
+        }
+        .chunk-section__title {
+            font-family: var(--font-family-headings);
+            color: var(--heading-color);
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: var(--spacing-lg, 24px);
+            padding-bottom: var(--spacing-sm, 8px);
+            border-bottom: 2px solid var(--primary-color-light, #eee);
+        }
+        .component-layout-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--spacing-lg, 24px); }
+        
+        /* Stepper Component Styles (New) */
+        .pt-stepper { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-md); }
+        .pt-stepper__step { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--text-color-muted); flex-grow:1; position:relative; }
+        .pt-stepper__step:not(:last-child)::after { /* Connector line */ content:''; position:absolute; top:15px; left: calc(50% + 20px); width:calc(100% - 40px); height:2px; background-color: var(--border-color); z-index:0;}
+        .pt-stepper__indicator { width: 30px; height: 30px; border-radius: 50%; background-color: var(--border-color-light); border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: var(--spacing-xs); z-index:1; }
+        .pt-stepper__label { font-size: 0.85em; }
+        .pt-stepper__step.is-active .pt-stepper__indicator { background-color: var(--primary-color); color: var(--text-color-on-primary); border-color: var(--primary-color); }
+        .pt-stepper__step.is-active .pt-stepper__label { color: var(--primary-color); font-weight: 600; }
+        .pt-stepper__step.is-complete .pt-stepper__indicator { background-color: var(--success-color); color: var(--text-color-on-success, #fff); border-color: var(--success-color); }
+        .pt-stepper__step.is-complete .pt-stepper__label { color: var(--text-color); }
+        .pt-stepper__step.is-complete:not(:last-child)::after { background-color: var(--success-color); }
+
+
+        .pt-form-step { display: none; /* Hidden by default */ }
+        .pt-form-step.is-active { display: block; }
+        .pt-form-navigation { margin-top: var(--spacing-lg); display: flex; justify-content: space-between; }
+
+        /* Basic Profile Header (copied from pt-showcase-dashboard, might move to _components.css) */
+        .pt-profile-header { display: flex; align-items: center; gap: var(--spacing-lg); padding-bottom:var(--spacing-lg); border-bottom: 1px solid var(--border-color-light); margin-bottom:var(--spacing-lg); }
+        .pt-profile-header__avatar { width: 80px; height: 80px; border-radius: 50%; background-color: var(--primary-color-light); display:flex; align-items:center; justify-content:center; font-size: 1.8em; color: var(--primary-color-dark); font-weight: bold; flex-shrink:0; }
+        .pt-profile-header__info h2 { margin:0 0 var(--spacing-xs) 0; font-size: 1.5em; }
+        .pt-profile-header__info p { margin:0 0 var(--spacing-xs) 0; font-size: 0.9em; color: var(--text-color-muted); }
+        .pt-profile-header__actions .pt-button:not(:last-child) { margin-right: var(--spacing-sm); }
+
+        @media (max-width: 768px) {
+            #themed-chunk-area { padding: var(--spacing-md, 16px); }
+            .page-header { padding: var(--spacing-sm, 8px) var(--spacing-md, 16px); flex-direction:column; align-items:flex-start; }
+            h1.page-title { font-size: 1.3em; margin-bottom:var(--spacing-sm); }
+            .theme-selector-container {width:100%;} #theme-switcher {width:100%;}
+            .chunk-section { padding: var(--spacing-md, 16px); margin-bottom: var(--spacing-lg, 24px); }
+            .chunk-section__title { font-size: 1.5em; margin-bottom: var(--spacing-md, 16px); }
+            .component-layout-grid { gap: var(--spacing-md, 16px); }
+            .pt-stepper__label { display:none; } /* Hide labels on very small screens if too cramped */
+            .pt-stepper__step:not(:last-child)::after {left: calc(50% + 15px); width:calc(100% - 30px); }
+        }
+         @media (max-width: 600px) { /* Profile Header Stack */
+            .pt-profile-header { flex-direction: column; align-items: center; text-align: center; }
+            .pt-profile-header__avatar { margin-bottom: var(--spacing-md); margin-right: 0; }
+            .pt-profile-header__info { margin-right: 0; }
+            .pt-profile-header__actions { width: 100%; display: flex; flex-direction: column; gap: var(--spacing-sm); }
+            .pt-profile-header__actions .pt-button { margin-right: 0; width: 100%; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <h1 class="page-title">Chunk 1: Onboarding & Profile</h1>
+        <div class="theme-selector-container">
+            <label for="theme-switcher">Theme:</label>
+            <select id="theme-switcher"></select>
+        </div>
+    </header>
+
+    <div id="themed-chunk-area">
+        
+        <!-- Section: Client Onboarding Form -->
+        <section class="chunk-section">
+            <h2 class="chunk-section__title">Client Onboarding Process</h2>
+            <form id="clientOnboardingForm">
+                <div class="pt-stepper" id="onboardingStepper">
+                    <div class="pt-stepper__step is-active" data-step="1">
+                        <div class="pt-stepper__indicator">1</div>
+                        <div class="pt-stepper__label">Personal</div>
+                    </div>
+                    <div class="pt-stepper__step" data-step="2">
+                        <div class="pt-stepper__indicator">2</div>
+                        <div class="pt-stepper__label">Goals</div>
+                    </div>
+                    <div class="pt-stepper__step" data-step="3">
+                        <div class="pt-stepper__indicator">3</div>
+                        <div class="pt-stepper__label">Health</div>
+                    </div>
+                    <div class="pt-stepper__step" data-step="4">
+                        <div class="pt-stepper__indicator">4</div>
+                        <div class="pt-stepper__label">Review</div>
+                    </div>
+                </div>
+
+                <div class="pt-form-step is-active" data-step-content="1">
+                    <h3 style="color:var(--heading-color); margin-bottom:var(--spacing-md);">Step 1: Personal Details</h3>
+                    <div class="pt-input-group"><label for="onboardName">Full Name:</label><input type="text" id="onboardName" class="pt-input" required></div>
+                    <div class="pt-input-group"><label for="onboardDob">Date of Birth:</label><input type="date" id="onboardDob" class="pt-input" required></div>
+                    <div class="pt-input-group"><label for="onboardEmail">Email:</label><input type="email" id="onboardEmail" class="pt-input" required></div>
+                    <div class="pt-input-group"><label for="onboardPhone">Phone:</label><input type="tel" id="onboardPhone" class="pt-input"></div>
+                </div>
+
+                <div class="pt-form-step" data-step-content="2">
+                    <h3 style="color:var(--heading-color); margin-bottom:var(--spacing-md);">Step 2: Fitness Goals & Experience</h3>
+                    <div class="pt-input-group">
+                        <label for="onboardGoal">Primary Goal:</label>
+                        <select id="onboardGoal" class="pt-input">
+                            <option value="weight_loss">Weight Loss</option><option value="muscle_gain">Muscle Gain</option>
+                            <option value="endurance">Improve Endurance</option><option value="flexibility">Improve Flexibility</option>
+                            <option value="overall_fitness">Overall Fitness</option>
+                        </select>
+                    </div>
+                    <div class="pt-input-group">
+                        <label>Experience Level:</label>
+                        <div><label><input type="radio" name="experience" value="beginner" checked> Beginner</label></div>
+                        <div><label><input type="radio" name="experience" value="intermediate"> Intermediate</label></div>
+                        <div><label><input type="radio" name="experience" value="advanced"> Advanced</label></div>
+                    </div>
+                </div>
+
+                <div class="pt-form-step" data-step-content="3">
+                    <h3 style="color:var(--heading-color); margin-bottom:var(--spacing-md);">Step 3: Health Information (Basic PAR-Q)</h3>
+                    <p>Please answer the following questions honestly:</p>
+                    <div class="pt-input-group"><label><input type="checkbox" name="parq1"> Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?</label></div>
+                    <div class="pt-input-group"><label><input type="checkbox" name="parq2"> Do you feel pain in your chest when you do physical activity?</label></div>
+                    <div class="pt-input-group"><label><input type="checkbox" name="parq3"> In the past month, have you had chest pain when you were not doing physical activity?</label></div>
+                     <div class="pt-input-group"><label for="onboardMedicalNotes">Any other medical conditions or injuries?</label><textarea id="onboardMedicalNotes" class="pt-input" rows="3"></textarea></div>
+                </div>
+                
+                <div class="pt-form-step" data-step-content="4">
+                    <h3 style="color:var(--heading-color); margin-bottom:var(--spacing-md);">Step 4: Review & Submit</h3>
+                    <p>Please review your information before submitting.</p>
+                    <div id="onboardingReviewOutput" style="padding:var(--spacing-md); background-color:var(--surface-color-alt); border-radius:var(--border-radius-sm);">Review data will appear here...</div>
+                </div>
+
+                <div class="pt-form-navigation">
+                    <button type="button" class="pt-button pt-button--secondary" id="prevStepBtn" disabled>Previous</button>
+                    <button type="button" class="pt-button pt-button--primary" id="nextStepBtn">Next</button>
+                    <button type="submit" class="pt-button pt-button--accent" id="submitOnboardingBtn" style="display:none;">Submit Onboarding</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Section: Admin - Add New Client Modal -->
+        <section class="chunk-section">
+            <h2 class="chunk-section__title">Admin: Add New Client</h2>
+            <button class="pt-button pt-button--primary" id="openAddClientModalBtn">Add New Client Manually</button>
+        </section>
+        
+        <!-- Add New Client Modal -->
+        <div class="pt-modal" id="addClientModal">
+            <div class="pt-modal__content">
+                <div class="pt-modal__header"><h3 class="pt-modal__title">Add New Client</h3><button class="pt-modal__close" aria-label="Close modal">×</button></div>
+                <form id="adminAddClientForm">
+                    <div class="pt-modal__body">
+                        <div class="pt-input-group"><label for="adminClientName">Full Name:</label><input type="text" id="adminClientName" class="pt-input" required></div>
+                        <div class="pt-input-group"><label for="adminClientEmail">Email:</label><input type="email" id="adminClientEmail" class="pt-input" required></div>
+                        <div class="pt-input-group"><label for="adminClientGoal">Primary Goal:</label><select id="adminClientGoal" class="pt-input"><option>Weight Loss</option><option>Muscle Gain</option></select></div>
+                        <!-- Add more fields as needed -->
+                    </div>
+                    <div class="pt-modal__footer">
+                        <button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button>
+                        <button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Client</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Section: Admin/Client - Profile View Components -->
+        <section class="chunk-section">
+            <h2 class="chunk-section__title">Profile View Components</h2>
+            
+            <!-- Enhanced Profile Header -->
+            <h3 style="color:var(--heading-color); margin-bottom:var(--spacing-sm);">Enhanced Client Profile Header (Admin/Client View)</h3>
+            <div class="pt-profile-header">
+                <div class="pt-profile-header__avatar">SA</div>
+                <div class="pt-profile-header__info">
+                    <h2>Sarah Adams</h2>
+                    <p>Primary Goal: Endurance | Status: Active | Joined: Mar 01, 2023</p>
+                </div>
+                <div class="pt-profile-header__actions">
+                    <button class="pt-button pt-button--primary pt-button--small">View Full Profile</button>
+                </div>
+            </div>
+
+            <div class="component-layout-grid" style="margin-top:var(--spacing-lg);">
+                <!-- Client Personal Details Card (View) -->
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Personal Details (View)</h3>
+                    <p class="pt-card-content"><strong>Name:</strong> Sarah Adams<br><strong>DOB:</strong> 1985-10-10<br><strong>Email:</strong> sarah.a@example.com</p>
+                </div>
+                <!-- Client Goal Display Card -->
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Fitness Goals</h3>
+                    <p class="pt-card-content"><strong>Primary:</strong> Improve Endurance for 10k run.<br><strong>Secondary:</strong> Tone core muscles.</p>
+                </div>
+                <!-- PAR-Q / Health Notes Viewer -->
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Health Summary</h3>
+                    <p class="pt-card-content">Generally healthy. Reports occasional lower back stiffness after long sitting periods.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Client Dashboard - Profile Summary Card -->
+        <section class="chunk-section">
+            <h2 class="chunk-section__title">Client View: Dashboard Profile Snippet</h2>
+            <div class="pt-card" style="max-width: 350px;"> <!-- Example of a smaller summary card -->
+                <div class="pt-profile-header" style="border-bottom:none; margin-bottom:0; padding-bottom:var(--spacing-sm);">
+                    <div class="pt-profile-header__avatar" style="width:60px; height:60px; font-size:1.5em;">SA</div>
+                    <div class="pt-profile-header__info">
+                        <h2 style="font-size:1.3em;">Sarah Adams</h2>
+                        <p>Goal: Endurance Training</p>
+                    </div>
+                </div>
+                 <button class="pt-button pt-button--primary pt-button--small" style="width:100%; margin-top:var(--spacing-sm);">View My Plan</button>
+            </div>
+        </section>
+
+
+    </div> <!-- /#themed-chunk-area -->
+    
+    <script>
+        const themes = [ /* ... same as index.html ... */
+            { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
+        ];
+
+        function applyShowcaseTheme(themeValue, themedArea) {
+            if (!themedArea) { console.error("Themed area not found in applyShowcaseTheme."); return; }
+            
+            themedArea.className = ''; 
+            themedArea.classList.add(themeValue);
+            
+            themedArea.style.backgroundColor = 'var(--background-color)'; 
+            themedArea.style.color = 'var(--text-color)';
+
+            const addClientModal = document.getElementById('addClientModal'); // Get modal for this page
+            if (addClientModal) {
+                themes.forEach(t => { if (addClientModal.classList.contains(t.value)) { addClientModal.classList.remove(t.value); } });
+                addClientModal.classList.add(themeValue);
+            }
+        }
+        
+        // --- Onboarding Stepper JS ---
+        function setupOnboardingStepper() {
+            const stepper = document.getElementById('onboardingStepper');
+            const formSteps = document.querySelectorAll('#clientOnboardingForm .pt-form-step');
+            const prevBtn = document.getElementById('prevStepBtn');
+            const nextBtn = document.getElementById('nextStepBtn');
+            const submitBtn = document.getElementById('submitOnboardingBtn');
+            const reviewOutput = document.getElementById('onboardingReviewOutput');
+            let currentStep = 1;
+            const totalSteps = formSteps.length;
+
+            function updateStepView() {
+                // Update stepper indicators
+                stepper.querySelectorAll('.pt-stepper__step').forEach((stepEl, index) => {
+                    stepEl.classList.remove('is-active', 'is-complete');
+                    if (index + 1 < currentStep) stepEl.classList.add('is-complete');
+                    if (index + 1 === currentStep) stepEl.classList.add('is-active');
+                });
+                // Show current form step
+                formSteps.forEach(stepEl => {
+                    stepEl.classList.remove('is-active');
+                    if (parseInt(stepEl.dataset.stepContent) === currentStep) {
+                        stepEl.classList.add('is-active');
+                    }
+                });
+                // Update button states
+                prevBtn.disabled = currentStep === 1;
+                nextBtn.style.display = currentStep === totalSteps ? 'none' : 'inline-block';
+                submitBtn.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+
+                // Populate review step
+                if (currentStep === totalSteps && reviewOutput) {
+                    const formData = new FormData(document.getElementById('clientOnboardingForm'));
+                    let reviewHTML = '<h4>Review Your Details:</h4><ul>';
+                    formData.forEach((value, key) => {
+                        if (value) reviewHTML += `<li><strong>${key.replace('onboard', '')}:</strong> ${value}</li>`;
+                    });
+                    reviewHTML += '</ul>';
+                    reviewOutput.innerHTML = reviewHTML;
+                }
+            }
+
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                if (currentStep < totalSteps) currentStep++;
+                updateStepView();
+            });
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) currentStep--;
+                updateStepView();
+            });
+            if (submitBtn) document.getElementById('clientOnboardingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Onboarding Submitted (Demo)!');
+                // Here you would handle form data submission
+            });
+            
+            updateStepView(); // Initial view
+        }
+
+        // --- Add Client Modal JS ---
+        function setupAddClientModal() {
+            const modal = document.getElementById('addClientModal');
+            const openBtn = document.getElementById('openAddClientModalBtn');
+            const closeButtons = modal ? modal.querySelectorAll('.pt-modal__close') : [];
+            const form = document.getElementById('adminAddClientForm');
+
+            if (openBtn && modal) openBtn.addEventListener('click', () => modal.classList.add('is-active'));
+            if (modal) {
+                closeButtons.forEach(btn => btn.addEventListener('click', () => modal.classList.remove('is-active')));
+                modal.addEventListener('click', (event) => { if (event.target === modal) modal.classList.remove('is-active'); });
+            }
+            if (form) form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('New Client Saved (Demo)!');
+                if(modal) modal.classList.remove('is-active');
+                form.reset();
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const themedArea = document.getElementById('themed-chunk-area'); // Ensure this ID is correct
+            if (!themeSwitcher || !themedArea) { console.error("Theme switcher or themed area not found on this page!"); return; }
+            
+            themes.forEach(theme => {
+                const option = document.createElement('option'); option.value = theme.value; option.textContent = theme.name;
+                themeSwitcher.appendChild(option);
+            });
+
+            if (themes.length > 0) { applyShowcaseTheme(themes[0].value, themedArea); }
+            
+            themeSwitcher.addEventListener('change', (event) => { applyShowcaseTheme(event.target.value, themedArea); });
+            
+            setupOnboardingStepper();
+            setupAddClientModal();
+        });
+    </script>
+</body>
+</html>
