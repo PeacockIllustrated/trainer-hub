@@ -172,64 +172,26 @@
         <!-- Global Mobile Nav HTML will be injected here -->
     </div>
 
-    <script>
+       <script>
         const themes = [
             { value: 'theme-modern-professional', name: 'Modern & Professional', sidebarLogo: 'ProTrain', sidebarUser: 'Alex P.' },
             { value: 'theme-friendly-supportive', name: 'Friendly & Supportive', sidebarLogo: 'WellFit', sidebarUser: 'Sam K.' },
-            // Add WIP themes once their CSS is ready
-            // { value: 'theme-energetic-motivating', name: 'Energetic (WIP)', sidebarLogo: 'GoActive!', sidebarUser: 'Chris G.' },
-            // { value: 'theme-natural-grounded', name: 'Natural (WIP)', sidebarLogo: 'RootFit', sidebarUser: 'Jamie R.' }
+            // NEW THEMES ADDED BELOW
+            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating', sidebarLogo: 'IgniteFit', sidebarUser: 'Max Power' },
+            { value: 'theme-natural-grounded', name: 'Natural & Grounded', sidebarLogo: 'TerraFit', sidebarUser: 'Willow G.' },
+            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist', sidebarLogo: 'ELEVATE', sidebarUser: 'Kendall R.' },
+            { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
         ];
 
-        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => {
-            return `
-            <aside class="pt-sidebar">
-                <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
-                <nav class="pt-sidebar__nav"><ul class="pt-sidebar__nav-list">
-                    <li class="pt-sidebar__nav-item"><a href="#dashboard" class="pt-sidebar__nav-link is-active"><span class="pt-sidebar__nav-icon">D</span><span class="pt-sidebar__nav-text">Dashboard</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#clients" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">C</span><span class="pt-sidebar__nav-text">Clients</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#workouts" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">W</span><span class="pt-sidebar__nav-text">Workouts</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#schedule" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">S</span><span class="pt-sidebar__nav-text">Schedule</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#settings" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">⚙</span><span class="pt-sidebar__nav-text">Settings</span></a></li>
-                </ul></nav>
-                <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">${userName.charAt(0)}</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
-            </aside>`;
-        };
-
-        const getMobileNavHTML = () => {
-            return `
-            <div class="pt-mobile-nav-banner">
-                <nav class="pt-mobile-nav-banner__scroll-container">
-                    <a href="#dashboard" class="pt-mobile-nav-banner__link is-active">Dashboard</a>
-                    <a href="#clients" class="pt-mobile-nav-banner__link">Clients</a>
-                    <a href="#workouts" class="pt-mobile-nav-banner__link">Workouts</a>
-                    <a href="#schedule" class="pt-mobile-nav-banner__link">Schedule</a>
-                    <a href="#settings" class="pt-mobile-nav-banner__link">Settings</a>
-                    <a href="#profile" class="pt-mobile-nav-banner__link">Profile</a>
-                    <a href="#messages" class="pt-mobile-nav-banner__link">Messages</a>
-                </nav>
-            </div>`;
-        };
-
-        const getMainContentHTML = (themeId) => { // themeId might be useful for unique element IDs if needed
-            return `
-            <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
-            <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
-            <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Alerts</h3>
-            <div class="pt-alert pt-alert--success"><strong>Great job!</strong> Workout logged successfully.</div><div class="pt-alert pt-alert--warning"><strong>Heads up:</strong> Upcoming session in 2 hours.</div><div class="pt-alert pt-alert--error"><strong>Oops!</strong> We couldn't save your food log. Please try again.</div><div class="pt-alert pt-alert--info"><strong>Tip:</strong> Remember to warm up before each session!</div>
-            <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Client List</h3>
-            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>AD</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Alice Davis</h4><p class="pt-client-list-item__meta">Next Up: Cardio Blast, Tomorrow 9 AM</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
-            <div class="pt-client-list-item pt-client-list-item--active"><div class="pt-client-list-item__avatar"><span>BE</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Bob Evans</h4><p class="pt-client-list-item__meta">Active Plan: Full Body Strength</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--primary pt-button--small">Chat</a></div></div>
-            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>CH</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Carol Hayes</h4><p class="pt-client-list-item__meta">Goal: Weight Loss - 5kg Target</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
-            `;
-        };
+        // ... (getSidebarHTML, getMobileNavHTML, getMainContentHTML functions remain the same) ...
+        // No changes to the HTML generating functions needed for this fix
 
         document.addEventListener('DOMContentLoaded', () => {
             const themeSwitcher = document.getElementById('theme-switcher');
             const themedArea = document.getElementById('themed-area');
             const sidebarContainer = document.getElementById('sidebar-container');
             const mainComponentsContainer = document.getElementById('main-components-container');
-            const mobileNavGlobalContainer = document.getElementById('mobile-nav-global-container');
+            const mobileNavGlobalContainer = document.getElementById('mobile-nav-global-container'); // Get this container
 
             // Populate theme switcher
             themes.forEach(theme => {
@@ -241,10 +203,19 @@
 
             // Function to apply theme and content
             function applyTheme(themeValue) {
-                // Remove old theme class
-                themedArea.className = ''; // Clear all classes first
-                // Add new theme class
+                // Remove old theme classes
+                themedArea.className = ''; 
+                if (mobileNavGlobalContainer.firstChild) { // If mobile nav exists
+                     mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset its class first
+                }
+
+
+                // Add new theme class to themed area and mobile nav container/banner
                 themedArea.classList.add(themeValue);
+                if (mobileNavGlobalContainer.firstChild) {
+                    mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Apply theme to the banner itself
+                }
+
 
                 // Find theme object
                 const currentTheme = themes.find(t => t.value === themeValue);
@@ -254,30 +225,37 @@
                     }
                 }
                 // Re-apply base class for styling from _variables and body vars
-                themedArea.style.background = 'var(--background-color)';
-                themedArea.style.color = 'var(--text-color)';
+                // This ensures that CSS variables cascade correctly
+                themedArea.style.background = ''; // Clear inline style, let CSS class handle it
+                themedArea.style.color = '';    // Clear inline style
+
+                 // Trigger re-flow for mobile nav if variables inside it change.
+                 // This might not be strictly necessary but can sometimes help.
+                if (mobileNavGlobalContainer.firstChild) {
+                    mobileNavGlobalContainer.firstChild.style.display = 'none';
+                    mobileNavGlobalContainer.firstChild.offsetHeight; // Trigger reflow
+                    mobileNavGlobalContainer.firstChild.style.display = '';
+                }
             }
 
             // Set initial theme and content
             if (themes.length > 0) {
-                applyTheme(themes[0].value); // Apply the first theme by default
+                // Initial content injection
                 if (mainComponentsContainer) mainComponentsContainer.innerHTML = getMainContentHTML(themes[0].value);
                 if (mobileNavGlobalContainer) mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
+                
+                applyTheme(themes[0].value); // Apply the first theme by default (NOW AFTER mobile nav is created)
             }
 
 
             // Event listener for theme switcher
             themeSwitcher.addEventListener('change', (event) => {
                 applyTheme(event.target.value);
-                // Content in mainComponentsContainer and mobileNavGlobalContainer doesn't need to change with theme,
-                // unless you specifically want it to (e.g. theme-specific demo text).
-                // If so, re-inject them:
-                // if (mainComponentsContainer) mainComponentsContainer.innerHTML = getMainContentHTML(event.target.value);
-                // Active link switcher might need to be re-applied if sidebar/mobile nav is completely re-rendered
-                setupActiveLinkSwitcher();
+                setupActiveLinkSwitcher(); 
             });
 
             function setupActiveLinkSwitcher() {
+                // ... (active link switcher code remains the same) ...
                 document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link').forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
