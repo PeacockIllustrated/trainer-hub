@@ -62,6 +62,7 @@
   --font-family-primary: 'Barlow', var(--font-family-sans);
   --font-family-headings: 'Anton', var(--font-family-sans);
   --button-font-weight: 700;
+  --letter-spacing: 2px;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --shadow-md: 0 5px 10px var(--shadow-color);
 
