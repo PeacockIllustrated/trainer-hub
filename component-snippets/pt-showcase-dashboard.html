@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PT Component Showcase - Dashboard & Client Tools</title>
-    <!-- Google Fonts (ensure all used fonts are linked) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../assets/css/main.css"> <!-- Changed to root-relative -->
+    <link rel="stylesheet" href="../assets/css/main.css"> <!-- Assuming this file is in component-snippets -->
     <link rel="stylesheet" href="../assets/css/themes/theme-modern-professional.css">
     <link rel="stylesheet" href="../assets/css/themes/theme-friendly-supportive.css">
     <link rel="stylesheet" href="../assets/css/themes/theme-energetic-motivating.css">
     <link rel="stylesheet" href="../assets/css/themes/theme-natural-grounded.css">
     <link rel="stylesheet" href="../assets/css/themes/theme-luxe-minimalist.css">
     <link rel="stylesheet" href="../assets/css/themes/theme-retro-funk.css">
-    <link rel="stylesheet" href="../assets/css/base/_components.css">
-    <link rel="stylesheet" href="../assets/css/base/_variables.css">
-    <link rel="stylesheet" href="../assets/css/base/_reset.css">
+
     <style>
         body { margin: 0; color: #333; }
-        .page-header { padding: 16px 24px; background-color: #f0f0f0; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1010; }
+        .page-header { 
+            padding: var(--spacing-md, 16px) var(--spacing-lg, 24px); 
+            background-color: #f0f0f0; 
+            border-bottom: 1px solid #ddd; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1010; 
+        }
         h1.page-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5em; color: #333; margin: 0; }
         .theme-selector-container label { margin-right: 8px; font-size: 0.9em; color: #555; }
         #theme-switcher { padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; background-color: #fff; }
@@ -31,7 +39,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             background-color: var(--background-color); 
             color: var(--text-color);
-            padding: var(--spacing-xl, 40px);
+            padding: var(--spacing-xl, 40px); /* Default padding */
         }
         .showcase-section {
             margin-bottom: var(--spacing-xxl, 48px);
@@ -40,7 +48,6 @@
             border: 1px solid var(--border-color-light);
             border-radius: var(--border-radius-lg, 8px);
             box-shadow: var(--shadow-md);
-            /* overflow-x: hidden; /* Added cautiously */
         }
         .showcase-section__title {
             font-family: var(--font-family-headings);
@@ -51,30 +58,23 @@
             padding-bottom: var(--spacing-sm, 8px);
             border-bottom: 2px solid var(--primary-color-light, #eee);
         }
-        .component-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); /* Responsive grid */
-            gap: var(--spacing-lg, 24px); 
-        }
+        .component-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--spacing-lg, 24px); }
         .placeholder-img { background-color: var(--neutral-extralight); width: 100%; height: 150px; display:flex; align-items:center; justify-content:center; color: var(--neutral-medium); border-radius: var(--border-radius-sm); text-align: center; }
         hr.pt-divider { border: 0; height: 1px; background-color: var(--border-color); margin: var(--spacing-lg) 0; }
 
-        /* Profile Header Responsive */
         .pt-profile-header { display: flex; align-items: center; gap: var(--spacing-lg); padding-bottom:var(--spacing-lg); border-bottom: 1px solid var(--border-color-light); margin-bottom:var(--spacing-lg); }
         .pt-profile-header__avatar { width: 100px; height: 100px; border-radius: 50%; background-color: var(--primary-color-light); display:flex; align-items:center; justify-content:center; font-size: 2em; color: var(--primary-color-dark); font-weight: bold; flex-shrink:0; }
         .pt-profile-header__info h2 { margin:0 0 var(--spacing-xs) 0; font-size: 1.6em; }
         .pt-profile-header__info p { margin:0 0 var(--spacing-xs) 0; font-size: 0.9em; color: var(--text-color-muted); }
         .pt-profile-header__actions .pt-button:not(:last-child) { margin-right: var(--spacing-sm); }
 
-        /* Tabs */
         .pt-tabs { border-bottom: 1px solid var(--border-color); margin-bottom: var(--spacing-md); }
-        .pt-tabs__list { display: flex; list-style: none; padding: 0; margin:0; gap: var(--spacing-xs); overflow-x: auto; /* Allow tabs to scroll on small screens */ }
+        .pt-tabs__list { display: flex; list-style: none; padding: 0; margin:0; gap: var(--spacing-xs); overflow-x: auto; }
         .pt-tabs__tab button { background:none; border:none; padding: var(--spacing-sm) var(--spacing-md); cursor:pointer; color:var(--text-color-muted); font-weight:600; font-family:var(--font-family-primary); font-size:1em; border-bottom: 3px solid transparent; margin-bottom:calc(-1 * var(--border-width)); white-space:nowrap; }
         .pt-tabs__tab button.is-active { color:var(--primary-color); border-bottom-color:var(--primary-color); }
         .pt-tabs__panel { padding: var(--spacing-md) var(--spacing-xs); }
         .pt-tabs__panel:not(.is-active) { display: none; }
 
-        /* Accordion */
         .pt-accordion__item + .pt-accordion__item { margin-top: var(--spacing-xs); }
         .pt-accordion__button { display:flex; justify-content:space-between; align-items:center; width:100%; background-color: var(--surface-color-alt); padding: var(--spacing-sm) var(--spacing-md); border:1px solid var(--border-color); border-radius:var(--border-radius-sm); text-align:left; font-weight:600; color: var(--text-color-on-surface); cursor:pointer; font-size:1em; transition: background-color 0.2s ease; }
         .pt-accordion__button:hover { background-color: var(--border-color-light); }
@@ -83,11 +83,9 @@
         .pt-accordion__content { padding: var(--spacing-md); border:1px solid var(--border-color); border-top:0; border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm); background-color: var(--surface-color); }
         .pt-accordion__content[hidden] { display:none; }
 
-        /* Progress Bar */
         .pt-progress-bar { width:100%; height:20px; background-color:var(--neutral-extralight); border-radius:var(--border-radius-pill); overflow:hidden; border: 1px solid var(--border-color-light); }
         .pt-progress-bar__fill { height:100%; background-color:var(--primary-color); width:60%; border-radius:var(--border-radius-pill); text-align:center; color:var(--text-color-on-primary); font-size:0.8em; line-height:20px; transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); white-space: nowrap; }
 
-        /* Modal */
         .pt-modal { position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:2000; padding: var(--spacing-md); }
         .pt-modal.is-active { display:flex; }
         .pt-modal__content { background-color:var(--surface-color); padding:var(--spacing-lg); border-radius:var(--border-radius-lg); max-width:600px; width:95%; box-shadow:var(--shadow-xl); max-height:90vh; overflow-y:auto; }
@@ -99,31 +97,27 @@
         .pt-modal__footer { text-align:right; margin-top:var(--spacing-lg); padding-top:var(--spacing-md); border-top:1px solid var(--border-color-light); }
         .pt-modal__footer .pt-button:not(:last-child) { margin-right:var(--spacing-sm); }
 
-        /* Loading Spinner */
         .pt-loading-spinner { border: 4px solid var(--neutral-extralight); border-top-color: var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: ptSpin 0.8s linear infinite; margin:var(--spacing-lg) auto; }
         @keyframes ptSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* File Upload */
         .pt-file-upload { display: flex; align-items: center; }
         .pt-file-upload label.pt-button { display: inline-block; }
         .pt-file-upload input[type="file"] { display: none; }
         .pt-file-upload__name { margin-left: var(--spacing-md); font-style: italic; color: var(--text-color-muted); font-size: 0.9em; }
 
-        /* Table */
         .pt-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom:var(--spacing-lg); }
-        table.pt-table { width:100%; border-collapse:collapse; font-size: 0.95em; min-width: 500px; /* Example min-width */ }
+        table.pt-table { width:100%; border-collapse:collapse; font-size: 0.95em; min-width: 500px; }
         .pt-table th, .pt-table td { padding:var(--spacing-sm) var(--spacing-md); border:1px solid var(--border-color); text-align:left; vertical-align:middle; }
         .pt-table thead th { background-color:var(--surface-color-alt); font-weight:600; color:var(--heading-color-on-surface); font-family:var(--font-family-headings); }
         .pt-table tbody tr:nth-child(even) { background-color:var(--neutral-extralight); }
         .pt-table tbody tr:hover { background-color:var(--border-color-light); }
         .pt-table .pt-input--small { font-size: 0.9em; padding: var(--spacing-xs); }
 
-        /* Image Slider Styles */
         .pt-image-slider { position: relative; margin-bottom: var(--spacing-md); }
         .pt-image-slider__viewport { overflow: hidden; border-radius: var(--border-radius-md); border: 1px solid var(--border-color-light); }
         .pt-image-slider__film { display: flex; transition: transform 0.4s ease-in-out; }
-        .pt-image-slider__slide { min-width: 100%; flex-shrink: 0; box-sizing: border-box; /* padding: 0 var(--spacing-xs); Remove padding for seamless look */ }
-        .pt-image-slider__slide .placeholder-img { border-radius: 0; /* Remove radius if inside viewport with radius */ }
+        .pt-image-slider__slide { min-width: 100%; flex-shrink: 0; box-sizing: border-box; }
+        .pt-image-slider__slide .placeholder-img { border-radius: 0; }
         .pt-image-slider__nav { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0,0,0,0.4); color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2em; cursor: pointer; z-index: 10; display:flex; align-items:center; justify-content:center; }
         .pt-image-slider__nav:hover { background-color: rgba(0,0,0,0.6); }
         .pt-image-slider__nav--prev { left: var(--spacing-sm); }
@@ -132,19 +126,41 @@
         .pt-image-slider__dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: var(--neutral-light); margin: 0 var(--spacing-xs); cursor: pointer; border:0; padding:0; }
         .pt-image-slider__dot.is-active { background-color: var(--primary-color); }
         
-        /* Responsive adjustments for mobile */
-        @media (max-width: 600px) {
+        /* MOBILE PADDING AND RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 768px) { 
+            #themed-showcase-area {
+                padding: var(--spacing-md, 16px); /* Reduced main padding */
+            }
+            .page-header { 
+                padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+            }
+            h1.page-title { 
+                font-size: 1.3em;
+            }
+            .component-grid {
+                gap: var(--spacing-md, 16px);
+            }
+            .showcase-section {
+                padding: var(--spacing-md, 16px);
+                margin-bottom: var(--spacing-lg, 24px); 
+            }
+            .showcase-section__title {
+                font-size: 1.5em;
+                margin-bottom: var(--spacing-md, 16px);
+            }
+        }
+
+        @media (max-width: 600px) { /* Specific profile header stacking */
             .pt-profile-header { flex-direction: column; align-items: center; text-align: center; }
             .pt-profile-header__avatar { margin-bottom: var(--spacing-md); margin-right: 0; }
             .pt-profile-header__info { margin-right: 0; }
             .pt-profile-header__actions { width: 100%; display: flex; flex-direction: column; gap: var(--spacing-sm); }
             .pt-profile-header__actions .pt-button { margin-right: 0; width: 100%; }
         }
-
     </style>
 </head>
 <body>
-
+    <!-- BODY content remains the same -->
     <header class="page-header">
         <h1 class="page-title">PT Component Library</h1>
         <div class="theme-selector-container">
@@ -153,146 +169,57 @@
         </div>
     </header>
 
-    <div id="themed-showcase-area">
-        
+    <div id="themed-showcase-area"> 
         <section class="showcase-section">
             <h2 class="showcase-section__title">Client Profile & Info</h2>
             <div class="pt-profile-header">
                 <div class="pt-profile-header__avatar">JD</div>
-                <div class="pt-profile-header__info">
-                    <h2>Johnathan Doe</h2>
-                    <p>Age: 32 | Goal: Muscle Gain | Joined: Jan 15, 2023</p>
-                </div>
-                <div class="pt-profile-header__actions">
-                    <button class="pt-button pt-button--primary pt-button--small">Message</button>
-                    <button class="pt-button pt-button--secondary pt-button--small">Edit Profile</button>
-                </div>
+                <div class="pt-profile-header__info"><h2>Johnathan Doe</h2><p>Age: 32 | Goal: Muscle Gain | Joined: Jan 15, 2023</p></div>
+                <div class="pt-profile-header__actions"><button class="pt-button pt-button--primary pt-button--small">Message</button><button class="pt-button pt-button--secondary pt-button--small">Edit Profile</button></div>
             </div>
-
             <div class="component-grid">
-                <div class="pt-card">
-                    <h3 class="pt-card-title">Personal Details</h3>
-                    <p class="pt-card-content"><strong>DOB:</strong> 1991-05-20<br><strong>Email:</strong> john.doe@example.com<br><strong>Phone:</strong> (555) 123-4567</p>
-                </div>
-                <div class="pt-card">
-                    <h3 class="pt-card-title">Emergency Contact</h3>
-                    <p class="pt-card-content"><strong>Name:</strong> Jane Doe (Spouse)<br><strong>Phone:</strong> (555) 987-6543</p>
-                </div>
-                <div class="pt-card">
-                    <h3 class="pt-card-title">Medical Notes</h3>
-                    <p class="pt-card-content">Previous knee injury (left). Cleared for moderate exercise. Avoid high-impact jumps.</p>
-                </div>
+                <div class="pt-card"><h3 class="pt-card-title">Personal Details</h3><p class="pt-card-content"><strong>DOB:</strong> 1991-05-20<br><strong>Email:</strong> john.doe@example.com<br><strong>Phone:</strong> (555) 123-4567</p></div>
+                <div class="pt-card"><h3 class="pt-card-title">Emergency Contact</h3><p class="pt-card-content"><strong>Name:</strong> Jane Doe (Spouse)<br><strong>Phone:</strong> (555) 987-6543</p></div>
+                <div class="pt-card"><h3 class="pt-card-title">Medical Notes</h3><p class="pt-card-content">Previous knee injury (left). Cleared for moderate exercise. Avoid high-impact jumps.</p></div>
             </div>
         </section>
-
         <section class="showcase-section">
             <h2 class="showcase-section__title">Tracking & Progress</h2>
             <div class="component-grid">
                 <div class="pt-card">
                     <h3 class="pt-card-title">Measurement Tracker</h3>
-                    <div class="pt-table-wrapper">
-                        <table class="pt-table">
-                            <thead><tr><th>Date</th><th>Weight (kg)</th><th>Body Fat %</th><th>Waist (cm)</th></tr></thead>
-                            <tbody>
-                                <tr><td>2023-01-15</td><td>85.2</td><td>22.5</td><td>90</td></tr>
-                                <tr><td>2023-02-15</td><td>83.9</td><td>21.1</td><td>88</td></tr>
-                                <tr><td>2023-03-15</td><td><input type="text" class="pt-input pt-input--small" value="82.5" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="20.2" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="86" style="max-width:70px;"></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="pt-table-wrapper"><table class="pt-table"><thead><tr><th>Date</th><th>Weight (kg)</th><th>Body Fat %</th><th>Waist (cm)</th></tr></thead><tbody><tr><td>2023-01-15</td><td>85.2</td><td>22.5</td><td>90</td></tr><tr><td>2023-02-15</td><td>83.9</td><td>21.1</td><td>88</td></tr><tr><td>2023-03-15</td><td><input type="text" class="pt-input pt-input--small" value="82.5" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="20.2" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="86" style="max-width:70px;"></td></tr></tbody></table></div>
                     <button class="pt-button pt-button--primary pt-button--small">Add Measurement</button>
                 </div>
-
                 <div class="pt-card">
                     <h3 class="pt-card-title">Progress Photos</h3>
-                    <div class="pt-image-slider">
-                        <div class="pt-image-slider__viewport">
-                            <div class="pt-image-slider__film">
-                                <div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Jan 2023 - View 1</div></div>
-                                <div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Feb 2023 - View 1</div></div>
-                                <div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Mar 2023 - View 1</div></div>
-                            </div>
-                        </div>
-                        <button class="pt-image-slider__nav pt-image-slider__nav--prev" aria-label="Previous slide"><</button>
-                        <button class="pt-image-slider__nav pt-image-slider__nav--next" aria-label="Next slide">></button>
-                        <div class="pt-image-slider__dots"></div>
-                    </div>
-                    <div class="pt-file-upload" style="margin-top: var(--spacing-md);">
-                        <label for="photoUploadShowcase" class="pt-button pt-button--secondary pt-button--small">Upload New Photo</label>
-                        <input type="file" id="photoUploadShowcase" accept="image/*">
-                        <span class="pt-file-upload__name">No file chosen</span>
-                    </div>
+                    <div class="pt-image-slider"><div class="pt-image-slider__viewport"><div class="pt-image-slider__film"><div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Jan 2023 - View 1</div></div><div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Feb 2023 - View 1</div></div><div class="pt-image-slider__slide"><div class="placeholder-img" style="height:250px;">Mar 2023 - View 1</div></div></div></div><button class="pt-image-slider__nav pt-image-slider__nav--prev" aria-label="Previous slide"><</button><button class="pt-image-slider__nav pt-image-slider__nav--next" aria-label="Next slide">></button><div class="pt-image-slider__dots"></div></div>
+                    <div class="pt-file-upload" style="margin-top: var(--spacing-md);"><label for="photoUploadShowcase" class="pt-button pt-button--secondary pt-button--small">Upload New Photo</label><input type="file" id="photoUploadShowcase" accept="image/*"><span class="pt-file-upload__name">No file chosen</span></div>
                 </div>
             </div>
-
-            <div class="pt-card" style="margin-top:var(--spacing-lg);">
-                <h3 class="pt-card-title">Main Goal: Strength Increase</h3>
-                <p>Target: Increase bench press by 10kg in 8 weeks.</p>
-                <div class="pt-progress-bar" style="margin-top:var(--spacing-sm);">
-                    <div class="pt-progress-bar__fill" style="width: 75%;">75%</div>
-                </div>
-            </div>
+            <div class="pt-card" style="margin-top:var(--spacing-lg);"><h3 class="pt-card-title">Main Goal: Strength Increase</h3><p>Target: Increase bench press by 10kg in 8 weeks.</p><div class="pt-progress-bar" style="margin-top:var(--spacing-sm);"><div class="pt-progress-bar__fill" style="width: 75%;">75%</div></div></div>
         </section>
-
         <section class="showcase-section">
             <h2 class="showcase-section__title">Workout & Planning</h2>
             <div class="pt-tabs" id="workout-tabs-showcase">
-                <ul class="pt-tabs__list" role="tablist">
-                    <li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="true" aria-controls="panel-current-plan-showcase" id="tab-current-plan-showcase" class="is-active">Current Plan</button></li>
-                    <li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="false" aria-controls="panel-exercise-lib-showcase" id="tab-exercise-lib-showcase">Exercise Library</button></li>
-                </ul>
-                <div class="pt-tabs__panel is-active" role="tabpanel" id="panel-current-plan-showcase" aria-labelledby="tab-current-plan-showcase">
-                    <h4>Phase 2: Hypertrophy Focus (Week 3/4)</h4>
-                    <div class="pt-accordion__item">
-                        <button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day1-showcase">Day 1: Upper Body Push</button>
-                        <div class="pt-accordion__content" id="accordion-day1-showcase" hidden><p>Bench Press: 3 sets x 8-10 reps</p><p>Overhead Press: 3 sets x 10-12 reps</p><p>Tricep Pushdowns: 3 sets x 12-15 reps</p></div>
-                    </div>
-                     <div class="pt-accordion__item">
-                        <button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day2-showcase">Day 2: Lower Body</button>
-                        <div class="pt-accordion__content" id="accordion-day2-showcase" hidden>Squats, Deadlifts, Leg Press...</div>
-                    </div>
-                </div>
-                <div class="pt-tabs__panel" role="tabpanel" id="panel-exercise-lib-showcase" aria-labelledby="tab-exercise-lib-showcase" hidden>
-                    <input type="text" class="pt-input" placeholder="Search exercises..." style="margin-bottom:var(--spacing-md);">
-                    <p>List of exercises would go here.</p>
-                </div>
+                <ul class="pt-tabs__list" role="tablist"><li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="true" aria-controls="panel-current-plan-showcase" id="tab-current-plan-showcase" class="is-active">Current Plan</button></li><li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="false" aria-controls="panel-exercise-lib-showcase" id="tab-exercise-lib-showcase">Exercise Library</button></li></ul>
+                <div class="pt-tabs__panel is-active" role="tabpanel" id="panel-current-plan-showcase" aria-labelledby="tab-current-plan-showcase"><h4>Phase 2: Hypertrophy Focus (Week 3/4)</h4><div class="pt-accordion__item"><button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day1-showcase">Day 1: Upper Body Push</button><div class="pt-accordion__content" id="accordion-day1-showcase" hidden><p>Bench Press: 3 sets x 8-10 reps</p><p>Overhead Press: 3 sets x 10-12 reps</p><p>Tricep Pushdowns: 3 sets x 12-15 reps</p></div></div><div class="pt-accordion__item"><button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day2-showcase">Day 2: Lower Body</button><div class="pt-accordion__content" id="accordion-day2-showcase" hidden>Squats, Deadlifts, Leg Press...</div></div></div>
+                <div class="pt-tabs__panel" role="tabpanel" id="panel-exercise-lib-showcase" aria-labelledby="tab-exercise-lib-showcase" hidden><input type="text" class="pt-input" placeholder="Search exercises..." style="margin-bottom:var(--spacing-md);"><p>List of exercises would go here.</p></div>
             </div>
         </section>
-
         <section class="showcase-section">
             <h2 class="showcase-section__title">Nutrition & Habits</h2>
-            <div class="component-grid">
-                <div class="pt-card">
-                    <h3 class="pt-card-title">Log Meal</h3>
-                    <form>
-                        <div class="pt-input-group"><label for="mealTypeShowcase">Meal Type:</label><select id="mealTypeShowcase" class="pt-input"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></div>
-                        <div class="pt-input-group"><label for="foodItemsShowcase">Food Items:</label><textarea id="foodItemsShowcase" class="pt-input" rows="3" placeholder="e.g., Chicken breast, broccoli, rice"></textarea></div>
-                        <button type="submit" class="pt-button pt-button--primary">Add Log</button>
-                    </form>
-                </div>
-                <div class="pt-card">
-                    <h3 class="pt-card-title">Daily Habits</h3>
-                    <div class="pt-input-group"><label><input type="checkbox" checked> Drank 8 glasses of water</label><br><label><input type="checkbox"> Slept 7-8 hours</label><br><label><input type="checkbox" checked> 10,000 steps</label></div>
-                </div>
-            </div>
+            <div class="component-grid"><div class="pt-card"><h3 class="pt-card-title">Log Meal</h3><form><div class="pt-input-group"><label for="mealTypeShowcase">Meal Type:</label><select id="mealTypeShowcase" class="pt-input"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></div><div class="pt-input-group"><label for="foodItemsShowcase">Food Items:</label><textarea id="foodItemsShowcase" class="pt-input" rows="3" placeholder="e.g., Chicken breast, broccoli, rice"></textarea></div><button type="submit" class="pt-button pt-button--primary">Add Log</button></form></div><div class="pt-card"><h3 class="pt-card-title">Daily Habits</h3><div class="pt-input-group"><label><input type="checkbox" checked> Drank 8 glasses of water</label><br><label><input type="checkbox"> Slept 7-8 hours</label><br><label><input type="checkbox" checked> 10,000 steps</label></div></div></div>
         </section>
-
         <section class="showcase-section">
             <h2 class="showcase-section__title">Communication & Admin</h2>
-            <div class="component-grid">
-                <div class="pt-card"><h3 class="pt-card-title">Trainer Notes</h3><textarea class="pt-input" rows="4" placeholder="Client reported good energy levels this week..."></textarea></div>
-                <div class="pt-card"><h3 class="pt-card-title">Subscription</h3><p>Status: Active <span style="color:var(--success-color)">(Paid)</span></p><p>Next Billing: 2023-04-15</p><button class="pt-button pt-button--secondary pt-button--small">Manage Subscription</button></div>
-            </div>
+            <div class="component-grid"><div class="pt-card"><h3 class="pt-card-title">Trainer Notes</h3><textarea class="pt-input" rows="4" placeholder="Client reported good energy levels this week..."></textarea></div><div class="pt-card"><h3 class="pt-card-title">Subscription</h3><p>Status: Active <span style="color:var(--success-color)">(Paid)</span></p><p>Next Billing: 2023-04-15</p><button class="pt-button pt-button--secondary pt-button--small">Manage Subscription</button></div></div>
         </section>
-
         <section class="showcase-section">
             <h2 class="showcase-section__title">General UI Elements</h2>
-            <p><button class="pt-button pt-button--accent" id="openModalBtnShowcase">Open Sample Modal</button></p>
-            <div class="pt-loading-spinner"></div>
+            <p><button class="pt-button pt-button--accent" id="openModalBtnShowcase">Open Sample Modal</button></p><div class="pt-loading-spinner"></div>
         </section>
-
-    </div> <!-- /#themed-showcase-area -->
-    
+    </div> 
     <div class="pt-modal" id="sampleModalShowcase">
         <div class="pt-modal__content">
             <div class="pt-modal__header"><h3 class="pt-modal__title">Modal Title Here</h3><button class="pt-modal__close" aria-label="Close modal">×</button></div>
@@ -302,18 +229,34 @@
     </div>
 
     <script>
-        const themes = [ /* ... same as index.html ... */
+        const themes = [ 
             { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
             { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
             { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
         ];
 
-        function applyShowcaseTheme(themeValue, themedArea) { /* ... same as index.html ... */
-            if (!themedArea) return; themedArea.className = ''; themedArea.classList.add(themeValue);
-            themedArea.style.backgroundColor = 'var(--background-color)'; themedArea.style.color = 'var(--text-color)';
+        function applyShowcaseTheme(themeValue, themedArea) { 
+            if (!themedArea) { console.error("Themed area not found in applyShowcaseTheme."); return; }
+            
+            themedArea.className = ''; // Clear all classes from #themed-showcase-area
+            themedArea.classList.add(themeValue); // Add the new theme class
+            
+            themedArea.style.backgroundColor = 'var(--background-color)'; 
+            themedArea.style.color = 'var(--text-color)';
+
+            const modal = document.getElementById('sampleModalShowcase');
+            if (modal) {
+                // Remove any previous theme classes before adding new one
+                themes.forEach(t => {
+                    if (modal.classList.contains(t.value)) {
+                        modal.classList.remove(t.value);
+                    }
+                });
+                modal.classList.add(themeValue); // Add the current theme class
+            }
         }
         
-        function setupInteractiveComponents() { /* ... same as before, but target new IDs ... */
+        function setupInteractiveComponents() { /* ... same as before ... */
             document.querySelectorAll('#workout-tabs-showcase .pt-tabs__tab button').forEach(button => {
                 button.addEventListener('click', () => {
                     const tabContainer = button.closest('.pt-tabs');
@@ -330,12 +273,13 @@
             document.querySelectorAll('.pt-accordion__button').forEach(button => {
                 button.addEventListener('click', () => {
                     const contentId = button.getAttribute('aria-controls'); const content = document.getElementById(contentId);
+                    if (!content) return; // Guard if content not found
                     const isExpanded = button.getAttribute('aria-expanded') === 'true';
                     button.setAttribute('aria-expanded', !isExpanded); content.hidden = isExpanded;
                 });
             });
             const modal = document.getElementById('sampleModalShowcase'); const openModalBtn = document.getElementById('openModalBtnShowcase');
-            const closeButtons = document.querySelectorAll('#sampleModalShowcase .pt-modal__close'); // Target specifically
+            const closeButtons = document.querySelectorAll('#sampleModalShowcase .pt-modal__close'); 
             if(openModalBtn && modal) openModalBtn.addEventListener('click', () => modal.classList.add('is-active'));
             if(modal) {
                 closeButtons.forEach(btn => btn.addEventListener('click', () => modal.classList.remove('is-active')));
@@ -349,7 +293,6 @@
                     else { fileNameDisplay.textContent = 'No file chosen'; }
                 });
             });
-             // Image Slider
             document.querySelectorAll('.pt-image-slider').forEach(slider => {
                 const film = slider.querySelector('.pt-image-slider__film');
                 const slides = film.querySelectorAll('.pt-image-slider__slide');
@@ -359,6 +302,7 @@
                 let currentIndex = 0; const totalSlides = slides.length;
                 if (!film || !slides.length) return;
                 if (dotsContainer) {
+                    dotsContainer.innerHTML = ''; // Clear existing dots before regenerating
                     slides.forEach((_, index) => {
                         const dot = document.createElement('button'); dot.classList.add('pt-image-slider__dot');
                         dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
