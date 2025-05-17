@@ -1,0 +1,148 @@
+/* --- Theme: Natural & Grounded --- */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&display=swap');
+
+.theme-natural-grounded {
+  /* Core Palette */
+  --primary-brand-color: #4A7856;  /* Forest Green */
+  --primary-brand-dark: #3B5F45;
+  --primary-brand-light: #6B9578;
+  --accent-color-main: #D4A373;    /* Warm Terracotta/Light Wood */
+  --accent-color-dark: #B98C61;
+  --accent-color-light: #E6B88F;
+
+  --neutral-dark: #4F4A45;   /* Earthy Dark Brown/Gray */
+  --neutral-medium: #8A817C; /* Stone Gray */
+  --neutral-light: #D7CEC7;  /* Light Beige/Stone */
+  --neutral-extralight: #F0EBE8; /* Very Light Beige */
+  --background-main: #FCFAF7;  /* Creamy, textured white */
+  --surface-main: #FFFFFF;
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #4F4A45;
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium);
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: var(--neutral-light);
+  --text-color-on-secondary: #FFFFFF;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight);
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--primary-brand-dark); /* Darker green for headings */
+  --heading-color-on-surface: var(--primary-brand-dark);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-dark);
+
+  --border-color: var(--neutral-light);
+  --border-color-light: color-mix(in srgb, var(--neutral-light) 40%, var(--surface-main));
+  --border-radius-sm: 4px;  /* Subtle rounding */
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --border-radius-pill: 20px;
+  --border-width: 1px;
+
+  /* Typography */
+  --font-family-primary: 'Lato', var(--font-family-sans);
+  --font-family-headings: 'Merriweather', var(--font-family-serif); /* Elegant, readable serif */
+  --button-font-weight: 700; /* Lato Bold */
+
+  /* Shadows - Soft, natural */
+  --shadow-color: rgba(79, 74, 69, 0.1); /* Based on --neutral-dark */
+  --shadow-sm: 0 2px 4px -1px var(--shadow-color);
+  --shadow-md: 0 4px 8px -2px var(--shadow-color);
+
+  /* Alert Colors - Muted and natural */
+  --success-color: #77A981; --text-alert: #2A402E;
+  --warning-color: #E6BE8A;
+  --error-color:   #C97C7C;
+  --info-color:    #A0B2C2;
+
+  --success-color-light: color-mix(in srgb, var(--success-color) 20%, var(--background-main));
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 25%, var(--background-main));
+  --error-color-light:   color-mix(in srgb, var(--error-color) 20%, var(--background-main));
+  --info-color-light:    color-mix(in srgb, var(--info-color) 25%, var(--background-main));
+
+  --text-color-on-success: var(--text-alert);
+  --text-color-on-warning: var(--neutral-dark);
+  --text-color-on-error:   var(--neutral-dark);
+  --text-color-on-info:    var(--neutral-dark);
+}
+
+.theme-natural-grounded {
+  /* Optional: Subtle paper texture background */
+  background-image: linear-gradient(rgba(240,235,232,0.5), rgba(240,235,232,0.5)), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23d7cec7' fill-opacity='0.15'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6zM26 26c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6v2c-3.314 0-6-2.686-6-6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.theme-natural-grounded .pt-card,
+.theme-natural-grounded .pt-input,
+.theme-natural-grounded .pt-alert {
+    border-color: var(--border-color-light); /* Softer borders */
+}
+
+.theme-natural-grounded .pt-button {
+    font-family: var(--font-family-primary); /* Lato for buttons */
+    letter-spacing: 0.3px;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.theme-natural-grounded .pt-button--primary {
+    border: 1px solid var(--primary-brand-dark);
+}
+.theme-natural-grounded .pt-button--primary:hover {
+    background-color: var(--primary-brand-dark);
+}
+
+.theme-natural-grounded .pt-button--secondary {
+    color: var(--primary-brand-dark);
+    border: 1px solid var(--border-color);
+}
+.theme-natural-grounded .pt-button--secondary:hover {
+    background-color: var(--neutral-extralight);
+    border-color: var(--primary-brand-dark);
+}
+.theme-natural-grounded .pt-button--accent {
+     border: 1px solid color-mix(in srgb, var(--accent-color-main) 80%, black);
+}
+.theme-natural-grounded .pt-button--accent:hover {
+    background-color: var(--accent-color-dark);
+    color: #fff; /* Might need white text on darker terracotta */
+    border-color: var(--accent-color-dark);
+}
+
+
+.theme-natural-grounded .pt-input-group label {
+    color: var(--neutral-medium);
+    font-weight: 700; /* Lato Bold for labels */
+}
+.theme-natural-grounded .pt-alert strong {
+    font-family: var(--font-family-headings); /* Merriweather for strong text in alerts */
+}
+/* Use theme specific text and background for alerts */
+.theme-natural-grounded .pt-alert--success { background-color: var(--success-color-light); color: var(--text-color-on-success); border-left-color: var(--success-color); }
+.theme-natural-grounded .pt-alert--warning { background-color: var(--warning-color-light); color: var(--text-color-on-warning); border-left-color: var(--warning-color); }
+.theme-natural-grounded .pt-alert--error { background-color: var(--error-color-light); color: var(--text-color-on-error); border-left-color: var(--error-color); }
+.theme-natural-grounded .pt-alert--info { background-color: var(--info-color-light); color: var(--text-color-on-info); border-left-color: var(--info-color); }
+
+.theme-natural-grounded .pt-sidebar {
+    background-color: var(--neutral-extralight); /* Sidebar gets a slightly textured/off-white feel */
+    border-right-color: var(--border-color);
+}
+.theme-natural-grounded .pt-sidebar__logo {
+    font-size: 1.7em;
+    color: var(--primary-brand-dark);
+}

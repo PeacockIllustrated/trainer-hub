@@ -1,0 +1,159 @@
+/* --- Theme: Energetic & Motivating --- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700;800&display=swap');
+
+.theme-energetic-motivating {
+  /* Core Palette */
+  --primary-brand-color: #FF4E00;  /* Vibrant Orange */
+  --primary-brand-dark: #D94400;
+  --primary-brand-light: #FF7433;
+  --accent-color-main: #00F0B5;    /* Bright Teal/Mint */
+  --accent-color-dark: #00C99A;
+  --accent-color-light: #33F3C4;
+
+  --neutral-dark: #1A1A1A;   /* Very Dark Gray / Near Black */
+  --neutral-medium: #4D4D4D;
+  --neutral-light: #CCCCCC;
+  --neutral-extralight: #E5E5E5;
+  --background-main: #262626;  /* Dark background for high contrast */
+  --surface-main: #3D3D3D;      /* Slightly lighter surface for cards */
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #1A1A1A;
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--accent-color-main); /* Using accent as secondary for buttons */
+  --secondary-color-dark: var(--accent-color-dark);
+  --secondary-color-light: var(--accent-color-light);
+  --text-color-on-secondary: var(--text-on-accent);
+
+  --accent-color: #FFFF00; /* Bright Yellow for a tertiary pop */
+  --accent-color-dark: #D9D900;
+  --accent-color-light: #FFFF33;
+  --text-color-on-accent: #1A1A1A;
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: color-mix(in srgb, var(--surface-main) 80%, var(--background-main));
+
+  --text-color: #F0F0F0; /* Light text on dark background */
+  --text-color-muted: var(--neutral-light);
+  --text-color-on-surface: #F0F0F0;
+  --heading-color: var(--primary-brand-color);
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-light);
+
+  --border-color: var(--neutral-medium);
+  --border-color-light: color-mix(in srgb, var(--neutral-medium) 50%, var(--background-main));
+  --border-radius-sm: 3px; /* Sharper edges */
+  --border-radius-md: 5px;
+  --border-radius-lg: 6px;
+  --border-radius-pill: 25px;
+  --border-width: 1px;
+  --border-width-bold: 2px;
+
+  /* Typography */
+  --font-family-primary: 'Barlow', var(--font-family-sans);
+  --font-family-headings: 'Anton', var(--font-family-sans); /* Very bold, impactful heading font */
+  --button-font-weight: 700; /* Barlow Bold */
+
+  /* Shadows - Can be subtle on dark themes or more pronounced */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 5px 10px var(--shadow-color);
+
+  /* Alert Colors */
+  --success-color: #00C851; --text-on-alert: #1A1A1A;
+  --warning-color: #ffbb33;
+  --error-color:   #ff3547;
+  --info-color:    #33b5e5;
+
+  --success-color-light: color-mix(in srgb, var(--success-color) 80%, white);
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 80%, white);
+  --error-color-light:   color-mix(in srgb, var(--error-color) 80%, white);
+  --info-color-light:    color-mix(in srgb, var(--info-color) 80%, white);
+
+  --text-color-on-success: var(--text-on-alert);
+  --text-color-on-warning: var(--text-on-alert);
+  --text-color-on-error:   var(--text-on-alert);
+  --text-color-on-info:    var(--text-on-alert);
+}
+
+.theme-energetic-motivating {
+    /* Optional: subtle pattern or gradient for background */
+    background-image: linear-gradient(45deg, var(--background-main) 0%, color-mix(in srgb, var(--background-main) 85%, #000) 100%);
+}
+
+.theme-energetic-motivating .pt-card-title,
+.theme-energetic-motivating .pt-client-list-item__name {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.theme-energetic-motivating .pt-button {
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: var(--button-font-weight);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Default shadow for buttons */
+}
+.theme-energetic-motivating .pt-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.theme-energetic-motivating .pt-button:active {
+    transform: translateY(0px) scale(1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.theme-energetic-motivating .pt-button--primary {
+    color: var(--text-on-primary-brand); /* Explicitly set from vars */
+}
+.theme-energetic-motivating .pt-button--secondary {
+    color: var(--text-on-secondary);
+}
+.theme-energetic-motivating .pt-button--accent {
+    background-color: var(--accent-color);
+    color: var(--text-color-on-accent);
+}
+.theme-energetic-motivating .pt-button--accent:hover {
+     background-color: var(--accent-color-dark);
+}
+
+
+.theme-energetic-motivating .pt-input {
+    background-color: color-mix(in srgb, var(--surface-main) 80%, black);
+    border-color: var(--neutral-medium);
+    color: var(--text-color);
+}
+.theme-energetic-motivating .pt-input:focus {
+    border-color: var(--primary-brand-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 40%, transparent);
+}
+.theme-energetic-motivating .pt-input-group label {
+    color: var(--primary-brand-light);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+}
+
+
+.theme-energetic-motivating .pt-alert {
+    border-left-width: 4px;
+    font-weight: 600;
+}
+/* Alerts are now configured to use their specific background colors (e.g., --success-color-light) */
+/* And their specific text colors (e.g., --text-color-on-success) */
+/* Need to ensure text on the LIGHT alert BG is dark enough */
+.theme-energetic-motivating .pt-alert--success { background-color: var(--success-color-light); color: var(--text-on-alert); border-left-color: var(--success-color); }
+.theme-energetic-motivating .pt-alert--warning { background-color: var(--warning-color-light); color: var(--text-on-alert); border-left-color: var(--warning-color); }
+.theme-energetic-motivating .pt-alert--error { background-color: var(--error-color-light); color: var(--text-on-alert); border-left-color: var(--error-color); }
+.theme-energetic-motivating .pt-alert--info { background-color: var(--info-color-light); color: var(--text-on-alert); border-left-color: var(--info-color); }
+
+.theme-energetic-motivating .pt-sidebar__logo {
+    font-size: 2em;
+}

@@ -1,0 +1,196 @@
+/* --- Theme: Retro Funk --- */
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+.theme-retro-funk {
+  /* Core Palette - 70s Inspired */
+  --primary-brand-color: #E88C30;  /* Burnt Orange */
+  --primary-brand-dark: #C06E1A;
+  --primary-brand-light: #F0A65A;
+  --accent-color-main: #4E937A;    /* Muted Teal/Avocado */
+  --accent-color-dark: #3A705D;
+  --accent-color-light: #6FB09A;
+
+  --neutral-dark: #5D4037;   /* Deep Brown */
+  --neutral-medium: #8D6E63; /* Lighter Brown */
+  --neutral-light: #D7CCC8;  /* Beige */
+  --neutral-extralight: #F5F5F5; /* Off-white */
+  --background-main: #FFF3E0; /* Creamy Yellow/Beige Background */
+  --surface-main: #FFFFFF;
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #FFFFFF;
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium); /* Brown secondary */
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: var(--neutral-light);
+  --text-color-on-secondary: #FFFFFF;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: color-mix(in srgb, var(--background-main) 90%, #fff);
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--neutral-dark); /* Brown headings */
+  --heading-color-on-surface: var(--neutral-dark);
+  --link-color: var(--primary-brand-color);
+  --link-color-hover: var(--primary-brand-dark);
+
+  --border-color: var(--neutral-medium); /* Brown borders */
+  --border-color-light: var(--neutral-light);
+  --border-radius-sm: 10px; /* Chunky rounded corners */
+  --border-radius-md: 15px;
+  --border-radius-lg: 20px;
+  --border-radius-pill: 50px; /* Very pill-like */
+  --border-width: 2px; /* Chunky borders */
+  --border-width-bold: 3px;
+
+  /* Typography - Funky and legible */
+  --font-family-primary: 'Space Grotesk', var(--font-family-sans);
+  --font-family-headings: 'Bungee', var(--font-family-sans); /* Chunky, retro display font for major heads */
+  /* Use Righteous for subheads or less prominent headings */
+  --font-family-subheadings: 'Righteous', cursive;
+  --button-font-weight: 700; /* Space Grotesk Bold */
+
+  /* Shadows - Harder, inset style shadows */
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --shadow-sm: 2px 2px 0px var(--neutral-dark); /* Hard shadow */
+  --shadow-md: 3px 3px 0px var(--neutral-dark);
+  --shadow-inset: inset 2px 2px 2px rgba(0,0,0,0.15), inset -2px -2px 2px rgba(255,255,255,0.1);
+
+
+  /* Alert Colors */
+  --alert-bg-base: var(--neutral-extralight);
+  --success-color: #8BC34A; --text-alert: var(--neutral-dark);
+  --warning-color: #FFC107;
+  --error-color:   #F44336;
+  --info-color:    #03A9F4;
+
+  --success-color-light: var(--alert-bg-base);
+  --warning-color-light: var(--alert-bg-base);
+  --error-color-light:   var(--alert-bg-base);
+  --info-color-light:    var(--alert-bg-base);
+
+  --text-color-on-success: var(--text-alert);
+  --text-color-on-warning: var(--text-alert);
+  --text-color-on-error:   var(--text-alert);
+  --text-color-on-info:    var(--text-alert);
+}
+
+.theme-retro-funk {
+    /* Optional: Funky background pattern - ensure it doesn't overpower */
+    background-image: linear-gradient(45deg, var(--accent-color-light) 25%, transparent 25%),
+                      linear-gradient(-45deg, var(--accent-color-light) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, var(--accent-color-light) 75%),
+                      linear-gradient(-45deg, transparent 75%, var(--accent-color-light) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+    background-color: var(--background-main); /* Fallback */
+}
+
+.theme-retro-funk .pt-card {
+  border-width: var(--border-width-bold);
+  border-color: var(--neutral-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-retro-funk .pt-card-title,
+.theme-retro-funk .pt-client-list-item__name {
+    font-family: var(--font-family-subheadings); /* Righteous for card/list item titles */
+    color: var(--primary-brand-color);
+    letter-spacing: 0.5px;
+}
+/* For the main h1 in sidebar/page */
+.theme-retro-funk .pt-sidebar__logo {
+    font-family: var(--font-family-headings); /* Bungee */
+    font-size: 2em;
+}
+
+
+.theme-retro-funk .pt-button {
+    font-family: 'Space Grotesk', var(--font-family-sans);
+    font-weight: var(--button-font-weight);
+    border-width: var(--border-width-bold);
+    border-color: var(--neutral-dark);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.theme-retro-funk .pt-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: calc(var(--shadow-sm-offset-x, 2px) + 1px) calc(var(--shadow-sm-offset-y, 2px) + 1px) 0px var(--neutral-dark);
+}
+.theme-retro-funk .pt-button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--neutral-dark);
+}
+
+.theme-retro-funk .pt-button--primary {
+    background-color: var(--primary-brand-color);
+    color: var(--text-on-primary-brand);
+}
+.theme-retro-funk .pt-button--secondary {
+    background-color: var(--neutral-light); /* Beige secondary */
+    color: var(--neutral-dark);
+}
+.theme-retro-funk .pt-button--accent {
+    background-color: var(--accent-color-main);
+    color: var(--text-on-accent);
+}
+
+
+.theme-retro-funk .pt-input {
+    background-color: var(--surface-main);
+    border: var(--border-width-bold) solid var(--neutral-dark);
+    color: var(--text-color);
+    box-shadow: var(--shadow-inset);
+    border-radius: var(--border-radius-sm);
+}
+.theme-retro-funk .pt-input:focus {
+    border-color: var(--primary-brand-color);
+    box-shadow: var(--shadow-inset), 0 0 0 2px color-mix(in srgb, var(--primary-brand-color) 50%, transparent);
+}
+.theme-retro-funk .pt-input-group label {
+    font-family: var(--font-family-subheadings);
+    color: var(--neutral-dark);
+    font-size: 0.9em;
+}
+
+.theme-retro-funk .pt-alert {
+    border: var(--border-width-bold) solid var(--neutral-dark);
+    border-left-width: 6px; /* Thicker theme color accent */
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+}
+.theme-retro-funk .pt-alert strong {
+    font-family: 'Righteous', cursive;
+}
+/* Ensure light background is consistent for alerts */
+.theme-retro-funk .pt-alert--success { background-color: var(--success-color-light); color: var(--text-color-on-success); border-left-color: var(--success-color); }
+.theme-retro-funk .pt-alert--warning { background-color: var(--warning-color-light); color: var(--text-color-on-warning); border-left-color: var(--warning-color); }
+.theme-retro-funk .pt-alert--error { background-color: var(--error-color-light); color: var(--text-color-on-error); border-left-color: var(--error-color); }
+.theme-retro-funk .pt-alert--info { background-color: var(--info-color-light); color: var(--text-color-on-info); border-left-color: var(--info-color); }
+
+.theme-retro-funk .pt-sidebar {
+    background-color: var(--neutral-light); /* Beige sidebar */
+    border-right: var(--border-width-bold) solid var(--neutral-dark);
+}
+.theme-retro-funk .pt-sidebar__nav-link.is-active {
+    background-color: var(--primary-brand-light);
+    color: var(--neutral-dark);
+    border: 2px dashed var(--primary-brand-dark);
+}
+.theme-retro-funk .pt-sidebar__nav-link.is-active .pt-sidebar__nav-icon {
+    color: var(--primary-brand-dark);
+}
