@@ -60,10 +60,12 @@
             background-color: #fff;
         }
 
+        /* Ensure this ID matches exactly what's in the JS getElementById */
         #themed-area { 
             min-height: 100vh; 
             box-sizing: border-box;
             transition: background-color 0.3s ease, color 0.3s ease;
+            /* These will be dynamically updated by JS when theme changes */
             background-color: var(--background-color); 
             color: var(--text-color); 
         }
@@ -96,15 +98,8 @@
         }
 
         @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: var(--spacing-sm);
-            }
-            h1.page-title {
-                font-size: 1.2em;
-                margin-bottom: var(--spacing-sm);
-            }
+            .page-header { flex-direction: column; align-items: flex-start; padding: var(--spacing-sm); }
+            h1.page-title { font-size: 1.2em; margin-bottom: var(--spacing-sm); }
             .theme-selector-container { width: 100%; }
             #theme-switcher { width: 100%; }
             .theme-showcase-layout .pt-sidebar { display: none !important; } 
@@ -113,6 +108,7 @@
             .component-group { max-width: 100%; padding: var(--spacing-md); }
         }
         @media (min-width: 769px) {
+            /* Ensure this targets the .pt-sidebar class inside the #sidebar-container */
             #sidebar-container .pt-sidebar { 
                 height: calc(100vh - 60px); /* Adjust if header height changes */
                 position: sticky;
@@ -132,6 +128,7 @@
         </div>
     </header>
 
+    <!-- CRITICAL: Ensure this ID is exactly 'themed-area' -->
     <div id="themed-area"> 
         <div class="theme-showcase-layout"> 
             <div id="sidebar-container"></div>
@@ -153,7 +150,8 @@
             { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
         ];
 
-        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => { /* ... same as previous full version ... */
+        // --- FUNCTION DEFINITIONS ---
+        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => { /* ... same as before ... */
             return `
             <aside class="pt-sidebar">
                 <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
@@ -168,7 +166,7 @@
             </aside>`;
         };
 
-        const getMobileNavHTML = () => { /* ... same as previous full version ... */
+        const getMobileNavHTML = () => { /* ... same as before ... */
             return `
             <div class="pt-mobile-nav-banner">
                 <nav class="pt-mobile-nav-banner__scroll-container">
@@ -183,7 +181,7 @@
             </div>`;
         };
 
-        const getMainContentHTML = (themeId) => { /* ... same as previous full version ... */
+        const getMainContentHTML = (themeId) => { /* ... same as before ... */
             return `
             <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
             <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
@@ -197,25 +195,23 @@
         };
         
         function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
-            const { themedArea, sidebarContainer, mainComponentsContainer, mobileNavGlobalContainer } = elements;
+            const themedArea = elements.themedArea; // Renamed from elements.themedArea for clarity within this function
+            const sidebarContainer = elements.sidebarContainer;
+            const mainComponentsContainer = elements.mainComponentsContainer;
+            const mobileNavGlobalContainer = elements.mobileNavGlobalContainer;
 
-            if (!themedArea) {
-                console.error("CRITICAL: #themed-area element not found. Theme application aborted.");
-                return;
+            if (!themedArea) { // Guard clause
+                console.error("Error: Themed area element is not available in applyThemeAndContent.");
+                return; 
             }
             
             themedArea.className = ''; // Clear all classes from #themed-area (it will only have the theme class)
             themedArea.classList.add(themeValue); 
 
             if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset base class
-                mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Add new theme class
-            } else if (mobileNavGlobalContainer && !mobileNavGlobalContainer.firstChild && !isInitialLoad) {
-                // This case handles if mobile nav wasn't there initially but should be themed on subsequent changes
-                // Though our current setup injects it once.
-                console.warn("Mobile nav container exists but has no child to theme.");
+                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; 
+                mobileNavGlobalContainer.firstChild.classList.add(themeValue); 
             }
-
 
             const currentTheme = themes.find(t => t.value === themeValue);
             if (currentTheme) {
@@ -227,12 +223,11 @@
                 }
             }
             
-            // Force browser to re-evaluate CSS variables from the newly applied theme class
             themedArea.style.backgroundColor = 'var(--background-color)';
             themedArea.style.color = 'var(--text-color)';
         }
 
-        function setupActiveLinkSwitcher() { /* ... same as previous full version ... */
+        function setupActiveLinkSwitcher() { /* ... same as before ... */
             const allNavLinks = document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link');
             allNavLinks.forEach(link => {
                 const newLink = link.cloneNode(true); 
@@ -253,25 +248,32 @@
             });
         }
 
+        // --- DOMContentLoaded LISTENER ---
         document.addEventListener('DOMContentLoaded', () => {
-            const elements = {
+            const elements = { // Define the elements object right at the start
                 themeSwitcher: document.getElementById('theme-switcher'),
-                themedArea: document.getElementById('themed-area'),
+                themedArea: document.getElementById('themed-area'), // CRITICAL: Ensure ID 'themed-area' exists
                 sidebarContainer: document.getElementById('sidebar-container'),
                 mainComponentsContainer: document.getElementById('main-components-container'),
                 mobileNavGlobalContainer: document.getElementById('mobile-nav-global-container')
             };
 
-            if (!elements.themedArea || !elements.themeSwitcher || !elements.sidebarContainer || !elements.mainComponentsContainer || !elements.mobileNavGlobalContainer) {
-                console.error("One or more critical page elements could not be found. Please check HTML IDs.");
-                return; 
+            // Early check if critical elements are found
+            if (!elements.themedArea) {
+                console.error("CRITICAL FAILURE: #themed-area HTML element not found. Script cannot proceed.");
+                return; // Stop if #themed-area is missing
             }
+            if (!elements.themeSwitcher) console.warn("#theme-switcher not found."); // Non-critical for initial load, but needed for switching
+            // Other elements can also be checked here if desired.
+
 
             themes.forEach(theme => {
-                const option = document.createElement('option');
-                option.value = theme.value;
-                option.textContent = theme.name;
-                elements.themeSwitcher.appendChild(option);
+                if(elements.themeSwitcher) { // Check if themeSwitcher exists before appending
+                    const option = document.createElement('option');
+                    option.value = theme.value;
+                    option.textContent = theme.name;
+                    elements.themeSwitcher.appendChild(option);
+                }
             });
             
             if (elements.mobileNavGlobalContainer) {
@@ -279,13 +281,16 @@
             }
 
             if (themes.length > 0) {
-                applyThemeAndContent(themes[0].value, elements, true);
+                // This call might be where elements.themedArea is still undefined if not found above
+                applyThemeAndContent(themes[0].value, elements, true); 
             }
 
-            elements.themeSwitcher.addEventListener('change', (event) => {
-                applyThemeAndContent(event.target.value, elements, false); 
-                setupActiveLinkSwitcher(); 
-            });
+            if(elements.themeSwitcher) { // Check before adding listener
+                elements.themeSwitcher.addEventListener('change', (event) => {
+                    applyThemeAndContent(event.target.value, elements, false); 
+                    setupActiveLinkSwitcher(); 
+                });
+            }
             
             setupActiveLinkSwitcher(); 
         });
