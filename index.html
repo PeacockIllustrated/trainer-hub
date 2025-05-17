@@ -3,142 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Trainer Component Showcase - SHOCK & AWE Edition</title>
-    <!-- Google Fonts (Example - adjust as per theme needs) -->
+    <title>Personal Trainer Component Showcase - Wellness Edition</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Include all fonts that might be used by themes -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;700&family=Anton&family=Bebas+Neue&family=Inter:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Quicksand:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;700&family=Press+Start+2P&family=Monoton&family=Sacramento&family=Major+Mono+Display&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@400;600;700;900&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Link all theme files for the showcase -->
-    <link rel="stylesheet" href="assets/css/themes/theme-neon-cyberscape.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-ethereal-bloom.css">   <!-- Create this file -->
-    <link rel="stylesheet" href="assets/css/themes/theme-retro-arcade-pop.css"> <!-- Create this file -->
-    <link rel="stylesheet" href="assets/css/themes/theme-brutalist-impact.css"> <!-- Create this file -->
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css"> <!-- Placeholder -->
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">   <!-- Placeholder -->
     <style>
         body {
             margin: 0;
-            /* A neutral fallback for space between theme sections */
-            background-color: #111;
-            color: #eee; /* Default text color for un-themed parts of the page */
+            background-color: #e9e9e9; /* Neutral fallback for space between sections */
+            color: #333;
         }
         .showcase-outer-wrapper {
-            padding: 40px 20px; /* Spacing around each theme demo */
-            min-height: 100vh; /* Ensure each theme can show off its background */
+            padding: 50px 20px;
+            min-height: 100vh; /* To see full backgrounds if any */
             box-sizing: border-box;
         }
-        .showcase-outer-wrapper h2.theme-title { /* Styling for the H2 inside the theme wrapper */
-            font-family: var(--font-family-headings, 'Orbitron', sans-serif); /* Fallback font */
-            color: var(--heading-color, #fff); /* Fallback color */
+        /* Apply theme's background and text color to the wrapper */
+        .showcase-outer-wrapper.theme-modern-professional { background-color: var(--background-color); color: var(--text-color); }
+        .showcase-outer-wrapper.theme-friendly-supportive { background-color: var(--background-color); color: var(--text-color); }
+        .showcase-outer-wrapper.theme-energetic-motivating { background-color: var(--background-color, #222); color: var(--text-color, #fff); } /* Fallback for WIP */
+        .showcase-outer-wrapper.theme-natural-grounded { background-color: var(--background-color, #f0f0f0); color: var(--text-color, #333); } /* Fallback for WIP */
+
+        .showcase-outer-wrapper h2.theme-title {
+            font-family: var(--font-family-headings, sans-serif);
+            color: var(--heading-color, #111);
             text-align: center;
-            font-size: 2.5em;
+            font-size: 2.2em;
             margin-bottom: var(--spacing-xl, 40px);
-            text-shadow: 0 0 10px currentColor; /* Subtle glow for titles */
         }
         .component-group {
-            margin: 20px auto; /* Center the component group */
+            margin: 20px auto;
             padding: var(--spacing-lg, 24px);
-            max-width: 800px; /* Constrain width for better viewing */
-            border-radius: var(--border-radius-lg, 8px); /* Use theme's radius */
-            /* For themes without full-page bg, this ensures some containment */
-            background-color: var(--surface-color-alt, rgba(255,255,255,0.05));
-            box-shadow: var(--shadow-lg, 0 5px 25px rgba(0,0,0,0.2));
+            max-width: 700px;
+            border-radius: var(--border-radius-lg, 8px);
+             /* For themes without explicit surface settings, use defaults */
+            background-color: var(--surface-color, #fff);
+            box-shadow: var(--shadow-lg, 0 5px 15px rgba(0,0,0,0.1));
         }
         h1.page-title {
             text-align: center;
-            font-family: 'Monoton', cursive;
-            font-size: 3em;
-            color: #fff;
-            padding: 40px 20px;
-            background: linear-gradient(45deg, #ff00ff, #00f2ff, #39ff14);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif; /* Changed to a more general font */
+            font-weight: 700;
+            font-size: 2.8em;
+            color: #444;
+            padding: 40px 20px 20px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1 class="page-title">PT Component Themes: Shock & Awe</h1>
+    <h1 class="page-title">PT Component Themes: Wellness Focused</h1>
 
-    <!-- Helper function to get component HTML -->
     <script>
         const getSampleComponentsHTML = (themeName) => `
             <div class="pt-card">
-                <h3 class="pt-card-title ${themeName === 'neon-cyberscape' ? 'glitch-text' : ''}">SYSTEM ONLINE // Client Intake</h3>
-                <p class="pt-card-content">Data stream active. Input required for operative: Alex Ryder. Designate training protocol.</p>
+                <h3 class="pt-card-title">Your Weekly Workout Plan</h3>
+                <p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p>
                 <div class="pt-input-group">
-                    <label for="clientName-${themeName}">Operative ID:</label>
-                    <input type="text" id="clientName-${themeName}" class="pt-input" placeholder="e.g., UNIT_734">
+                    <label for="goalInput-${themeName}">Set a Mini-Goal for this Week:</label>
+                    <input type="text" id="goalInput-${themeName}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily">
                 </div>
                 <div class="pt-button-group">
-                    <button class="pt-button pt-button--primary">Engage Protocol</button>
-                    <button class="pt-button pt-button--secondary">Query Databanks</button>
-                    <button class="pt-button pt-button--accent">Purge Record</button>
+                    <button class="pt-button pt-button--primary">Log Workout</button>
+                    <button class="pt-button pt-button--secondary">View Progress</button>
+                    <button class="pt-button pt-button--accent">Share Update</button>
                 </div>
             </div>
 
             <div class="pt-alert pt-alert--success">
-                <strong>CONNECTION ESTABLISHED:</strong> Profile synced with mainframe.
+                <strong>Great job!</strong> Workout logged successfully.
             </div>
             <div class="pt-alert pt-alert--warning">
-                <strong>SECURITY ALERT:</strong> Unauthorised access detected. Level 3 lockdown?
+                <strong>Heads up:</strong> Upcoming session in 2 hours.
             </div>
             <div class="pt-alert pt-alert--error">
-                <strong>CRITICAL FAILURE:</strong> Neural interface offline. Reboot required.
+                <strong>Oops!</strong> We couldn't save your food log. Please try again.
             </div>
             <div class="pt-alert pt-alert--info">
-                <strong>SYSTEM UPDATE:</strong> New training subroutines available.
+                <strong>Tip:</strong> Remember to warm up before each session!
             </div>
         `;
     </script>
 
-    <section id="showcase-neon-cyberscape" class="showcase-outer-wrapper theme-neon-cyberscape">
-        <h2 class="theme-title">Theme: Neon Cyberscape</h2>
-        <div class="component-group" id="neon-cyberscape-components">
-            <!-- Components will be injected here by script -->
-        </div>
+    <section id="showcase-modern-professional" class="showcase-outer-wrapper theme-modern-professional">
+        <h2 class="theme-title">Theme: Modern & Professional</h2>
+        <div class="component-group" id="modern-professional-components"></div>
     </section>
 
-    <section id="showcase-ethereal-bloom" class="showcase-outer-wrapper theme-ethereal-bloom">
-        <!-- placeholder for now, actual theme CSS file not yet created -->
-        <h2 class="theme-title" style="color:#ffc0cb;">Theme: Ethereal Bloom (WIP)</h2>
-        <div class="component-group" id="ethereal-bloom-components" style="background:rgba(255,240,245,0.8);">
-             <!-- Placeholder content -->
+    <section id="showcase-friendly-supportive" class="showcase-outer-wrapper theme-friendly-supportive">
+        <h2 class="theme-title">Theme: Friendly & Supportive</h2>
+        <div class="component-group" id="friendly-supportive-components"></div>
+    </section>
+
+    <section id="showcase-energetic-motivating" class="showcase-outer-wrapper theme-energetic-motivating">
+        <h2 class="theme-title" style="color:#FF6B6B;">Theme: Energetic & Motivating (WIP)</h2>
+        <div class="component-group" id="energetic-motivating-components" style="background:rgba(50,50,50,0.8);">
              Preview of components will appear here once theme is developed.
         </div>
     </section>
 
-    <section id="showcase-retro-arcade-pop" class="showcase-outer-wrapper theme-retro-arcade-pop">
-        <!-- placeholder -->
-        <h2 class="theme-title" style="color:#ffeb3b;">Theme: Retro Arcade Pop (WIP)</h2>
-        <div class="component-group" id="retro-arcade-pop-components" style="background:rgba(50,50,50,0.8);">
-            Preview of components will appear here once theme is developed.
-        </div>
-    </section>
-
-    <section id="showcase-brutalist-impact" class="showcase-outer-wrapper theme-brutalist-impact">
-        <!-- placeholder -->
-        <h2 class="theme-title" style="color:#000; background: #fff;">Theme: Brutalist Impact (WIP)</h2>
-        <div class="component-group" id="brutalist-impact-components" style="background:#e0e0e0; border: 2px solid #000;">
+    <section id="showcase-natural-grounded" class="showcase-outer-wrapper theme-natural-grounded">
+        <h2 class="theme-title" style="color:#556B2F;">Theme: Natural & Grounded (WIP)</h2>
+        <div class="component-group" id="natural-grounded-components" style="background:#f5f5dc;">
             Preview of components will appear here once theme is developed.
         </div>
     </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Inject Neon Cyberscape components
-            const neonCyberscapeContainer = document.getElementById('neon-cyberscape-components');
-            if (neonCyberscapeContainer) {
-                neonCyberscapeContainer.innerHTML = getSampleComponentsHTML('neon-cyberscape');
+            const modernProfessionalContainer = document.getElementById('modern-professional-components');
+            if (modernProfessionalContainer) {
+                modernProfessionalContainer.innerHTML = getSampleComponentsHTML('modern-professional');
             }
-            // For other themes, you'd call:
-            // const etherealBloomContainer = document.getElementById('ethereal-bloom-components');
-            // if (etherealBloomContainer) etherealBloomContainer.innerHTML = getSampleComponentsHTML('ethereal-bloom');
-            // ...and so on
+            const friendlySupportiveContainer = document.getElementById('friendly-supportive-components');
+            if (friendlySupportiveContainer) {
+                friendlySupportiveContainer.innerHTML = getSampleComponentsHTML('friendly-supportive');
+            }
+            // Future themes:
+            // const energeticContainer = document.getElementById('energetic-motivating-components');
+            // if(energeticContainer) energeticContainer.innerHTML = getSampleComponentsHTML('energetic-motivating');
+            // const naturalContainer = document.getElementById('natural-grounded-components');
+            // if(naturalContainer) naturalContainer.innerHTML = getSampleComponentsHTML('natural-grounded');
         });
     </script>
     <script src="assets/js/main.js"></script>
