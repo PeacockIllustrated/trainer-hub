@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Component Showcase - Dashboard & Client Tools</title>
+    <!-- Google Fonts (ensure all used fonts are linked) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
+
+    <style>
+        body { margin: 0; color: #333; }
+        .page-header { padding: 16px 24px; background-color: #f0f0f0; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1010; }
+        h1.page-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5em; color: #333; margin: 0; }
+        .theme-selector-container label { margin-right: 8px; font-size: 0.9em; color: #555; }
+        #theme-switcher { padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; background-color: #fff; }
+
+        #themed-showcase-area { /* Main wrapper for theming this page */
+            min-height: 100vh; box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: var(--background-color); 
+            color: var(--text-color);
+            padding: var(--spacing-xl, 40px);
+        }
+        .showcase-section {
+            margin-bottom: var(--spacing-xxl, 48px);
+            padding: var(--spacing-lg, 24px);
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color-light);
+            border-radius: var(--border-radius-lg, 8px);
+            box-shadow: var(--shadow-md);
+        }
+        .showcase-section__title {
+            font-family: var(--font-family-headings);
+            color: var(--heading-color);
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: var(--spacing-lg, 24px);
+            padding-bottom: var(--spacing-sm, 8px);
+            border-bottom: 2px solid var(--primary-color-light, #eee);
+        }
+        .component-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg, 24px); }
+        .placeholder-img { background-color: var(--neutral-extralight); width: 100%; height: 150px; display:flex; align-items:center; justify-content:center; color: var(--neutral-medium); border-radius: var(--border-radius-sm); text-align: center; }
+        hr.pt-divider { border: 0; height: 1px; background-color: var(--border-color); margin: var(--spacing-lg) 0; }
+
+        /* Styles for new components (add to _components.css too) */
+        .pt-profile-header { display: flex; align-items: center; gap: var(--spacing-lg); padding-bottom:var(--spacing-lg); border-bottom: 1px solid var(--border-color-light); margin-bottom:var(--spacing-lg); }
+        .pt-profile-header__avatar { width: 100px; height: 100px; border-radius: 50%; background-color: var(--primary-color-light); display:flex; align-items:center; justify-content:center; font-size: 2em; color: var(--primary-color-dark); font-weight: bold; flex-shrink:0; }
+        .pt-profile-header__info h2 { margin:0 0 var(--spacing-xs) 0; font-size: 1.6em; }
+        .pt-profile-header__info p { margin:0 0 var(--spacing-xs) 0; font-size: 0.9em; color: var(--text-color-muted); }
+        .pt-profile-header__actions .pt-button { margin-right: var(--spacing-sm); }
+
+        .pt-tabs { border-bottom: 1px solid var(--border-color); margin-bottom: var(--spacing-md); }
+        .pt-tabs__list { display: flex; list-style: none; padding: 0; margin:0; }
+        .pt-tabs__tab button { background:none; border:none; padding: var(--spacing-sm) var(--spacing-md); cursor:pointer; color:var(--text-color-muted); font-weight:500; border-bottom: 3px solid transparent; margin-bottom:-1px; /* Overlap border */ }
+        .pt-tabs__tab button.is-active { color:var(--primary-color); border-bottom-color:var(--primary-color); }
+        .pt-tabs__panel { padding: var(--spacing-md) 0; } /* Hidden by default */
+        .pt-tabs__panel.is-active { display: block; }
+
+        .pt-accordion__item + .pt-accordion__item { margin-top: var(--spacing-xs); }
+        .pt-accordion__button { display:flex; justify-content:space-between; align-items:center; width:100%; background-color: var(--surface-color-alt); padding: var(--spacing-sm) var(--spacing-md); border:1px solid var(--border-color); border-radius:var(--border-radius-sm); text-align:left; font-weight:600; color: var(--text-color-on-surface); cursor:pointer; }
+        .pt-accordion__button::after { content: '+'; font-size: 1.2em; transition: transform 0.2s; }
+        .pt-accordion__button[aria-expanded="true"]::after { transform: rotate(45deg); }
+        .pt-accordion__content { padding: var(--spacing-md); border:1px solid var(--border-color); border-top:0; border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm); }
+
+        .pt-progress-bar { width:100%; height:20px; background-color:var(--neutral-extralight); border-radius:var(--border-radius-pill); overflow:hidden; }
+        .pt-progress-bar__fill { height:100%; background-color:var(--primary-color); width:60%; /* Example */ border-radius:var(--border-radius-pill); text-align:center; color:var(--text-color-on-primary); font-size:0.8em; line-height:20px; transition: width 0.3s ease; }
+
+        .pt-modal { /* Basic Modal Structure */ position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .pt-modal.is-active { display:flex; }
+        .pt-modal__content { background-color:var(--surface-color); padding:var(--spacing-lg); border-radius:var(--border-radius-md); max-width:500px; width:90%; box-shadow:var(--shadow-xl); }
+        .pt-modal__header { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-md); padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--border-color-light); }
+        .pt-modal__title { font-size:1.4em; margin:0; color:var(--heading-color); }
+        .pt-modal__close { background:none; border:none; font-size:1.5em; cursor:pointer; color:var(--text-color-muted); }
+
+        .pt-loading-spinner { border: 4px solid var(--neutral-extralight); border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: ptSpin 1s linear infinite; margin:var(--spacing-lg) auto; }
+        @keyframes ptSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .pt-file-upload label { display:inline-block; padding:var(--button-padding-y) var(--button-padding-x); background-color:var(--secondary-color); color:var(--text-color-on-secondary); border-radius:var(--border-radius-sm); cursor:pointer; }
+        .pt-file-upload input[type="file"] { display:none; }
+        .pt-file-upload__name { margin-left:var(--spacing-sm); font-style:italic; color: var(--text-color-muted); }
+        
+        table.pt-table { width:100%; border-collapse:collapse; margin-bottom:var(--spacing-lg); }
+        .pt-table th, .pt-table td { padding:var(--spacing-sm) var(--spacing-md); border:1px solid var(--border-color); text-align:left; }
+        .pt-table thead th { background-color:var(--surface-color-alt); font-weight:600; }
+        .pt-table tbody tr:nth-child(even) { background-color:var(--neutral-extralight); }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <h1 class="page-title">PT Component Library</h1>
+        <div class="theme-selector-container">
+            <label for="theme-switcher">Theme:</label>
+            <select id="theme-switcher"></select>
+        </div>
+    </header>
+
+    <div id="themed-showcase-area"> <!-- Main wrapper for theming this page -->
+        
+        <!-- Section: Client Profile -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">Client Profile & Info</h2>
+            <div class="pt-profile-header">
+                <div class="pt-profile-header__avatar">JD</div>
+                <div class="pt-profile-header__info">
+                    <h2>Johnathan Doe</h2>
+                    <p>Age: 32 | Goal: Muscle Gain | Joined: Jan 15, 2023</p>
+                </div>
+                <div class="pt-profile-header__actions">
+                    <button class="pt-button pt-button--primary pt-button--small">Message</button>
+                    <button class="pt-button pt-button--secondary pt-button--small">Edit Profile</button>
+                </div>
+            </div>
+
+            <div class="component-grid">
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Personal Details</h3>
+                    <p class="pt-card-content"><strong>DOB:</strong> 1991-05-20<br><strong>Email:</strong> john.doe@example.com<br><strong>Phone:</strong> (555) 123-4567</p>
+                </div>
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Emergency Contact</h3>
+                    <p class="pt-card-content"><strong>Name:</strong> Jane Doe (Spouse)<br><strong>Phone:</strong> (555) 987-6543</p>
+                </div>
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Medical Notes</h3>
+                    <p class="pt-card-content">Previous knee injury (left). Cleared for moderate exercise. Avoid high-impact jumps.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Tracking & Progress -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">Tracking & Progress</h2>
+            <div class="component-grid">
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Measurement Tracker</h3>
+                    <table class="pt-table">
+                        <thead><tr><th>Date</th><th>Weight (kg)</th><th>Body Fat %</th><th>Waist (cm)</th></tr></thead>
+                        <tbody>
+                            <tr><td>2023-01-15</td><td>85.2</td><td>22.5</td><td>90</td></tr>
+                            <tr><td>2023-02-15</td><td>83.9</td><td>21.1</td><td>88</td></tr>
+                            <tr><td>2023-03-15</td><td><input type="text" class="pt-input pt-input--small" value="82.5" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="20.2" style="max-width:70px;"></td><td><input type="text" class="pt-input pt-input--small" value="86" style="max-width:70px;"></td></tr>
+                        </tbody>
+                    </table>
+                    <button class="pt-button pt-button--primary pt-button--small">Add Measurement</button>
+                </div>
+
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Progress Photos</h3>
+                    <div class="component-grid" style="grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));">
+                        <div class="placeholder-img">Jan 2023</div>
+                        <div class="placeholder-img">Feb 2023</div>
+                        <div class="placeholder-img">Mar 2023</div>
+                    </div>
+                    <div class="pt-file-upload" style="margin-top: var(--spacing-md);">
+                        <label for="photoUpload">Upload New Photo</label>
+                        <input type="file" id="photoUpload" accept="image/*">
+                        <span class="pt-file-upload__name">No file chosen</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-card" style="margin-top:var(--spacing-lg);">
+                <h3 class="pt-card-title">Main Goal: Strength Increase</h3>
+                <p>Target: Increase bench press by 10kg in 8 weeks.</p>
+                <div class="pt-progress-bar" style="margin-top:var(--spacing-sm);">
+                    <div class="pt-progress-bar__fill" style="width: 75%;">75%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Workout & Planning -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">Workout & Planning</h2>
+            <div class="pt-tabs" id="workout-tabs">
+                <ul class="pt-tabs__list" role="tablist">
+                    <li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="true" aria-controls="panel-current-plan" id="tab-current-plan" class="is-active">Current Plan</button></li>
+                    <li class="pt-tabs__tab" role="presentation"><button role="tab" aria-selected="false" aria-controls="panel-exercise-lib" id="tab-exercise-lib">Exercise Library</button></li>
+                </ul>
+                <div class="pt-tabs__panel is-active" role="tabpanel" id="panel-current-plan" aria-labelledby="tab-current-plan">
+                    <h4>Phase 2: Hypertrophy Focus (Week 3/4)</h4>
+                    <div class="pt-accordion__item">
+                        <button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day1">Day 1: Upper Body Push</button>
+                        <div class="pt-accordion__content" id="accordion-day1" hidden>
+                            <p>Bench Press: 3 sets x 8-10 reps</p>
+                            <p>Overhead Press: 3 sets x 10-12 reps</p>
+                            <p>Tricep Pushdowns: 3 sets x 12-15 reps</p>
+                        </div>
+                    </div>
+                     <div class="pt-accordion__item">
+                        <button class="pt-accordion__button" aria-expanded="false" aria-controls="accordion-day2">Day 2: Lower Body</button>
+                        <div class="pt-accordion__content" id="accordion-day2" hidden>Squats, Deadlifts, Leg Press...</div>
+                    </div>
+                </div>
+                <div class="pt-tabs__panel" role="tabpanel" id="panel-exercise-lib" aria-labelledby="tab-exercise-lib" hidden>
+                    <input type="text" class="pt-input" placeholder="Search exercises..." style="margin-bottom:var(--spacing-md);">
+                    <p>List of exercises would go here (e.g., using client list item style or cards).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Nutrition & Habits -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">Nutrition & Habits</h2>
+            <div class="component-grid">
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Log Meal</h3>
+                    <form>
+                        <div class="pt-input-group">
+                            <label for="mealType">Meal Type:</label>
+                            <select id="mealType" class="pt-input"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select>
+                        </div>
+                        <div class="pt-input-group">
+                            <label for="foodItems">Food Items:</label>
+                            <textarea id="foodItems" class="pt-input" rows="3" placeholder="e.g., Chicken breast, broccoli, rice"></textarea>
+                        </div>
+                        <button type="submit" class="pt-button pt-button--primary">Add Log</button>
+                    </form>
+                </div>
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Daily Habits</h3>
+                    <div class="pt-input-group">
+                        <label><input type="checkbox" checked> Drank 8 glasses of water</label><br>
+                        <label><input type="checkbox"> Slept 7-8 hours</label><br>
+                        <label><input type="checkbox" checked> 10,000 steps</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Communication & Admin -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">Communication & Admin</h2>
+            <div class="component-grid">
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Trainer Notes</h3>
+                    <textarea class="pt-input" rows="4" placeholder="Client reported good energy levels this week..."></textarea>
+                </div>
+                <div class="pt-card">
+                    <h3 class="pt-card-title">Subscription</h3>
+                    <p>Status: Active <span style="color:var(--success-color)">(Paid)</span></p>
+                    <p>Next Billing: 2023-04-15</p>
+                    <button class="pt-button pt-button--secondary pt-button--small">Manage Subscription</button>
+                </div>
+            </div>
+        </section>
+
+         <!-- Section: UI Elements & Modals -->
+        <section class="showcase-section">
+            <h2 class="showcase-section__title">General UI Elements</h2>
+            <p><button class="pt-button pt-button--accent" id="openModalBtn">Open Sample Modal</button></p>
+            <div class="pt-loading-spinner"></div>
+        </section>
+
+
+    </div> <!-- /#themed-showcase-area -->
+    
+    <!-- Sample Modal Structure (initially hidden) -->
+    <div class="pt-modal" id="sampleModal">
+        <div class="pt-modal__content">
+            <div class="pt-modal__header">
+                <h3 class="pt-modal__title">Modal Title Here</h3>
+                <button class="pt-modal__close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="pt-modal__body">
+                <p>This is the content of the modal. It can be anything you need, from simple text to complex forms.</p>
+            </div>
+            <div class="pt-modal__footer" style="text-align:right; margin-top:var(--spacing-md); padding-top:var(--spacing-md); border-top:1px solid var(--border-color-light);">
+                <button class="pt-button pt-button--secondary pt-modal__close">Cancel</button>
+                <button class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Confirm Action</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Themes definition (same as index.html)
+        const themes = [
+            { value: 'theme-modern-professional', name: 'Modern & Professional' },
+            { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
+            { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' },
+            { value: 'theme-retro-funk', name: 'Retro Funk' }
+        ];
+
+        function applyShowcaseTheme(themeValue, themedArea) {
+            if (!themedArea) return;
+            themedArea.className = ''; // Clear all classes
+            themedArea.classList.add(themeValue);
+            // Force re-evaluation of CSS variables for the themed area
+            themedArea.style.backgroundColor = 'var(--background-color)';
+            themedArea.style.color = 'var(--text-color)';
+        }
+        
+        // Basic JS for Tabs, Accordion, Modal for demo
+        function setupInteractiveComponents() {
+            // Tabs
+            document.querySelectorAll('.pt-tabs__tab button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabContainer = button.closest('.pt-tabs');
+                    tabContainer.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute('aria-selected', 'false'));
+                    tabContainer.querySelectorAll('.pt-tabs__tab button').forEach(b => b.classList.remove('is-active'));
+                    button.setAttribute('aria-selected', 'true');
+                    button.classList.add('is-active');
+                    
+                    const panelId = button.getAttribute('aria-controls');
+                    tabContainer.querySelectorAll('[role="tabpanel"]').forEach(p => p.hidden = true);
+                    tabContainer.querySelectorAll('.pt-tabs__panel').forEach(p => p.classList.remove('is-active'));
+                    const activePanel = tabContainer.querySelector(`#${panelId}`);
+                    if(activePanel) {
+                        activePanel.hidden = false;
+                        activePanel.classList.add('is-active');
+                    }
+                });
+            });
+
+            // Accordion
+            document.querySelectorAll('.pt-accordion__button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const contentId = button.getAttribute('aria-controls');
+                    const content = document.getElementById(contentId);
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    content.hidden = isExpanded;
+                });
+            });
+
+            // Modal
+            const modal = document.getElementById('sampleModal');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeButtons = document.querySelectorAll('.pt-modal__close');
+
+            if(openModalBtn && modal) openModalBtn.addEventListener('click', () => modal.classList.add('is-active'));
+            if(modal) {
+                closeButtons.forEach(btn => btn.addEventListener('click', () => modal.classList.remove('is-active')));
+                modal.addEventListener('click', (event) => { // Close on backdrop click
+                    if (event.target === modal) modal.classList.remove('is-active');
+                });
+            }
+             // File Upload Name Display
+            const fileUploads = document.querySelectorAll('.pt-file-upload input[type="file"]');
+            fileUploads.forEach(input => {
+                input.addEventListener('change', function() {
+                    const fileNameDisplay = this.closest('.pt-file-upload').querySelector('.pt-file-upload__name');
+                    if (this.files && this.files.length > 0) {
+                        fileNameDisplay.textContent = this.files[0].name;
+                    } else {
+                        fileNameDisplay.textContent = 'No file chosen';
+                    }
+                });
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const themedArea = document.getElementById('themed-showcase-area');
+
+            if (!themeSwitcher || !themedArea) {
+                console.error("Theme switcher or themed area not found!");
+                return;
+            }
+
+            themes.forEach(theme => {
+                const option = document.createElement('option');
+                option.value = theme.value;
+                option.textContent = theme.name;
+                themeSwitcher.appendChild(option);
+            });
+
+            if (themes.length > 0) {
+                applyShowcaseTheme(themes[0].value, themedArea);
+            }
+
+            themeSwitcher.addEventListener('change', (event) => {
+                applyShowcaseTheme(event.target.value, themedArea);
+            });
+
+            setupInteractiveComponents(); // Initialize interactive component JS
+        });
+    </script>
+</body>
+</html>
