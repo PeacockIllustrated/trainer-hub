@@ -3,54 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Personalized Fitness Journey Starts Here</title>
+    <title>FitFlow - Your Personalized Fitness Journey</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Google Platform Library for Sign-In -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="490908100618-a13gj712uu1d68ohlj2pk9pb6ndk0qlc.apps.googleusercontent.com"> <!-- REPLACE THIS -->
+    <meta name="google-signin-client_id" content="490908100618-a13gj712uu1d68ohlj2pk9pb6ndk0qlc.apps.googleusercontent.com">
 
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- We'll use a default theme for the landing page, or specific landing page styles -->
-    <!-- For now, let's assume some base styles are good, or we can use one of our themes like 'Modern & Professional' -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css"> 
-    <!-- Or create a dedicated landing-page.css if it's very different -->
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
 
     <style>
-        /* Landing Page Specific Styles */
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
             line-height: 1.7;
-            color: #555; /* Default text color */
-            /* Background will be handled by #landing-page-wrapper with theme */
+            /* Theme variables will be applied here by JS */
+            background-color: var(--background-color, #f4f7f7);
+            color: var(--text-color, #333);
+            overflow-x: hidden; /* Prevent horizontal scroll from abstract SVGs if they bleed */
         }
 
-        #landing-page-wrapper {
+        #landing-page-wrapper { /* This wrapper might not be strictly needed if body is themed */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: var(--background-color, #f4f7f7); /* Fallback */
-            color: var(--text-color, #333); /* Fallback */
         }
 
         .landing-header {
             padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
-            background-color: var(--surface-color, #fff);
+            background-color: var(--surface-color, #fff); /* Use theme surface */
             box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.05));
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative; /* So z-index works if needed above SVGs */
+            z-index: 10; 
         }
 
         .landing-logo {
             font-family: 'Poppins', sans-serif;
             font-size: 1.8em;
             font-weight: 700;
-            color: var(--primary-color, #005f73); /* Theme primary */
+            color: var(--primary-color, #005f73);
             text-decoration: none;
         }
 
@@ -71,26 +73,42 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px);
-            background-image: linear-gradient(to bottom, var(--primary-color-light, rgba(0,95,115,0.1)), transparent 50%), 
-                              url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'); /* Example background image */
-            background-size: cover;
-            background-position: center;
-            color: var(--text-color-on-primary, #fff); /* Adjust if background makes white text hard to read */
-            min-height: 60vh;
+            padding: var(--spacing-xxl, 60px) var(--spacing-lg, 24px);
+            /* REMOVED background-image, replaced with SVG concept */
+            background-color: var(--primary-color-light, #e0f7fa); /* Use a light theme color as base */
+            color: var(--text-color-on-primary, #333); /* Text color that contrasts with primary-color-light */
+            min-height: 65vh; /* Adjusted min-height */
             position: relative;
+            overflow: hidden; /* To contain SVGs that might bleed */
         }
-        .hero-section::before { /* Overlay for better text readability */
-            content: '';
+        
+        /* Example simple SVG wave background - replace with more complex/layered SVGs */
+        .hero-section .svg-background-wave {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0,0,0,0.3); /* Adjust opacity */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto; /* Adjust height as needed or set fixed */
             z-index: 1;
+            pointer-events: none; /* So it doesn't interfere with clicks */
+            fill: var(--primary-color, #007bff); /* Use theme color */
+            opacity: 0.1; /* Make it subtle */
         }
+         .hero-section .svg-abstract-blobs { /* Placeholder for another SVG layer */
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 300px; /* Example */
+            height: 300px; /* Example */
+            z-index: 0;
+            opacity: 0.05;
+            fill: var(--accent-color, #ffc107);
+        }
+
 
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Above SVGs */
             max-width: 700px;
         }
 
@@ -99,14 +117,14 @@
             font-size: 3em;
             font-weight: 700;
             margin-bottom: var(--spacing-md, 16px);
-            color: #fff; /* Ensure hero title is white */
+            color: var(--heading-color, #111); /* Text color suitable for light background */
             line-height: 1.2;
         }
 
         .hero-section p.subtitle {
             font-size: 1.2em;
             margin-bottom: var(--spacing-lg, 24px);
-            color: rgba(255,255,255,0.9);
+            color: var(--text-color, #444); /* Text color suitable for light background */
             max-width: 600px;
         }
         
@@ -117,76 +135,37 @@
             align-items: center;
             gap: var(--spacing-md, 16px);
         }
-        /* Google Sign-In Button Styling */
-        .g-signin2 { /* This is Google's default class */
-           width: 240px !important; /* Override Google's default if needed */
+        .g-signin2 { 
+           width: 240px !important; 
            height: 50px !important;
            border-radius: var(--border-radius-md, 6px) !important;
            box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1)) !important;
         }
-        .custom-google-btn { /* If you make a custom button */
-            /* Style like your pt-button--primary */
-        }
 
         .admin-signin-link {
             font-size: 0.85em;
-            color: var(--text-color-on-primary, #eee); /* Adjust if needed */
+            color: var(--text-color-muted, #555); /* Text color suitable for light background */
             text-decoration: underline;
             margin-top: var(--spacing-md, 16px);
             opacity: 0.8;
         }
-         .admin-signin-link:hover {
-            opacity: 1;
-        }
+         .admin-signin-link:hover { opacity: 1; }
 
 
-        .features-section {
-            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px);
-            text-align: center;
+        .features-section { /* ... same as before ... */
+            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px); text-align: center;
             background-color: var(--surface-color-alt, #f9f9f9);
         }
-        .features-section h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2em;
-            margin-bottom: var(--spacing-xl, 32px);
-            color: var(--heading-color, #333);
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-lg, 24px);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .feature-item {
-            background-color: var(--surface-color, #fff);
-            padding: var(--spacing-lg, 24px);
-            border-radius: var(--border-radius-lg, 8px);
-            box-shadow: var(--shadow-md, 0 4px 8px rgba(0,0,0,0.07));
-        }
-        .feature-item .icon { /* Placeholder for icons */
-            font-size: 2.5em;
-            color: var(--primary-color, #005f73);
-            margin-bottom: var(--spacing-md, 16px);
-        }
-        .feature-item h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3em;
-            margin-bottom: var(--spacing-sm, 8px);
-            color: var(--heading-color-on-surface, #333);
-        }
-        .feature-item p {
-            font-size: 0.95em;
-            color: var(--text-color-on-surface, #555);
-        }
+        .features-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.2em; margin-bottom: var(--spacing-xl, 32px); color: var(--heading-color, #333); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-lg, 24px); max-width: 1200px; margin: 0 auto; }
+        .feature-item { background-color: var(--surface-color, #fff); padding: var(--spacing-lg, 24px); border-radius: var(--border-radius-lg, 8px); box-shadow: var(--shadow-md, 0 4px 8px rgba(0,0,0,0.07)); }
+        .feature-item .icon { font-size: 2.5em; color: var(--primary-color, #005f73); margin-bottom: var(--spacing-md, 16px); }
+        .feature-item h3 { font-family: 'Poppins', sans-serif; font-size: 1.3em; margin-bottom: var(--spacing-sm, 8px); color: var(--heading-color-on-surface, #333); }
+        .feature-item p { font-size: 0.95em; color: var(--text-color-on-surface, #555); }
 
-        .landing-footer {
-            text-align: center;
-            padding: var(--spacing-lg, 24px);
-            background-color: var(--neutral-dark, #333);
-            color: var(--neutral-light, #ccc);
-            font-size: 0.9em;
-            margin-top: auto; /* Pushes footer to bottom if content is short */
+        .landing-footer { /* ... same as before ... */
+            text-align: center; padding: var(--spacing-lg, 24px); background-color: var(--neutral-dark, #333);
+            color: var(--neutral-light, #ccc); font-size: 0.9em; margin-top: auto;
         }
 
         @media (max-width: 768px) {
@@ -195,140 +174,99 @@
             .landing-header { flex-direction: column; gap: var(--spacing-sm); }
             .landing-nav { margin-top: var(--spacing-sm); }
         }
-
     </style>
 </head>
-<body class="theme-modern-professional"> <!-- Apply a default theme, or handle via JS -->
+<body class="theme-modern-professional"> <!-- Default theme -->
 
-    <div id="landing-page-wrapper">
+    <div id="landing-page-wrapper"> <!-- This wrapper will also get the theme class via JS -->
         <header class="landing-header">
-            <a href="#" class="landing-logo">[Your PT App Name/Logo]</a>
+            <a href="#" class="landing-logo">FitFlow</a>
             <nav class="landing-nav">
                 <a href="#features">Features</a>
-                <a href="#about">About Us (Optional)</a>
                 <a href="#" id="adminLoginLinkPlaceholder">Trainer Login</a>
             </nav>
         </header>
 
         <section class="hero-section">
+            <!-- Example SVG background element (replace with your actual SVGs) -->
+            <svg class="svg-background-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,120 C240,60 480,180 720,120 C960,60 1200,180 1440,120 L1440,0 L0,0 Z"></path>
+            </svg>
+            <!-- You can layer multiple SVGs for more complex backgrounds -->
+            <!-- 
+            <svg class="svg-abstract-blobs" viewBox="0 0 200 200">
+                <circle cx="50" cy="50" r="40" />
+                <ellipse cx="150" cy="100" rx="50" ry="30" transform="rotate(15 150 100)" />
+            </svg> 
+            -->
+
             <div class="hero-content">
-                <h1>Achieve Your Fitness Goals, Personalized For You.</h1>
+                <h1>Your Personalized Fitness Journey with FitFlow</h1>
                 <p class="subtitle">
-                    Your dedicated personal trainer will craft custom workout plans, track your progress, 
-                    and provide the support you need, all in one place.
+                    Achieve your goals with custom workout plans, progress tracking, and direct support from your dedicated trainer.
                 </p>
                 <div class="signin-options">
-                    <p style="font-weight:600; font-size:1.1em; margin-bottom:var(--spacing-xs); color: #fff;">Ready to start your journey?</p>
-                    <!-- Google Sign-In Button -->
+                    <p style="font-weight:600; font-size:1.1em; margin-bottom:var(--spacing-xs); color: var(--heading-color);">Ready to start?</p>
                     <div class="g-signin2" data-onsuccess="onClientSignIn" data-theme="light" data-width="240" data-height="50" data-longtitle="true"></div>
-                    <!-- <button class="pt-button pt-button--primary custom-google-btn">Sign In with Google</button> -->
                 </div>
                  <a href="#admin-login-section" class="admin-signin-link" id="adminLoginLinkConceptual">Are you a trainer? Sign in here.</a>
             </div>
         </section>
 
         <section class="features-section" id="features">
-            <h2>Why [Your PT App Name]?</h2>
+            <h2>Why FitFlow?</h2>
             <div class="features-grid">
-                <div class="feature-item">
-                    <div class="icon">💪</div>
-                    <h3>Custom Workouts</h3>
-                    <p>Tailored plans designed by your expert trainer to meet your specific needs and goals.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="icon">📊</div>
-                    <h3>Progress Tracking</h3>
-                    <p>Visually track your measurements, strength gains, and see how far you've come.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="icon">💬</div>
-                    <h3>Direct Communication</h3>
-                    <p>Stay connected with your trainer for guidance, motivation, and feedback.</p>
-                </div>
+                <div class="feature-item"><div class="icon">💪</div><h3>Custom Workouts</h3><p>Tailored plans designed by your expert trainer to meet your specific needs and goals.</p></div>
+                <div class="feature-item"><div class="icon">📊</div><h3>Progress Tracking</h3><p>Visually track your measurements, strength gains, and see how far you've come.</p></div>
+                <div class="feature-item"><div class="icon">💬</div><h3>Direct Communication</h3><p>Stay connected with your trainer for guidance, motivation, and feedback.</p></div>
             </div>
         </section>
         
-        <!-- Conceptual Admin Login Section (can be a modal or separate page) -->
-        <section class="chunk-section" id="admin-login-section" style="max-width: 400px; margin: 40px auto; display: none; /* Hidden by default */">
+        <section class="chunk-section" id="admin-login-section" style="max-width: 400px; margin: 40px auto; display: none;">
             <h2 class="chunk-section__title">Trainer Portal Login</h2>
-            <p style="text-align:center; margin-bottom:var(--spacing-md);">This area is for registered trainers.</p>
-            <!-- For demo, could also use Google Sign-In, but with different backend logic -->
+            <p style="text-align:center; margin-bottom:var(--spacing-md);">This area is for registered FitFlow trainers.</p>
             <div style="display:flex; justify-content:center;">
                  <div class="g-signin2" data-onsuccess="onAdminSignIn" data-theme="dark"></div>
             </div>
-            <p style="text-align:center; font-size:0.8em; margin-top:var(--spacing-sm);"> (Admin sign-in would typically involve email/password or a specific admin Google OAuth flow with whitelisting).</p>
         </section>
 
-
         <footer class="landing-footer">
-            <p>© <span id="currentYear"></span> [Your PT App Name or Your Name]. All Rights Reserved.</p>
-            <!-- Add links to privacy policy, terms, etc. if needed -->
+            <p>© <span id="currentYear"></span> FitFlow. All Rights Reserved.</p>
         </footer>
     </div>
 
     <script>
-        // CLIENT SIGN-IN CALLBACK
-        function onClientSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log("CLIENT Google ID Token: " + id_token);
-            // TODO: Send this id_token to your backend for verification & client session creation
-            // e.g., fetch('/auth/google/client/verify', { /* ... */ })
-            // After successful backend verification & session creation:
-            // window.location.href = '/client-dashboard.html'; // Redirect client
+        // --- Google Sign-In Callbacks ---
+        function onClientSignIn(googleUser) { /* ... same as before ... */
+            var id_token = googleUser.getAuthResponse().id_token; console.log("CLIENT Google ID Token: " + id_token);
             alert("Client Signed In (Demo)! Token: " + id_token.substring(0,30) + "...");
-            
-            // Sign out immediately for demo purposes so button remains clickable
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('Client signed out of Google for demo.');
-            });
+            var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log('Client signed out for demo.'); });
         }
-
-        // ADMIN SIGN-IN CALLBACK (Conceptual)
-        function onAdminSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log("ADMIN Google ID Token: " + id_token);
-            // TODO: Send this id_token to your backend.
-            // Backend verifies token AND checks if this Google User ID is on an admin whitelist.
-            // e.g., fetch('/auth/google/admin/verify', { /* ... */ })
-            // After successful backend verification & session creation:
-            // window.location.href = '/admin-dashboard.html'; // Redirect admin
+        function onAdminSignIn(googleUser) { /* ... same as before ... */
+            var id_token = googleUser.getAuthResponse().id_token; console.log("ADMIN Google ID Token: " + id_token);
             alert("Admin Signed In (Demo)! Token: " + id_token.substring(0,30) + "...\nBackend would verify admin status.");
-
-            // Sign out immediately for demo purposes
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('Admin signed out of Google for demo.');
-            });
+            var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log('Admin signed out for demo.'); });
         }
         
-        // Simple function to toggle admin login section visibility (for demo)
+        // --- Admin Login Toggle ---
         const adminLoginLinkConceptual = document.getElementById('adminLoginLinkConceptual');
         const adminLoginLinkPlaceholder = document.getElementById('adminLoginLinkPlaceholder');
         const adminLoginSection = document.getElementById('admin-login-section');
-
-        function toggleAdminLogin(e) {
-            e.preventDefault();
-            if (adminLoginSection) {
-                adminLoginSection.style.display = adminLoginSection.style.display === 'none' ? 'block' : 'none';
-                if (adminLoginSection.style.display === 'block') {
-                    adminLoginSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
+        function toggleAdminLogin(e) { /* ... same as before ... */
+            e.preventDefault(); if (adminLoginSection) { adminLoginSection.style.display = adminLoginSection.style.display === 'none' ? 'block' : 'none'; if (adminLoginSection.style.display === 'block') { adminLoginSection.scrollIntoView({ behavior: 'smooth' });}}
         }
         if(adminLoginLinkConceptual) adminLoginLinkConceptual.addEventListener('click', toggleAdminLogin);
         if(adminLoginLinkPlaceholder) adminLoginLinkPlaceholder.addEventListener('click', toggleAdminLogin);
 
-
-        // Theme Switcher (Optional for landing page, but keeping it for consistency if you want to test themes here)
+        // --- Theme Switcher Logic ---
         const themes = [ /* ... your themes array ... */
-            { value: 'theme-modern-professional', name: 'Modern & Professional' },
-            { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
-            // ... add all 6 themes
+            { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
         ];
         const themeSwitcher = document.getElementById('theme-switcher');
-        const bodyElement = document.body; // Theme the body for this landing page
+        const bodyElement = document.body; // Target body for overall theme
+        const landingPageWrapper = document.getElementById('landing-page-wrapper'); // And wrapper if needed
 
         if (themeSwitcher && themes.length > 0) {
             themes.forEach(theme => {
@@ -337,20 +275,21 @@
             });
             
             function applyLandingTheme(themeValue) {
-                bodyElement.className = ''; // Clear previous theme
+                // Apply to body for global CSS variable scope
+                bodyElement.className = ''; // Clear previous theme from body
                 bodyElement.classList.add(themeValue);
-                // Also apply to the main wrapper if needed for variable scoping
-                const wrapper = document.getElementById('landing-page-wrapper');
-                if (wrapper) {
-                    wrapper.className = '';
-                    wrapper.classList.add(themeValue);
-                    // Force re-evaluation of CSS variables for the wrapper
-                    wrapper.style.backgroundColor = 'var(--background-color)';
-                    wrapper.style.color = 'var(--text-color)';
+
+                // Also apply to the wrapper if it has specific styles relying on theme class
+                if(landingPageWrapper){
+                    landingPageWrapper.className = ''; // Clear its classes too
+                    landingPageWrapper.classList.add(themeValue);
+                     // Force re-evaluation for wrapper specifically if needed, though body should cascade
+                    landingPageWrapper.style.backgroundColor = 'var(--background-color)';
+                    landingPageWrapper.style.color = 'var(--text-color)';
                 }
             }
 
-            applyLandingTheme(themes[0].value); // Apply default theme
+            applyLandingTheme(themes[0].value); 
             themeSwitcher.value = themes[0].value;
 
             themeSwitcher.addEventListener('change', (event) => {
@@ -358,11 +297,9 @@
             });
         }
         
-        // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-
     </script>
-    <!-- Your main.js can be included if it has general utilities, but login logic is above -->
-    <!-- <script type="module" src="assets/js/main-showcase.js"></script> -->
+    <!-- <script type="module" src="assets/js/main-showcase.js"></script> --> 
+    <!-- This page now has self-contained JS. Link main.js if it contains other utilities you need. -->
 </body>
 </html>
