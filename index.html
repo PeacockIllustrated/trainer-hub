@@ -3,298 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Trainer UI Kit Showcase</title>
+    <title>Your Personalized Fitness Journey Starts Here</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Google Platform Library for Sign-In -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"> <!-- REPLACE THIS -->
 
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Link ALL theme files that will be switchable -->
-    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
+    <!-- We'll use a default theme for the landing page, or specific landing page styles -->
+    <!-- For now, let's assume some base styles are good, or we can use one of our themes like 'Modern & Professional' -->
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css"> 
+    <!-- Or create a dedicated landing-page.css if it's very different -->
 
     <style>
+        /* Landing Page Specific Styles */
         body {
             margin: 0;
-            color: #333; /* Fallback */
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.7;
+            color: #555; /* Default text color */
+            /* Background will be handled by #landing-page-wrapper with theme */
         }
 
-        .page-header {
+        #landing-page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background-color, #f4f7f7); /* Fallback */
+            color: var(--text-color, #333); /* Fallback */
+        }
+
+        .landing-header {
             padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
-            background-color: #f0f0f0; 
-            border-bottom: 1px solid #ddd;
+            background-color: var(--surface-color, #fff);
+            box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.05));
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky; 
-            top: 0;
-            z-index: 1010; 
         }
-        h1.page-title {
+
+        .landing-logo {
             font-family: 'Poppins', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color, #005f73); /* Theme primary */
+            text-decoration: none;
+        }
+
+        .landing-nav a {
+            margin-left: var(--spacing-lg, 24px);
+            text-decoration: none;
+            color: var(--text-color-muted, #555);
             font-weight: 600;
-            font-size: 1.5em; 
-            color: #333;
-            margin: 0;
-            padding: 0;
+            font-size: 0.95em;
         }
-        .theme-selector-container {
+        .landing-nav a:hover {
+            color: var(--primary-color, #005f73);
+        }
+
+        .hero-section {
             display: flex;
-            align-items: center;
-        }
-        .theme-selector-container label {
-            margin-right: var(--spacing-sm, 8px);
-            font-size: 0.9em;
-            color: #555;
-        }
-        #theme-switcher {
-            padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
-            border-radius: var(--border-radius-sm, 4px);
-            border: 1px solid #ccc;
-            font-size: 0.9em;
-            background-color: #fff;
-        }
-
-        /* Ensure this ID matches exactly what's in the JS getElementById */
-        #themed-area { 
-            min-height: 100vh; 
-            box-sizing: border-box;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            /* These will be dynamically updated by JS when theme changes */
-            background-color: var(--background-color); 
-            color: var(--text-color); 
-        }
-
-        .theme-showcase-layout {
-            display: flex;
-            min-height: calc(100vh - 60px); /* Header height adjustment */
-        }
-        
-        .theme-showcase-content {
-            flex-grow: 1;
-            padding: var(--spacing-xl, 40px);
-            overflow-y: auto;
-        }
-        
-        .component-group {
-            margin: 0 0 var(--spacing-xl, 40px) 0;
-            padding: var(--spacing-lg, 24px);
-            max-width: 800px;
-            border-radius: var(--border-radius-lg, 8px);
-            background-color: var(--surface-color); 
-            box-shadow: var(--shadow-lg);
-        }
-
-        .pt-sidebar__nav-icon, .pt-sidebar__user-avatar {
-            font-style: normal;
-            display: inline-flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px);
+            background-image: linear-gradient(to bottom, var(--primary-color-light, rgba(0,95,115,0.1)), transparent 50%), 
+                              url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'); /* Example background image */
+            background-size: cover;
+            background-position: center;
+            color: var(--text-color-on-primary, #fff); /* Adjust if background makes white text hard to read */
+            min-height: 60vh;
+            position: relative;
+        }
+        .hero-section::before { /* Overlay for better text readability */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.3); /* Adjust opacity */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+
+        .hero-section h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md, 16px);
+            color: #fff; /* Ensure hero title is white */
+            line-height: 1.2;
+        }
+
+        .hero-section p.subtitle {
+            font-size: 1.2em;
+            margin-bottom: var(--spacing-lg, 24px);
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+        }
+        
+        .signin-options {
+            margin-top: var(--spacing-lg, 24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md, 16px);
+        }
+        /* Google Sign-In Button Styling */
+        .g-signin2 { /* This is Google's default class */
+           width: 240px !important; /* Override Google's default if needed */
+           height: 50px !important;
+           border-radius: var(--border-radius-md, 6px) !important;
+           box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1)) !important;
+        }
+        .custom-google-btn { /* If you make a custom button */
+            /* Style like your pt-button--primary */
+        }
+
+        .admin-signin-link {
+            font-size: 0.85em;
+            color: var(--text-color-on-primary, #eee); /* Adjust if needed */
+            text-decoration: underline;
+            margin-top: var(--spacing-md, 16px);
+            opacity: 0.8;
+        }
+         .admin-signin-link:hover {
+            opacity: 1;
+        }
+
+
+        .features-section {
+            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px);
+            text-align: center;
+            background-color: var(--surface-color-alt, #f9f9f9);
+        }
+        .features-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: var(--spacing-xl, 32px);
+            color: var(--heading-color, #333);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg, 24px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-item {
+            background-color: var(--surface-color, #fff);
+            padding: var(--spacing-lg, 24px);
+            border-radius: var(--border-radius-lg, 8px);
+            box-shadow: var(--shadow-md, 0 4px 8px rgba(0,0,0,0.07));
+        }
+        .feature-item .icon { /* Placeholder for icons */
+            font-size: 2.5em;
+            color: var(--primary-color, #005f73);
+            margin-bottom: var(--spacing-md, 16px);
+        }
+        .feature-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3em;
+            margin-bottom: var(--spacing-sm, 8px);
+            color: var(--heading-color-on-surface, #333);
+        }
+        .feature-item p {
+            font-size: 0.95em;
+            color: var(--text-color-on-surface, #555);
+        }
+
+        .landing-footer {
+            text-align: center;
+            padding: var(--spacing-lg, 24px);
+            background-color: var(--neutral-dark, #333);
+            color: var(--neutral-light, #ccc);
+            font-size: 0.9em;
+            margin-top: auto; /* Pushes footer to bottom if content is short */
         }
 
         @media (max-width: 768px) {
-            .page-header { flex-direction: column; align-items: flex-start; padding: var(--spacing-sm); }
-            h1.page-title { font-size: 1.2em; margin-bottom: var(--spacing-sm); }
-            .theme-selector-container { width: 100%; }
-            #theme-switcher { width: 100%; }
-            .theme-showcase-layout .pt-sidebar { display: none !important; } 
-            .theme-showcase-layout { flex-direction: column; } 
-            .theme-showcase-content { padding: var(--spacing-md); }
-            .component-group { max-width: 100%; padding: var(--spacing-md); }
+            .hero-section h1 { font-size: 2.2em; }
+            .hero-section p.subtitle { font-size: 1em; }
+            .landing-header { flex-direction: column; gap: var(--spacing-sm); }
+            .landing-nav { margin-top: var(--spacing-sm); }
         }
-        @media (min-width: 769px) {
-            /* Ensure this targets the .pt-sidebar class inside the #sidebar-container */
-            #sidebar-container .pt-sidebar { 
-                height: calc(100vh - 60px); /* Adjust if header height changes */
-                position: sticky;
-                top: 60px; /* Stick below sticky header */
-                flex-shrink: 0;
-            }
-        }
+
     </style>
 </head>
-<body>
+<body class="theme-modern-professional"> <!-- Apply a default theme, or handle via JS -->
 
-    <header class="page-header">
-        <h1 class="page-title">PT UI Kit</h1>
-        <div class="theme-selector-container">
-            <label for="theme-switcher">Theme:</label>
-            <select id="theme-switcher"></select>
-        </div>
-    </header>
+    <div id="landing-page-wrapper">
+        <header class="landing-header">
+            <a href="#" class="landing-logo">[Your PT App Name/Logo]</a>
+            <nav class="landing-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About Us (Optional)</a>
+                <a href="#" id="adminLoginLinkPlaceholder">Trainer Login</a>
+            </nav>
+        </header>
 
-    <!-- CRITICAL: Ensure this ID is exactly 'themed-area' -->
-    <div id="themed-area"> 
-        <div class="theme-showcase-layout"> 
-            <div id="sidebar-container"></div>
-            <main class="theme-showcase-content">
-                <div class="component-group" id="main-components-container"></div>
-            </main>
-        </div>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Achieve Your Fitness Goals, Personalized For You.</h1>
+                <p class="subtitle">
+                    Your dedicated personal trainer will craft custom workout plans, track your progress, 
+                    and provide the support you need, all in one place.
+                </p>
+                <div class="signin-options">
+                    <p style="font-weight:600; font-size:1.1em; margin-bottom:var(--spacing-xs); color: #fff;">Ready to start your journey?</p>
+                    <!-- Google Sign-In Button -->
+                    <div class="g-signin2" data-onsuccess="onClientSignIn" data-theme="light" data-width="240" data-height="50" data-longtitle="true"></div>
+                    <!-- <button class="pt-button pt-button--primary custom-google-btn">Sign In with Google</button> -->
+                </div>
+                 <a href="#admin-login-section" class="admin-signin-link" id="adminLoginLinkConceptual">Are you a trainer? Sign in here.</a>
+            </div>
+        </section>
+
+        <section class="features-section" id="features">
+            <h2>Why [Your PT App Name]?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon">💪</div>
+                    <h3>Custom Workouts</h3>
+                    <p>Tailored plans designed by your expert trainer to meet your specific needs and goals.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>Visually track your measurements, strength gains, and see how far you've come.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <h3>Direct Communication</h3>
+                    <p>Stay connected with your trainer for guidance, motivation, and feedback.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Conceptual Admin Login Section (can be a modal or separate page) -->
+        <section class="chunk-section" id="admin-login-section" style="max-width: 400px; margin: 40px auto; display: none; /* Hidden by default */">
+            <h2 class="chunk-section__title">Trainer Portal Login</h2>
+            <p style="text-align:center; margin-bottom:var(--spacing-md);">This area is for registered trainers.</p>
+            <!-- For demo, could also use Google Sign-In, but with different backend logic -->
+            <div style="display:flex; justify-content:center;">
+                 <div class="g-signin2" data-onsuccess="onAdminSignIn" data-theme="dark"></div>
+            </div>
+            <p style="text-align:center; font-size:0.8em; margin-top:var(--spacing-sm);"> (Admin sign-in would typically involve email/password or a specific admin Google OAuth flow with whitelisting).</p>
+        </section>
+
+
+        <footer class="landing-footer">
+            <p>© <span id="currentYear"></span> [Your PT App Name or Your Name]. All Rights Reserved.</p>
+            <!-- Add links to privacy policy, terms, etc. if needed -->
+        </footer>
     </div>
 
-    <div id="mobile-nav-global-container"></div>
-
     <script>
-        const themes = [
-            { value: 'theme-modern-professional', name: 'Modern & Professional', sidebarLogo: 'ProTrain', sidebarUser: 'Alex P.' },
-            { value: 'theme-friendly-supportive', name: 'Friendly & Supportive', sidebarLogo: 'WellFit', sidebarUser: 'Sam K.' },
-            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating', sidebarLogo: 'IgniteFit', sidebarUser: 'Max Power' },
-            { value: 'theme-natural-grounded', name: 'Natural & Grounded', sidebarLogo: 'TerraFit', sidebarUser: 'Willow G.' },
-            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist', sidebarLogo: 'ELEVATE', sidebarUser: 'Kendall R.' },
-            { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
-        ];
+        // CLIENT SIGN-IN CALLBACK
+        function onClientSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("CLIENT Google ID Token: " + id_token);
+            // TODO: Send this id_token to your backend for verification & client session creation
+            // e.g., fetch('/auth/google/client/verify', { /* ... */ })
+            // After successful backend verification & session creation:
+            // window.location.href = '/client-dashboard.html'; // Redirect client
+            alert("Client Signed In (Demo)! Token: " + id_token.substring(0,30) + "...");
+            
+            // Sign out immediately for demo purposes so button remains clickable
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('Client signed out of Google for demo.');
+            });
+        }
 
-        // --- FUNCTION DEFINITIONS ---
-        const getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => { /* ... same as before ... */
-            return `
-            <aside class="pt-sidebar">
-                <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
-                <nav class="pt-sidebar__nav"><ul class="pt-sidebar__nav-list">
-                    <li class="pt-sidebar__nav-item"><a href="#dashboard" class="pt-sidebar__nav-link is-active"><span class="pt-sidebar__nav-icon">D</span><span class="pt-sidebar__nav-text">Dashboard</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#clients" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">C</span><span class="pt-sidebar__nav-text">Clients</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#workouts" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">W</span><span class="pt-sidebar__nav-text">Workouts</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#schedule" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">S</span><span class="pt-sidebar__nav-text">Schedule</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#settings" class="pt-sidebar__nav-link"><span class="pt-sidebar__nav-icon">⚙</span><span class="pt-sidebar__nav-text">Settings</span></a></li>
-                </ul></nav>
-                <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">${userName.charAt(0)}</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
-            </aside>`;
-        };
+        // ADMIN SIGN-IN CALLBACK (Conceptual)
+        function onAdminSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ADMIN Google ID Token: " + id_token);
+            // TODO: Send this id_token to your backend.
+            // Backend verifies token AND checks if this Google User ID is on an admin whitelist.
+            // e.g., fetch('/auth/google/admin/verify', { /* ... */ })
+            // After successful backend verification & session creation:
+            // window.location.href = '/admin-dashboard.html'; // Redirect admin
+            alert("Admin Signed In (Demo)! Token: " + id_token.substring(0,30) + "...\nBackend would verify admin status.");
 
-        const getMobileNavHTML = () => { /* ... same as before ... */
-            return `
-            <div class="pt-mobile-nav-banner">
-                <nav class="pt-mobile-nav-banner__scroll-container">
-                    <a href="#dashboard" class="pt-mobile-nav-banner__link is-active">Dashboard</a>
-                    <a href="#clients" class="pt-mobile-nav-banner__link">Clients</a>
-                    <a href="#workouts" class="pt-mobile-nav-banner__link">Workouts</a>
-                    <a href="#schedule" class="pt-mobile-nav-banner__link">Schedule</a>
-                    <a href="#settings" class="pt-mobile-nav-banner__link">Settings</a>
-                    <a href="#profile" class="pt-mobile-nav-banner__link">Profile</a>
-                    <a href="#messages" class="pt-mobile-nav-banner__link">Messages</a>
-                </nav>
-            </div>`;
-        };
-
-        const getMainContentHTML = (themeId) => { /* ... same as before ... */
-            return `
-            <h3 style="margin-top:0; margin-bottom: var(--spacing-sm); color: var(--heading-color);">Cards, Buttons, Inputs</h3>
-            <div class="pt-card"><h3 class="pt-card-title">Your Weekly Workout Plan</h3><p class="pt-card-content">This week focuses on building core strength and improving cardiovascular endurance. Stay consistent!</p><div class="pt-input-group"><label for="goalInput-${themeId}">Set a Mini-Goal for this Week:</label><input type="text" id="goalInput-${themeId}" class="pt-input" placeholder="e.g., Drink 8 glasses of water daily"></div><div class="pt-button-group"><button class="pt-button pt-button--primary">Log Workout</button><button class="pt-button pt-button--secondary">View Progress</button><button class="pt-button pt-button--accent">Share Update</button></div></div>
-            <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Alerts</h3>
-            <div class="pt-alert pt-alert--success"><strong>Great job!</strong> Workout logged successfully.</div><div class="pt-alert pt-alert--warning"><strong>Heads up:</strong> Upcoming session in 2 hours.</div><div class="pt-alert pt-alert--error"><strong>Oops!</strong> We couldn't save your food log. Please try again.</div><div class="pt-alert pt-alert--info"><strong>Tip:</strong> Remember to warm up before each session!</div>
-            <h3 style="margin-top: var(--spacing-xl); margin-bottom: var(--spacing-sm); color: var(--heading-color);">Client List</h3>
-            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>AD</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Alice Davis</h4><p class="pt-client-list-item__meta">Next Up: Cardio Blast, Tomorrow 9 AM</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
-            <div class="pt-client-list-item pt-client-list-item--active"><div class="pt-client-list-item__avatar"><span>BE</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Bob Evans</h4><p class="pt-client-list-item__meta">Active Plan: Full Body Strength</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--primary pt-button--small">Chat</a></div></div>
-            <div class="pt-client-list-item"><div class="pt-client-list-item__avatar"><span>CH</span></div><div class="pt-client-list-item__info"><h4 class="pt-client-list-item__name">Carol Hayes</h4><p class="pt-client-list-item__meta">Goal: Weight Loss - 5kg Target</p></div><div class="pt-client-list-item__actions"><a href="#" class="pt-button pt-button--secondary pt-button--small">Profile</a></div></div>
-            `;
-        };
+            // Sign out immediately for demo purposes
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('Admin signed out of Google for demo.');
+            });
+        }
         
-        function applyThemeAndContent(themeValue, elements, isInitialLoad = false) {
-            const themedArea = elements.themedArea; // Renamed from elements.themedArea for clarity within this function
-            const sidebarContainer = elements.sidebarContainer;
-            const mainComponentsContainer = elements.mainComponentsContainer;
-            const mobileNavGlobalContainer = elements.mobileNavGlobalContainer;
+        // Simple function to toggle admin login section visibility (for demo)
+        const adminLoginLinkConceptual = document.getElementById('adminLoginLinkConceptual');
+        const adminLoginLinkPlaceholder = document.getElementById('adminLoginLinkPlaceholder');
+        const adminLoginSection = document.getElementById('admin-login-section');
 
-            if (!themedArea) { // Guard clause
-                console.error("Error: Themed area element is not available in applyThemeAndContent.");
-                return; 
-            }
-            
-            themedArea.className = ''; // Clear all classes from #themed-area (it will only have the theme class)
-            themedArea.classList.add(themeValue); 
-
-            if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-                mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; 
-                mobileNavGlobalContainer.firstChild.classList.add(themeValue); 
-            }
-
-            const currentTheme = themes.find(t => t.value === themeValue);
-            if (currentTheme) {
-                if (sidebarContainer) {
-                    sidebarContainer.innerHTML = getSidebarHTML(currentTheme.sidebarLogo, currentTheme.sidebarUser);
-                }
-                if (isInitialLoad && mainComponentsContainer) {
-                     mainComponentsContainer.innerHTML = getMainContentHTML(currentTheme.value);
+        function toggleAdminLogin(e) {
+            e.preventDefault();
+            if (adminLoginSection) {
+                adminLoginSection.style.display = adminLoginSection.style.display === 'none' ? 'block' : 'none';
+                if (adminLoginSection.style.display === 'block') {
+                    adminLoginSection.scrollIntoView({ behavior: 'smooth' });
                 }
             }
-            
-            themedArea.style.backgroundColor = 'var(--background-color)';
-            themedArea.style.color = 'var(--text-color)';
         }
-
-        function setupActiveLinkSwitcher() { /* ... same as before ... */
-            const allNavLinks = document.querySelectorAll('.pt-sidebar__nav-link, .pt-mobile-nav-banner__link');
-            allNavLinks.forEach(link => {
-                const newLink = link.cloneNode(true); 
-                link.parentNode.replaceChild(newLink, link); 
-                newLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    let parentNavList;
-                    if (this.classList.contains('pt-sidebar__nav-link')) {
-                        parentNavList = this.closest('.pt-sidebar__nav-list');
-                    } else if (this.classList.contains('pt-mobile-nav-banner__link')) {
-                        parentNavList = this.closest('.pt-mobile-nav-banner__scroll-container');
-                    }
-                    if (parentNavList) {
-                        parentNavList.querySelectorAll('.is-active').forEach(el => el.classList.remove('is-active'));
-                        this.classList.add('is-active');
-                    }
-                });
-            });
-        }
-
-        // --- DOMContentLoaded LISTENER ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const elements = { // Define the elements object right at the start
-                themeSwitcher: document.getElementById('theme-switcher'),
-                themedArea: document.getElementById('themed-area'), // CRITICAL: Ensure ID 'themed-area' exists
-                sidebarContainer: document.getElementById('sidebar-container'),
-                mainComponentsContainer: document.getElementById('main-components-container'),
-                mobileNavGlobalContainer: document.getElementById('mobile-nav-global-container')
-            };
-
-            // Early check if critical elements are found
-            if (!elements.themedArea) {
-                console.error("CRITICAL FAILURE: #themed-area HTML element not found. Script cannot proceed.");
-                return; // Stop if #themed-area is missing
-            }
-            if (!elements.themeSwitcher) console.warn("#theme-switcher not found."); // Non-critical for initial load, but needed for switching
-            // Other elements can also be checked here if desired.
+        if(adminLoginLinkConceptual) adminLoginLinkConceptual.addEventListener('click', toggleAdminLogin);
+        if(adminLoginLinkPlaceholder) adminLoginLinkPlaceholder.addEventListener('click', toggleAdminLogin);
 
 
+        // Theme Switcher (Optional for landing page, but keeping it for consistency if you want to test themes here)
+        const themes = [ /* ... your themes array ... */
+            { value: 'theme-modern-professional', name: 'Modern & Professional' },
+            { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
+            // ... add all 6 themes
+        ];
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const bodyElement = document.body; // Theme the body for this landing page
+
+        if (themeSwitcher && themes.length > 0) {
             themes.forEach(theme => {
-                if(elements.themeSwitcher) { // Check if themeSwitcher exists before appending
-                    const option = document.createElement('option');
-                    option.value = theme.value;
-                    option.textContent = theme.name;
-                    elements.themeSwitcher.appendChild(option);
-                }
+                const option = document.createElement('option'); option.value = theme.value; option.textContent = theme.name;
+                themeSwitcher.appendChild(option);
             });
             
-            if (elements.mobileNavGlobalContainer) {
-                 elements.mobileNavGlobalContainer.innerHTML = getMobileNavHTML();
+            function applyLandingTheme(themeValue) {
+                bodyElement.className = ''; // Clear previous theme
+                bodyElement.classList.add(themeValue);
+                // Also apply to the main wrapper if needed for variable scoping
+                const wrapper = document.getElementById('landing-page-wrapper');
+                if (wrapper) {
+                    wrapper.className = '';
+                    wrapper.classList.add(themeValue);
+                    // Force re-evaluation of CSS variables for the wrapper
+                    wrapper.style.backgroundColor = 'var(--background-color)';
+                    wrapper.style.color = 'var(--text-color)';
+                }
             }
 
-            if (themes.length > 0) {
-                // This call might be where elements.themedArea is still undefined if not found above
-                applyThemeAndContent(themes[0].value, elements, true); 
-            }
+            applyLandingTheme(themes[0].value); // Apply default theme
+            themeSwitcher.value = themes[0].value;
 
-            if(elements.themeSwitcher) { // Check before adding listener
-                elements.themeSwitcher.addEventListener('change', (event) => {
-                    applyThemeAndContent(event.target.value, elements, false); 
-                    setupActiveLinkSwitcher(); 
-                });
-            }
-            
-            setupActiveLinkSwitcher(); 
-        });
+            themeSwitcher.addEventListener('change', (event) => {
+                applyLandingTheme(event.target.value);
+            });
+        }
+        
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
     </script>
-    <script src="assets/js/main.js"></script> 
+    <!-- Your main.js can be included if it has general utilities, but login logic is above -->
+    <!-- <script type="module" src="assets/js/main-showcase.js"></script> -->
 </body>
 </html>
