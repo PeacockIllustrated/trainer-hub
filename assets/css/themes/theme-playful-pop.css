@@ -1,0 +1,92 @@
+/* --- Theme: Playful & Vibrant Pop --- */
+/* @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@400;600;700&display=swap'); */
+
+/* .theme-playful-pop { */
+  /* Core Palette */
+  --primary-brand-color: #FF6B6B;  /* Vibrant Coral */
+  --primary-brand-dark: #E05252;
+  --primary-brand-light: #FF8C8C;
+  --accent-color-main: #4ECDC4;    /* Bright Teal */
+  --accent-color-dark: #3AAFA6;
+  --accent-color-light: #71E0D9;
+  --tertiary-pop-color: #FFD166; /* Sunny Yellow */
+
+
+  --neutral-dark: #4A4A4A;   /* Dark friendly gray */
+  --neutral-medium: #888888;
+  --neutral-light: #DEDEDE;
+  --neutral-extralight: #F7F7F7;
+  --background-main: #FFFFFF; 
+  --surface-main: #FFFFFF;
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #FFFFFF; /* Or dark if teal is light enough */
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--accent-color-main); /* Teal secondary */
+  --secondary-color-dark: var(--accent-color-dark);
+  --secondary-color-light: var(--accent-color-light);
+  --text-color-on-secondary: var(--text-on-accent);
+
+  --accent-color: var(--tertiary-pop-color); /* Yellow as the main "accent" variable */
+  --accent-color-dark: color-mix(in srgb, var(--tertiary-pop-color) 85%, black);
+  --accent-color-light: color-mix(in srgb, var(--tertiary-pop-color) 85%, white);
+  --text-color-on-accent: var(--neutral-dark); /* Dark text on yellow */
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight);
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--primary-brand-color); /* Coral headings */
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main); /* Teal links */
+  --link-color-hover: var(--accent-color-dark);
+
+  --border-color: var(--neutral-light);
+  --border-color-light: color-mix(in srgb, var(--neutral-light) 60%, white);
+  --border-radius-sm: 8px;  /* Very rounded */
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-pill: 30px;
+  --border-width: 2px; /* Slightly thicker, playful borders */
+  --border-width-bold: 3px;
+
+  /* Typography - Rounded, friendly */
+  --font-family-primary: 'Nunito', var(--font-family-sans);
+  --font-family-headings: 'Baloo 2', cursive; /* Rounded, playful display font */
+  /* Alt heading: 'Fredoka One' for even more character */
+  --button-font-weight: 700; /* Nunito Bold or Baloo 2 Bold */
+
+  /* Shadows - Soft, cartoonish drop shadows */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-sm: 2px 2px 0px var(--border-color); /* Playful offset shadow */
+  --shadow-md: 3px 3px 0px var(--border-color);
+  /* Alt: --shadow-md: 0 4px 6px var(--shadow-color); for softer */
+
+
+  /* Alert Colors - Bright and clear */
+  --success-color: #7ED957; --text-alert: var(--neutral-dark);
+  --warning-color: var(--tertiary-pop-color); /* Use yellow for warning */
+  --error-color:   #FF5A5F; /* Slightly different from primary coral */
+  --info-color:    var(--accent-color-main); /* Use teal for info */
+
+  --success-color-light: color-mix(in srgb, var(--success-color) 25%, white);
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 25%, white);
+  --error-color-light:   color-mix(in srgb, var(--error-color) 25%, white);
+  --info-color-light:    color-mix(in srgb, var(--info-color) 25%, white);
+
+  --text-color-on-success: var(--text-alert);
+  --text-color-on-warning: var(--text-alert);
+  --text-color-on-error:   #FFFFFF; /* White text on reddish error */
+  --text-color-on-info:    var(--text-alert); /* Dark text on light teal info */
+
+  /* Optional: Subtle polka dots or playful shapes in background */
+/* } */

@@ -1,0 +1,89 @@
+/* --- Theme: Urban Grit & Steel --- */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Oswald:wght@400;600;700&family=Archivo+Black&display=swap'); */
+
+/* .theme-urban-grit { */
+  /* Core Palette */
+  --primary-brand-color: #E53935;  /* Strong, slightly desaturated Red (like warning signs) */
+  --primary-brand-dark: #B71C1C;
+  --primary-brand-light: #FF7043;
+  --accent-color-main: #FFB300;    /* Industrial Yellow/Amber */
+  --accent-color-dark: #E69500;
+  --accent-color-light: #FFD54F;
+
+  --neutral-dark: #212121;   /* Very Dark Gray / Almost Black */
+  --neutral-medium: #616161; /* Medium Gray */
+  --neutral-light: #BDBDBD;  /* Light Gray */
+  --neutral-extralight: #424242; /* Darker surface for some elements */
+  --background-main: #303030;  /* Dark Concrete Gray */
+  --surface-main: #4A4A4A;     /* Darker "Steel" Panel */
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #212121; /* Black text on yellow */
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium); /* Gray secondary buttons */
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: #757575;
+  --text-color-on-secondary: #FFFFFF;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight); /* Slightly different dark surface */
+
+  --text-color: #E0E0E0; /* Light gray text on dark backgrounds */
+  --text-color-muted: var(--neutral-light);
+  --text-color-on-surface: #E0E0E0;
+  --heading-color: var(--primary-brand-color); /* Red headings for impact */
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-light);
+
+  --border-color: var(--neutral-medium);
+  --border-color-light: #757575; /* Slightly lighter border on dark surfaces */
+  --border-radius-sm: 0px;  /* Sharp corners */
+  --border-radius-md: 2px;  /* Minimal rounding if any */
+  --border-radius-lg: 3px;
+  --border-width: 1px;
+  --border-width-bold: 2px;
+
+  /* Typography - Strong, blocky, or stencil-like */
+  --font-family-primary: 'Oswald', var(--font-family-sans); /* Condensed, strong */
+  --font-family-headings: 'Archivo Black', var(--font-family-sans); /* Very bold display */
+  /* Alt heading: 'Roboto Condensed' with uppercase and letter-spacing */
+  --button-font-weight: 600; /* Oswald SemiBold */
+
+  /* Shadows - Hard, minimal, or emulating metallic sheen */
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 1px 1px 3px var(--shadow-color);
+  --shadow-md: 2px 2px 5px var(--shadow-color);
+  /* Consider box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 1px rgba(0,0,0,0.3); for metallic feel */
+
+  /* Alert Colors - Stark contrast */
+  --success-color: #4CAF50; --text-alert: #FFFFFF;
+  --warning-color: var(--accent-color-main); /* Use accent yellow */
+  --error-color:   var(--primary-brand-color); /* Use primary red */
+  --info-color:    #757575; /* A neutral gray for info */
+
+  --success-color-light: color-mix(in srgb, var(--success-color) 20%, var(--surface-main));
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 20%, var(--surface-main));
+  --error-color-light:   color-mix(in srgb, var(--error-color) 20%, var(--surface-main));
+  --info-color-light:    color-mix(in srgb, var(--info-color) 30%, var(--surface-main));
+
+  --text-color-on-success: var(--text-alert);
+  --text-color-on-warning: var(--text-on-accent); /* Dark text on yellow warning */
+  --text-color-on-error:   var(--text-alert);
+  --text-color-on-info:    var(--text-alert);
+
+  /* Optional: Subtle concrete texture or brushed metal effect for background */
+  /* background-image: var(--background-main) url('path/to/concrete-texture.png'); */
+/* } */

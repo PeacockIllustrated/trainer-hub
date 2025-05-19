@@ -1,0 +1,88 @@
+/* --- Theme: Tech & Data Driven --- */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700&display=swap'); */
+
+/* .theme-tech-data { */
+  /* Core Palette */
+  --primary-brand-color: #00D1FF;  /* Electric Cyan */
+  --primary-brand-dark: #00A3CC;
+  --primary-brand-light: #66E3FF;
+  --accent-color-main: #39FF14;    /* Neon/Hacker Green */
+  --accent-color-dark: #29CC0F;
+  --accent-color-light: #8CFF73;
+
+  --neutral-dark: #0A0F14;   /* Very Dark Blue/Black */
+  --neutral-medium: #1E2A3A; /* Dark Blue-Gray */
+  --neutral-light: #4A5C75;  /* Medium Blue-Gray */
+  --neutral-extralight: #8B9FB9; /* Light Blue-Gray */
+  --background-main: var(--neutral-dark);
+  --surface-main: #121A23;     /* Slightly lighter than background */
+
+  --text-on-primary-brand: var(--neutral-dark); /* Dark text on bright cyan */
+  --text-on-accent: var(--neutral-dark); /* Dark text on bright green */
+
+  /* Base Variable Overrides */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-light); /* Blue-gray secondary buttons */
+  --secondary-color-dark: var(--neutral-medium);
+  --secondary-color-light: var(--neutral-extralight);
+  --text-color-on-secondary: #FFFFFF;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: color-mix(in srgb, var(--surface-main) 80%, var(--background-main));
+
+  --text-color: #D0E0F0; /* Light blueish-white text */
+  --text-color-muted: var(--neutral-extralight);
+  --text-color-on-surface: #D0E0F0;
+  --heading-color: var(--primary-brand-color); /* Cyan headings */
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-light);
+
+  --border-color: var(--neutral-medium);
+  --border-color-light: var(--neutral-light);
+  --border-radius-sm: 2px;  /* Sharp, angular */
+  --border-radius-md: 3px;
+  --border-radius-lg: 4px;
+  --border-width: 1px;
+  --border-width-bold: 1px; /* Thin, precise lines */
+
+  /* Typography - Monospaced for data, geometric for headings */
+  --font-family-primary: 'Roboto Mono', var(--font-family-mono);
+  --font-family-headings: 'Orbitron', var(--font-family-sans); /* Techy display font */
+  /* Alt: 'Rajdhani' for a slightly softer tech feel */
+  --button-font-weight: 500; /* Roboto Mono Medium or Rajdhani SemiBold */
+
+  /* Shadows - Subtle glows or very minimal dark shadows */
+  --shadow-color: rgba(0, 209, 255, 0.15); /* Cyan glow */
+  --shadow-sm: 0 0 5px var(--shadow-color);
+  --shadow-md: 0 0 10px var(--shadow-color), 0 0 15px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+  /* Dark shadow alternative: --shadow-color: rgba(0,0,0,0.5); */
+
+  /* Alert Colors - Clear and distinct on dark background */
+  --success-color: #00E676; --text-alert: var(--neutral-dark); /* Dark text on bright light bg for alerts */
+  --warning-color: #FFD600;
+  --error-color:   #FF3D00;
+  --info-color:    var(--primary-brand-color); /* Cyan for info alerts */
+
+  --success-color-light: color-mix(in srgb, var(--success-color) 85%, white); /* Lighter for alert BG */
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 85%, white);
+  --error-color-light:   color-mix(in srgb, var(--error-color) 85%, white);
+  --info-color-light:    color-mix(in srgb, var(--info-color) 85%, white);
+
+  --text-color-on-success: var(--text-alert);
+  --text-color-on-warning: var(--text-alert);
+  --text-color-on-error:   var(--text-alert);
+  --text-color-on-info:    var(--text-alert);
+
+  /* Optional: Background with subtle grid lines or circuit pattern */
+/* } */
