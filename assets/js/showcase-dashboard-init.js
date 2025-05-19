@@ -6,9 +6,17 @@ import { initializeImageSliders } from './components/image-slider.js';
 import { initializeFileUploads } from './components/file-upload.js';
 
 const themesForDashboard = [ /* ... your themes array, can be shared from a config.js ... */
-    { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
+    { value: 'theme-modern-professional', name: 'Modern & Professional' },
+    { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
+    { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' },
+    { value: 'theme-retro-funk', name: 'Retro Funk' }, 
+    
+    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
+    { value: 'theme-urban-grit', name: 'Urban Grit' },
+    { value: 'theme-playful-pop', name: 'Playful Pop' },
+    { value: 'theme-tech-data', name: 'Tech Data' }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
