@@ -5,6 +5,7 @@ import { initializeStepper } from './components/stepper.js';
 const themesForChunk1 = [ /* ... your themes array ... */
     { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
     { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
     { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
 ];
 
