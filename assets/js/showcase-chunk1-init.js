@@ -3,10 +3,16 @@ import { initializeModals, openModal, closeModal } from './components/modal.js';
 import { initializeStepper } from './components/stepper.js';
 
 const themesForChunk1 = [ /* ... your themes array ... */
-    { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+    { value: 'theme-modern-professional', name: 'Modern & Professional' },
+    { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
+    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
+    { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+    { value: 'theme-urban-grit', name: 'Urban Grit' },
+    { value: 'theme-playful-pop', name: 'Playful Pop' },
+    { value: 'theme-tech-data', name: 'Tech Data' },
     { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
-    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
+    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' },
+    { value: 'theme-retro-funk', name: 'Retro Funk' }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
