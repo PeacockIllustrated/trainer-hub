@@ -1,0 +1,233 @@
+/* --- Theme: Feminine Elegance --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&display=swap');
+
+.theme-feminine-elegance {
+  /* Core Palette - Soft, Warm, and Inviting */
+  --primary-brand-color: #D8A0A0;  /* Dusty Rose */
+  --primary-brand-dark: #B37B7B;   /* Darker Dusty Rose */
+  --primary-brand-light: #E8C0C0;  /* Lighter Dusty Rose */
+  --accent-color-main: #B08D57;    /* Muted Gold/Antique Brass for elegant highlights */
+  --accent-color-dark: #8C6F46;    /* Darker Muted Gold */
+  --accent-color-light: #D4AE80;   /* Lighter Muted Gold */
+
+  --neutral-dark: #5D5050;   /* Warm Dark Gray/Brown for text */
+  --neutral-medium: #8D7F7F; /* Medium Warm Gray for secondary text */
+  --neutral-light: #D3C9C9;  /* Light Warm Gray for borders */
+  --neutral-extralight: #F5F0F0; /* Very Light Warm Gray/Cream for backgrounds */
+  --background-main: #FCF8F7; /* Soft Cream/Off-White */
+  --surface-main: #FFFFFF;     /* Pure white for cards, modals to maintain crispness */
+
+  --text-on-primary-brand: #FFFFFF;
+  --text-on-accent: #FFFFFF;
+
+
+  /* Overriding Base Variables from _variables.css */
+  --primary-color: var(--primary-brand-color);
+  --primary-color-dark: var(--primary-brand-dark);
+  --primary-color-light: var(--primary-brand-light);
+  --text-color-on-primary: var(--text-on-primary-brand);
+
+  --secondary-color: var(--neutral-medium); /* Using a warm neutral as secondary */
+  --secondary-color-dark: var(--neutral-dark);
+  --secondary-color-light: var(--neutral-light);
+  --text-color-on-secondary: #FFFFFF;
+
+  --accent-color: var(--accent-color-main);
+  --accent-color-dark: var(--accent-color-dark);
+  --accent-color-light: var(--accent-color-light);
+  --text-color-on-accent: var(--text-on-accent);
+
+  --background-color: var(--background-main);
+  --surface-color: var(--surface-main);
+  --surface-color-alt: var(--neutral-extralight);
+
+  --text-color: var(--neutral-dark);
+  --text-color-muted: var(--neutral-medium);
+  --text-color-on-surface: var(--neutral-dark);
+  --heading-color: var(--primary-brand-color); /* Headings take the soft brand color */
+  --heading-color-on-surface: var(--primary-brand-color);
+  --link-color: var(--accent-color-main);
+  --link-color-hover: var(--accent-color-dark);
+
+  --border-color: var(--neutral-light);
+  --border-color-light: color-mix(in srgb, var(--neutral-light) 50%, var(--background-main));
+  --border-radius-sm: 5px;  /* Slightly softer rounding */
+  --border-radius-md: 8px;
+  --border-radius-lg: 10px;
+  --border-width: 1px;
+  --border-width-bold: 2px;
+
+  /* Typography - Retaining elegant fonts */
+  --font-family-primary: 'Open Sans', var(--font-family-sans);
+  --font-family-headings: 'Poppins', var(--font-family-sans);
+  --button-font-weight: 500; /* Poppins Medium for buttons */
+
+  /* Shadows - Soft and subtle */
+  --shadow-color: rgba(93, 80, 80, 0.08); /* Based on neutral-dark, very subtle */
+  --shadow-xs: 0 1px 2px 0 var(--shadow-color);
+  --shadow-sm: 0 2px 4px -1px var(--shadow-color), 0 1px 2px -1px var(--shadow-color);
+  --shadow-md: 0 3px 6px -2px var(--shadow-color), 0 2px 4px -2px var(--shadow-color); /* Softer shadow */
+  --shadow-lg: 0 8px 12px -3px var(--shadow-color), 0 3px 5px -4px var(--shadow-color);
+
+
+  /* Alert Colors using palette - ensuring they are soft but clear */
+  --success-color: #77BFA3; /* Soft Mint Green */
+  --success-color-light: color-mix(in srgb, var(--success-color) 15%, white);
+  --success-color-dark: color-mix(in srgb, var(--success-color) 80%, black);
+  --text-color-on-success: #FFFFFF;
+
+  --warning-color: #E6B36A; /* Muted Apricot */
+  --warning-color-light: color-mix(in srgb, var(--warning-color) 15%, white);
+  --warning-color-dark: color-mix(in srgb, var(--warning-color) 80%, black);
+  --text-color-on-warning: var(--neutral-dark); /* Dark text for light warning */
+
+  --error-color: #D98383;   /* Soft Coral Red */
+  --error-color-light: color-mix(in srgb, var(--error-color) 15%, white);
+  --error-color-dark: color-mix(in srgb, var(--error-color) 80%, black);
+  --text-color-on-error: #FFFFFF;
+
+  --info-color: var(--primary-brand-light); /* Light version of primary brand */
+  --info-color-light: color-mix(in srgb, var(--info-color) 25%, white); /* Even lighter */
+  --info-color-dark: var(--primary-brand-color);
+  --text-color-on-info: var(--neutral-dark);
+
+  /* Optional: Subtle gradient or texture */
+  background: var(--background-color); /* Plain background can be more elegant */
+  /* Or: background: var(--background-color) linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.02) 100%); */
+}
+
+/* --- Feminine Elegance Specific Component Styling Adjustments --- */
+
+.theme-feminine-elegance .pt-card {
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg);
+}
+
+.theme-feminine-elegance .pt-card-title {
+  letter-spacing: 0.1px;
+  font-weight: 600; /* Poppins SemiBold for titles */
+  color: var(--heading-color);
+}
+
+.theme-feminine-elegance .pt-button {
+  font-family: 'Poppins', var(--font-family-sans);
+  letter-spacing: 0.4px;
+  font-weight: var(--button-font-weight);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border-radius: var(--border-radius-md); /* Softer button corners */
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.theme-feminine-elegance .pt-button:hover {
+    transform: translateY(-1px); /* Subtle hover effect */
+    box-shadow: var(--shadow-sm);
+}
+.theme-feminine-elegance .pt-button:active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+
+.theme-feminine-elegance .pt-button--primary {
+  background-color: var(--primary-brand-color);
+  color: var(--text-on-primary-brand);
+  border: 1px solid var(--primary-brand-color);
+}
+.theme-feminine-elegance .pt-button--primary:hover {
+  background-color: var(--primary-brand-dark);
+  border-color: var(--primary-brand-dark);
+}
+
+.theme-feminine-elegance .pt-button--secondary {
+  background-color: var(--surface-main);
+  color: var(--primary-brand-color);
+  border: 1px solid var(--primary-brand-light);
+}
+.theme-feminine-elegance .pt-button--secondary:hover {
+  background-color: var(--neutral-extralight);
+  border-color: var(--primary-brand-color);
+  color: var(--primary-brand-dark);
+}
+
+.theme-feminine-elegance .pt-button--accent {
+  background-color: var(--accent-color-main);
+  color: var(--text-on-accent);
+  border: 1px solid var(--accent-color-main);
+}
+.theme-feminine-elegance .pt-button--accent:hover {
+  background-color: var(--accent-color-dark);
+  border-color: var(--accent-color-dark);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color-main) 30%, transparent);
+}
+
+.theme-feminine-elegance .pt-input {
+  background-color: var(--surface-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.theme-feminine-elegance .pt-input:focus {
+  border-color: var(--primary-brand-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-brand-color) 20%, transparent);
+}
+.theme-feminine-elegance .pt-input-group label {
+    font-weight: 600; /* Open Sans SemiBold for labels */
+    color: var(--neutral-medium);
+    font-size: 0.95em; /* Slightly smaller for a delicate feel */
+}
+
+.theme-feminine-elegance .pt-alert {
+    border-left-width: 3px;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.theme-feminine-elegance .pt-alert--success strong,
+.theme-feminine-elegance .pt-alert--warning strong,
+.theme-feminine-elegance .pt-alert--error strong,
+.theme-feminine-elegance .pt-alert--info strong {
+    color: inherit; /* Let the parent alert define the strong color based on its specific text color */
+    font-family: 'Poppins', var(--font-family-sans);
+    font-weight: 600;
+}
+
+.theme-feminine-elegance .pt-alert--success { background-color: var(--success-color-light); color: color-mix(in srgb, var(--success-color-dark) 90%, black ); border-left-color: var(--success-color); }
+.theme-feminine-elegance .pt-alert--warning { background-color: var(--warning-color-light); color: var(--warning-color-dark); border-left-color: var(--warning-color); }
+.theme-feminine-elegance .pt-alert--error   { background-color: var(--error-color-light); color: var(--error-color-dark); border-left-color: var(--error-color); }
+.theme-feminine-elegance .pt-alert--info    { background-color: var(--info-color-light); color: var(--info-color-dark); border-left-color: var(--info-color); }
+
+/* Stepper adjustments for this theme if needed */
+.theme-feminine-elegance .pt-stepper__indicator {
+    background-color: var(--surface-main);
+    border: 2px solid var(--neutral-light);
+    color: var(--neutral-medium);
+}
+.theme-feminine-elegance .pt-stepper__step.is-active .pt-stepper__indicator {
+    background-color: var(--primary-brand-color);
+    border-color: var(--primary-brand-color);
+    color: var(--text-on-primary-brand);
+}
+.theme-feminine-elegance .pt-stepper__step.is-complete .pt-stepper__indicator {
+    background-color: var(--accent-color-light);
+    border-color: var(--accent-color-main);
+    color: var(--text-on-accent);
+}
+.theme-feminine-elegance .pt-stepper__line {
+    background-color: var(--neutral-light);
+}
+.theme-feminine-elegance .pt-stepper__step.is-active ~ .pt-stepper__step .pt-stepper__line,
+.theme-feminine-elegance .pt-stepper__step.is-complete ~ .pt-stepper__step .pt-stepper__line {
+    /* Keep future lines neutral */
+}
+.theme-feminine-elegance .pt-stepper__step.is-complete .pt-stepper__line--progress {
+    background-color: var(--accent-color-main);
+}
+
+
+/* Profile Header */
+.theme-feminine-elegance .pt-profile-header__avatar {
+    background-color: var(--primary-brand-light);
+    color: var(--primary-brand-dark);
+    font-weight: 600; /* Make initials stand out a bit more */
+}
