@@ -772,6 +772,19 @@ table.pt-table {
     background-color: var(--success-color); /* Or primary-color if preferred */
 }
 
+/* In _components.css */
+/* ... other button styles ... */
+
+.pt-button--destructive {
+  background-color: var(--error-color, #dc3545); /* Use error color from theme or a default red */
+  color: var(--text-color-on-error, #fff); /* Text color for error button */
+  border-color: var(--error-color, #dc3545);
+}
+.pt-button--destructive:hover {
+  background-color: var(--error-color-dark, #c82333);
+  border-color: var(--error-color-dark, #bd2130);
+  opacity: 1;
+}
 
 .pt-form-step { display: none; }
 .pt-form-step.is-active { display: block; animation: ptFadeIn 0.5s ease-out; }
