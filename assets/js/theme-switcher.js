@@ -2,10 +2,10 @@
 
 /**
  * Initializes the theme switcher dropdown and handles theme changes.
- * @param {Array} themesArray - Array of theme objects {value, name, sidebarLogo?, sidebarUser?}
- * @param {HTMLElement} themeSwitcherSelectElement - The select element for theme switching.
+ * @param {Array} themesArray - Array of theme objects {value, name, ... any other data needed by callback}
+ * @param {HTMLElement} themeSwitcherSelectElement - The <select> element for theme switching.
  * @param {HTMLElement} areaToThemeElement - The main DOM element to apply the theme class to.
- * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied.
+ * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied, receives (themeValue, currentThemeObject).
  */
 export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement, areaToThemeElement, onThemeChangeCallback) {
     if (!themesArray || !themeSwitcherSelectElement || !areaToThemeElement) {
@@ -30,35 +30,20 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         }
 
         // Apply theme to the main designated area
-        areaToThemeElement.className = ''; // Clear all existing classes from the target area
-        areaToThemeElement.classList.add(themeValue); // Add the new theme class
+        // Clear only known theme classes to preserve other structural classes if any
+        themesArray.forEach(t => areaToThemeElement.classList.remove(t.value));
+        areaToThemeElement.classList.add(themeValue); 
 
         // Force re-evaluation of CSS variables from the new theme class for the main area
+        // This ensures the direct children and the element itself get the root variables applied.
         areaToThemeElement.style.backgroundColor = 'var(--background-color)';
         areaToThemeElement.style.color = 'var(--text-color)';
-
-        // --- Logic for elements that might be unique to index.html or specific pages ---
-        // These should ideally be handled by the onThemeChangeCallback if they vary per page.
         
-        // Example: Theme the global mobile nav if it exists
-        const mobileNavGlobalContainer = document.getElementById('mobile-nav-global-container');
-        if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-            mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset base class
-            mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Apply current theme
-        }
+        const currentThemeObject = themesArray.find(t => t.value === themeValue);
 
-        // Example: Update sidebar content if it exists and getSidebarHTML is available
-        const sidebarContainer = document.getElementById('sidebar-container');
-        const currentThemeObj = themesArray.find(t => t.value === themeValue);
-        if (currentThemeObj && sidebarContainer && typeof window.getSidebarHTML === 'function') {
-            sidebarContainer.innerHTML = window.getSidebarHTML(currentThemeObj.sidebarLogo, currentThemeObj.sidebarUser);
-        }
-        // --- End of page-specific logic example ---
-
-
-        // Call the optional callback if provided, passing the new theme value
+        // Call the optional callback if provided, passing the new theme value and object
         if (onThemeChangeCallback && typeof onThemeChangeCallback === 'function') {
-            onThemeChangeCallback(themeValue);
+            onThemeChangeCallback(themeValue, currentThemeObject);
         }
     }
 
@@ -73,7 +58,5 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         applyTheme(event.target.value);
     });
 
-    // Optionally return the applyTheme function if it needs to be called externally
-    // (e.g., if another part of the JS needs to programmatically change the theme)
-    return applyTheme;
+    return applyTheme; // Optionally return the applyTheme function
 }
