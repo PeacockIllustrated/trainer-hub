@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow PT Admin MVP</title>
+    <!-- Google Fonts (ensure all used fonts are linked) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Add fonts used by your chosen default theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Apply ONE theme directly for the MVP -->
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css"> 
+    <!-- Add other theme files if you want to easily switch during development, but only one class will be applied to body -->
+
+    <style>
+        /* MVP Specific Styles (can be minimal if relying on theme) */
+        body {
+            /* Theme class will be applied here to set --background-color, etc. */
+            margin: 0;
+            display: flex; /* For sidebar layout */
+            font-family: var(--font-family-primary);
+        }
+
+        .mvp-app-container { /* Replaces #themed-area for this MVP page */
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        /* Sidebar is part of the main layout, not dynamically injected here */
+        /* .pt-sidebar styles from _components.css will apply */
+
+        .mvp-main-content {
+            flex-grow: 1;
+            padding: var(--spacing-lg);
+            overflow-y: auto; /* Allow content to scroll */
+        }
+
+        .mvp-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .mvp-page-header h1 {
+            font-family: var(--font-family-headings);
+            color: var(--heading-color);
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .view-section {
+            display: none; /* Hidden by default, JS will show active view */
+            animation: ptFadeIn 0.3s ease-out;
+        }
+        .view-section.is-active {
+            display: block;
+        }
+        
+        /* Utility for slightly smaller text in some areas */
+        .text-small { font-size: 0.9em; }
+        .text-muted { color: var(--text-color-muted); }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            body, .mvp-app-container {
+                flex-direction: column;
+            }
+            .pt-sidebar {
+                width: 100%;
+                height: auto; /* Auto height for sidebar on mobile if it becomes a top bar */
+                position: static; /* Or sticky top if it's a header bar */
+                border-right: none;
+                border-bottom: var(--border-width) solid var(--border-color);
+                /* Further styling needed if sidebar becomes a mobile top-bar */
+            }
+            .pt-mobile-nav-banner { /* Ensure this is styled if used */
+                /* Styles from _components.css */
+            }
+            .mvp-main-content {
+                padding: var(--spacing-md);
+            }
+            .mvp-page-header h1 {
+                font-size: 1.6em;
+            }
+            .pt-client-list-item { /* Stack client list item content on mobile */
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .pt-client-list-item__actions {
+                margin-top: var(--spacing-sm);
+                width: 100%;
+            }
+            .pt-client-list-item__actions .pt-button {
+                width: 100%;
+                margin-bottom: var(--spacing-xs);
+            }
+             .pt-client-list-item__actions .pt-button:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+    </style>
+</head>
+<body class="theme-modern-professional"> <!-- Apply the chosen theme to the body -->
+
+    <div class="mvp-app-container">
+        <!-- Sidebar (Static for this MVP structure) -->
+        <aside class="pt-sidebar">
+            <div class="pt-sidebar__header">
+                <h1 class="pt-sidebar__logo">FitFlow MVP</h1>
+            </div>
+            <nav class="pt-sidebar__nav">
+                <ul class="pt-sidebar__nav-list">
+                    <li class="pt-sidebar__nav-item">
+                        <a href="#dashboard" class="pt-sidebar__nav-link is-active" data-view="dashboardView">
+                            <span class="pt-sidebar__nav-icon">D</span>
+                            <span class="pt-sidebar__nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="pt-sidebar__nav-item">
+                        <a href="#clients" class="pt-sidebar__nav-link" data-view="clientsView">
+                            <span class="pt-sidebar__nav-icon">C</span>
+                            <span class="pt-sidebar__nav-text">Clients</span>
+                        </a>
+                    </li>
+                    <li class="pt-sidebar__nav-item">
+                        <a href="#workouts" class="pt-sidebar__nav-link" data-view="workoutsView">
+                            <span class="pt-sidebar__nav-icon">W</span>
+                            <span class="pt-sidebar__nav-text">Workouts</span>
+                        </a>
+                    </li>
+                    <!-- <li class="pt-sidebar__nav-item">
+                        <a href="#settings" class="pt-sidebar__nav-link" data-view="settingsView">
+                            <span class="pt-sidebar__nav-icon">⚙</span>
+                            <span class="pt-sidebar__nav-text">Settings</span>
+                        </a>
+                    </li> -->
+                </ul>
+            </nav>
+            <div class="pt-sidebar__footer">
+                <a href="#profile" class="pt-sidebar__user-profile">
+                    <span class="pt-sidebar__user-avatar">PT</span>
+                    <span class="pt-sidebar__user-name">Trainer MVP</span>
+                </a>
+                <!-- Conceptual Logout -->
+                <!-- <a href="#" class="pt-sidebar__logout-link" id="logoutButton">
+                    <span class="pt-sidebar__nav-icon">→</span>
+                    <span class="pt-sidebar__nav-text">Logout</span>
+                </a> -->
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="mvp-main-content">
+            
+            <!-- Dashboard View (Placeholder) -->
+            <section id="dashboardView" class="view-section is-active">
+                <div class="mvp-page-header">
+                    <h1>Dashboard</h1>
+                </div>
+                <p>Welcome to your FitFlow MVP Dashboard! (Content coming soon)</p>
+                <div class="component-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="pt-card">
+                        <h3 class="pt-card-title">Total Clients</h3>
+                        <p class="pt-card-content" style="font-size: 2em; font-weight: bold;" id="totalClientsStat">0</p>
+                    </div>
+                    <div class="pt-card">
+                        <h3 class="pt-card-title">Active Workouts</h3>
+                        <p class="pt-card-content" style="font-size: 2em; font-weight: bold;" id="activeWorkoutsStat">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clients View -->
+            <section id="clientsView" class="view-section">
+                <div class="mvp-page-header">
+                    <h1>Clients</h1>
+                    <button class="pt-button pt-button--primary" id="openAddClientModalBtn">Add New Client</button>
+                </div>
+                <div id="clientListContainer">
+                    <!-- Client list items will be injected here by JS -->
+                    <p class="text-muted" id="noClientsMessage">No clients yet. Click "Add New Client" to get started!</p>
+                </div>
+            </section>
+
+            <!-- Workouts View (Placeholder) -->
+            <section id="workoutsView" class="view-section">
+                <div class="mvp-page-header">
+                    <h1>Workouts</h1>
+                    <!-- <button class="pt-button pt-button--primary">Create Template</button> -->
+                </div>
+                <p>Workout management coming soon!</p>
+            </section>
+
+        </main>
+
+        <!-- Modals Container -->
+        <div id="modalsContainer">
+            <!-- Add New Client Modal -->
+            <div class="pt-modal" id="addEditClientModal">
+                <div class="pt-modal__content">
+                    <div class="pt-modal__header">
+                        <h3 class="pt-modal__title" id="clientModalTitle">Add New Client</h3>
+                        <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
+                    </div>
+                    <form id="clientForm">
+                        <input type="hidden" id="clientId"> <!-- For editing -->
+                        <div class="pt-modal__body">
+                            <div class="pt-input-group">
+                                <label for="clientName">Full Name:</label>
+                                <input type="text" id="clientName" class="pt-input" required>
+                            </div>
+                            <div class="pt-input-group">
+                                <label for="clientEmail">Email:</label>
+                                <input type="email" id="clientEmail" class="pt-input" required>
+                            </div>
+                            <div class="pt-input-group">
+                                <label for="clientPhone">Phone:</label>
+                                <input type="tel" id="clientPhone" class="pt-input">
+                            </div>
+                            <div class="pt-input-group">
+                                <label for="clientDob">Date of Birth:</label>
+                                <input type="date" id="clientDob" class="pt-input">
+                            </div>
+                            <div class="pt-input-group">
+                                <label for="clientGoal">Primary Goal:</label>
+                                <input type="text" id="clientGoal" class="pt-input" placeholder="e.g., Weight Loss, Muscle Gain">
+                            </div>
+                            <div class="pt-input-group">
+                                <label for="clientMedicalNotes">Medical Notes:</label>
+                                <textarea id="clientMedicalNotes" class="pt-input" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="pt-modal__footer">
+                            <button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button>
+                            <button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Client</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Confirmation Modal (Generic) -->
+            <div class="pt-modal" id="confirmModal">
+                <div class="pt-modal__content">
+                    <div class="pt-modal__header">
+                        <h3 class="pt-modal__title" id="confirmModalTitle">Confirm Action</h3>
+                        <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
+                    </div>
+                    <div class="pt-modal__body">
+                        <p id="confirmModalMessage">Are you sure you want to proceed with this action?</p>
+                    </div>
+                    <div class="pt-modal__footer">
+                        <button type="button" class="pt-button pt-button--secondary pt-modal__close" id="confirmModalCancelBtn">Cancel</button>
+                        <button type="button" class="pt-button pt-button--destructive" id="confirmModalConfirmBtn" style="margin-left:var(--spacing-sm);">Confirm</button>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- /#modalsContainer -->
+
+        <!-- Mobile Navigation (Placeholder - if needed differently from sidebar logic) -->
+        <!-- <div class="pt-mobile-nav-banner"> ... </div> -->
+
+    </div> <!-- /.mvp-app-container -->
+
+    <script type="module" src="assets/js/mvp-app.js"></script>
+</body>
+</html>
