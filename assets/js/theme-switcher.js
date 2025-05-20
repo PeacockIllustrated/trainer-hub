@@ -2,17 +2,15 @@
 
 /**
  * Initializes the theme switcher dropdown and handles theme changes.
- * @param {Array} themesArray - Array of theme objects {value, name, ...}
+ * @param {Array} themesArray - Array of theme objects {value, name, sidebarLogo?, sidebarUser?}
  * @param {HTMLElement} themeSwitcherSelectElement - The select element for theme switching.
- * @param {HTMLElement} areaToThemeElement - The main area to apply the theme class to.
- * @param {Function} [onThemeChangeCallback] - Optional callback after theme is applied.
+ * @param {HTMLElement} areaToThemeElement - The main DOM element to apply the theme class to.
+ * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied.
  */
 export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement, areaToThemeElement, onThemeChangeCallback) {
     if (!themesArray || !themeSwitcherSelectElement || !areaToThemeElement) {
         console.error("Theme switcher initialization failed: Missing required elements or themes array.");
-        console.log("themesArray:", themesArray);
-        console.log("themeSwitcherSelectElement:", themeSwitcherSelectElement);
-        console.log("areaToThemeElement:", areaToThemeElement);
+        console.log("Debug Info:", { themesArray, themeSwitcherSelectElement, areaToThemeElement });
         return;
     }
 
@@ -26,38 +24,39 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
 
     // Inner function to apply the actual theme
     function applyTheme(themeValue) {
-        // Use the passed parameter 'areaToThemeElement' NOT a new 'themedArea'
         if (!areaToThemeElement) {
-            console.error("applyTheme error: areaToThemeElement is undefined or null.");
+            console.error("applyTheme error: areaToThemeElement is undefined or null within applyTheme.");
             return;
         }
 
-        areaToThemeElement.className = ''; // Clear all classes from the target area
+        // Apply theme to the main designated area
+        areaToThemeElement.className = ''; // Clear all existing classes from the target area
         areaToThemeElement.classList.add(themeValue); // Add the new theme class
 
-        // Force re-evaluation of CSS variables from the new theme class
+        // Force re-evaluation of CSS variables from the new theme class for the main area
         areaToThemeElement.style.backgroundColor = 'var(--background-color)';
         areaToThemeElement.style.color = 'var(--text-color)';
 
-        // --- Specific logic for index.html's sidebar and mobile nav ---
-        // This part makes theme-switcher.js less generic.
-        // Consider moving this to the onThemeChangeCallback if possible.
+        // --- Logic for elements that might be unique to index.html or specific pages ---
+        // These should ideally be handled by the onThemeChangeCallback if they vary per page.
+        
+        // Example: Theme the global mobile nav if it exists
         const mobileNavGlobalContainer = document.getElementById('mobile-nav-global-container');
         if (mobileNavGlobalContainer && mobileNavGlobalContainer.firstChild) {
-            mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset
-            mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Apply theme
+            mobileNavGlobalContainer.firstChild.className = 'pt-mobile-nav-banner'; // Reset base class
+            mobileNavGlobalContainer.firstChild.classList.add(themeValue); // Apply current theme
         }
 
+        // Example: Update sidebar content if it exists and getSidebarHTML is available
         const sidebarContainer = document.getElementById('sidebar-container');
-        // Find the current theme object to get sidebarLogo and sidebarUser
-        const currentThemeObj = themesArray.find(t => t.value === themeValue); 
+        const currentThemeObj = themesArray.find(t => t.value === themeValue);
         if (currentThemeObj && sidebarContainer && typeof window.getSidebarHTML === 'function') {
             sidebarContainer.innerHTML = window.getSidebarHTML(currentThemeObj.sidebarLogo, currentThemeObj.sidebarUser);
         }
-        // --- End of index.html specific logic ---
+        // --- End of page-specific logic example ---
 
 
-        // Call the optional callback if provided
+        // Call the optional callback if provided, passing the new theme value
         if (onThemeChangeCallback && typeof onThemeChangeCallback === 'function') {
             onThemeChangeCallback(themeValue);
         }
@@ -74,5 +73,7 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         applyTheme(event.target.value);
     });
 
-    return applyTheme; // Optionally return the applyTheme function
+    // Optionally return the applyTheme function if it needs to be called externally
+    // (e.g., if another part of the JS needs to programmatically change the theme)
+    return applyTheme;
 }
