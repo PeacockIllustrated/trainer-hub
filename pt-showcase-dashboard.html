@@ -4,32 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PT Component Showcase - Dashboard & Client Tools</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts (ensure all used fonts are linked) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../assets/css/main.css"> <!-- Assuming this file is in component-snippets -->
-    <link rel="stylesheet" href="../assets/css/themes/theme-modern-professional.css">
-    <link rel="stylesheet" href="../assets/css/themes/theme-friendly-supportive.css">
-    <link rel="stylesheet" href="../assets/css/themes/theme-energetic-motivating.css">
-    <link rel="stylesheet" href="../assets/css/themes/theme-natural-grounded.css">
-    <link rel="stylesheet" href="../assets/css/themes/theme-luxe-minimalist.css">
-    <link rel="stylesheet" href="../assets/css/themes/theme-retro-funk.css">
+    <!-- CSS Paths assume this HTML file is in the project root -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-feminine-elegance.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-urban-grit.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-tech-data.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-playful-pop.css">
+
 
     <style>
+        /* Styles from previous full version of pt-showcase-dashboard.html remain the same */
         body { margin: 0; color: #333; }
-        .page-header { 
-            padding: var(--spacing-md, 16px) var(--spacing-lg, 24px); 
-            background-color: #f0f0f0; 
-            border-bottom: 1px solid #ddd; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1010; 
-        }
+        .page-header { padding: 16px 24px; background-color: #f0f0f0; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1010; }
         h1.page-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5em; color: #333; margin: 0; }
         .theme-selector-container label { margin-right: 8px; font-size: 0.9em; color: #555; }
         #theme-switcher { padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; background-color: #fff; }
@@ -39,7 +36,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             background-color: var(--background-color); 
             color: var(--text-color);
-            padding: var(--spacing-xl, 40px); /* Default padding */
+            padding: var(--spacing-xl, 40px);
         }
         .showcase-section {
             margin-bottom: var(--spacing-xxl, 48px);
@@ -126,31 +123,15 @@
         .pt-image-slider__dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: var(--neutral-light); margin: 0 var(--spacing-xs); cursor: pointer; border:0; padding:0; }
         .pt-image-slider__dot.is-active { background-color: var(--primary-color); }
         
-        /* MOBILE PADDING AND RESPONSIVE ADJUSTMENTS */
         @media (max-width: 768px) { 
-            #themed-showcase-area {
-                padding: var(--spacing-md, 16px); /* Reduced main padding */
-            }
-            .page-header { 
-                padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
-            }
-            h1.page-title { 
-                font-size: 1.3em;
-            }
-            .component-grid {
-                gap: var(--spacing-md, 16px);
-            }
-            .showcase-section {
-                padding: var(--spacing-md, 16px);
-                margin-bottom: var(--spacing-lg, 24px); 
-            }
-            .showcase-section__title {
-                font-size: 1.5em;
-                margin-bottom: var(--spacing-md, 16px);
-            }
+            #themed-showcase-area { padding: var(--spacing-md, 16px); }
+            .page-header { padding: var(--spacing-sm, 8px) var(--spacing-md, 16px); }
+            h1.page-title { font-size: 1.3em; }
+            .component-grid { gap: var(--spacing-md, 16px); }
+            .showcase-section { padding: var(--spacing-md, 16px); margin-bottom: var(--spacing-lg, 24px);  }
+            .showcase-section__title { font-size: 1.5em; margin-bottom: var(--spacing-md, 16px); }
         }
-
-        @media (max-width: 600px) { /* Specific profile header stacking */
+        @media (max-width: 600px) { 
             .pt-profile-header { flex-direction: column; align-items: center; text-align: center; }
             .pt-profile-header__avatar { margin-bottom: var(--spacing-md); margin-right: 0; }
             .pt-profile-header__info { margin-right: 0; }
@@ -160,7 +141,6 @@
     </style>
 </head>
 <body>
-    <!-- BODY content remains the same -->
     <header class="page-header">
         <h1 class="page-title">PT Component Library</h1>
         <div class="theme-selector-container">
@@ -170,6 +150,8 @@
     </header>
 
     <div id="themed-showcase-area"> 
+        <!-- HTML Content Sections (Client Profile, Tracking, Workout, etc.) -->
+        <!-- These sections are exactly the same as the previous full pt-showcase-dashboard.html -->
         <section class="showcase-section">
             <h2 class="showcase-section__title">Client Profile & Info</h2>
             <div class="pt-profile-header">
@@ -220,122 +202,15 @@
             <p><button class="pt-button pt-button--accent" id="openModalBtnShowcase">Open Sample Modal</button></p><div class="pt-loading-spinner"></div>
         </section>
     </div> 
+    
     <div class="pt-modal" id="sampleModalShowcase">
         <div class="pt-modal__content">
-            <div class="pt-modal__header"><h3 class="pt-modal__title">Modal Title Here</h3><button class="pt-modal__close" aria-label="Close modal">×</button></div>
+            <div class="pt-modal__header"><h3 class="pt-modal__title">Modal Title Here</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
             <div class="pt-modal__body"><p>This is the content of the modal. It can be anything you need, from simple text to complex forms.</p></div>
-            <div class="pt-modal__footer" style="text-align:right; margin-top:var(--spacing-md); padding-top:var(--spacing-md); border-top:1px solid var(--border-color-light);"><button class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Confirm Action</button></div>
+            <div class="pt-modal__footer" style="text-align:right; margin-top:var(--spacing-md); padding-top:var(--spacing-md); border-top:1px solid var(--border-color-light);"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Confirm Action</button></div>
         </div>
     </div>
 
-    <script>
-        const themes = [ 
-            { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }
-        ];
-
-        function applyShowcaseTheme(themeValue, themedArea) { 
-            if (!themedArea) { console.error("Themed area not found in applyShowcaseTheme."); return; }
-            
-            themedArea.className = ''; // Clear all classes from #themed-showcase-area
-            themedArea.classList.add(themeValue); // Add the new theme class
-            
-            themedArea.style.backgroundColor = 'var(--background-color)'; 
-            themedArea.style.color = 'var(--text-color)';
-
-            const modal = document.getElementById('sampleModalShowcase');
-            if (modal) {
-                // Remove any previous theme classes before adding new one
-                themes.forEach(t => {
-                    if (modal.classList.contains(t.value)) {
-                        modal.classList.remove(t.value);
-                    }
-                });
-                modal.classList.add(themeValue); // Add the current theme class
-            }
-        }
-        
-        function setupInteractiveComponents() { /* ... same as before ... */
-            document.querySelectorAll('#workout-tabs-showcase .pt-tabs__tab button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabContainer = button.closest('.pt-tabs');
-                    tabContainer.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute('aria-selected', 'false'));
-                    tabContainer.querySelectorAll('.pt-tabs__tab button').forEach(b => b.classList.remove('is-active'));
-                    button.setAttribute('aria-selected', 'true'); button.classList.add('is-active');
-                    const panelId = button.getAttribute('aria-controls');
-                    tabContainer.querySelectorAll('[role="tabpanel"]').forEach(p => p.hidden = true);
-                    tabContainer.querySelectorAll('.pt-tabs__panel').forEach(p => p.classList.remove('is-active'));
-                    const activePanel = tabContainer.querySelector(`#${panelId}`);
-                    if(activePanel) { activePanel.hidden = false; activePanel.classList.add('is-active'); }
-                });
-            });
-            document.querySelectorAll('.pt-accordion__button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const contentId = button.getAttribute('aria-controls'); const content = document.getElementById(contentId);
-                    if (!content) return; // Guard if content not found
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                    button.setAttribute('aria-expanded', !isExpanded); content.hidden = isExpanded;
-                });
-            });
-            const modal = document.getElementById('sampleModalShowcase'); const openModalBtn = document.getElementById('openModalBtnShowcase');
-            const closeButtons = document.querySelectorAll('#sampleModalShowcase .pt-modal__close'); 
-            if(openModalBtn && modal) openModalBtn.addEventListener('click', () => modal.classList.add('is-active'));
-            if(modal) {
-                closeButtons.forEach(btn => btn.addEventListener('click', () => modal.classList.remove('is-active')));
-                modal.addEventListener('click', (event) => { if (event.target === modal) modal.classList.remove('is-active'); });
-            }
-            const fileUploads = document.querySelectorAll('.pt-file-upload input[type="file"]');
-            fileUploads.forEach(input => {
-                input.addEventListener('change', function() {
-                    const fileNameDisplay = this.closest('.pt-file-upload').querySelector('.pt-file-upload__name');
-                    if (this.files && this.files.length > 0) { fileNameDisplay.textContent = this.files[0].name; } 
-                    else { fileNameDisplay.textContent = 'No file chosen'; }
-                });
-            });
-            document.querySelectorAll('.pt-image-slider').forEach(slider => {
-                const film = slider.querySelector('.pt-image-slider__film');
-                const slides = film.querySelectorAll('.pt-image-slider__slide');
-                const prevBtn = slider.querySelector('.pt-image-slider__nav--prev');
-                const nextBtn = slider.querySelector('.pt-image-slider__nav--next');
-                const dotsContainer = slider.querySelector('.pt-image-slider__dots');
-                let currentIndex = 0; const totalSlides = slides.length;
-                if (!film || !slides.length) return;
-                if (dotsContainer) {
-                    dotsContainer.innerHTML = ''; // Clear existing dots before regenerating
-                    slides.forEach((_, index) => {
-                        const dot = document.createElement('button'); dot.classList.add('pt-image-slider__dot');
-                        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-                        dot.addEventListener('click', () => goToSlide(index)); dotsContainer.appendChild(dot);
-                    });
-                }
-                const dots = dotsContainer ? dotsContainer.querySelectorAll('.pt-image-slider__dot') : [];
-                function updateSlider() {
-                    film.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    if (dots.length) {
-                        dots.forEach(dot => dot.classList.remove('is-active'));
-                        if(dots[currentIndex]) dots[currentIndex].classList.add('is-active');
-                    }
-                }
-                function goToSlide(index) { currentIndex = index; updateSlider(); }
-                if(prevBtn) prevBtn.addEventListener('click', () => { currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1; updateSlider(); });
-                if(nextBtn) nextBtn.addEventListener('click', () => { currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0; updateSlider(); });
-                if(dots.length) updateSlider();
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeSwitcher = document.getElementById('theme-switcher');
-            const themedArea = document.getElementById('themed-showcase-area');
-            if (!themeSwitcher || !themedArea) { console.error("Theme switcher or themed area not found on showcase page!"); return; }
-            themes.forEach(theme => {
-                const option = document.createElement('option'); option.value = theme.value; option.textContent = theme.name;
-                themeSwitcher.appendChild(option);
-            });
-            if (themes.length > 0) { applyShowcaseTheme(themes[0].value, themedArea); }
-            themeSwitcher.addEventListener('change', (event) => { applyShowcaseTheme(event.target.value, themedArea); });
-            setupInteractiveComponents();
-        });
-    </script>
+    <script type="module" src="assets/js/showcase-dashboard-init.js"></script>
 </body>
 </html>
