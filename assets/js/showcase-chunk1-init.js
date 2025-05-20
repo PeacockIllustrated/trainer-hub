@@ -1,16 +1,15 @@
 // assets/js/showcase-chunk1-init.js
-
-// Import component initializers
+import { initializeThemeSwitcher } from './theme-switcher.js'; // USING THE MODULE
 import { initializeModals, openModal, closeModal } from './components/modal.js';
 import { initializeStepper } from './components/stepper.js';
 
-// Define themes specifically for this page's context
+// This themes array is passed to initializeThemeSwitcher
 const themesForChunk1 = [
-    { value: 'theme-modern-professional', name: 'Modern & Professional' },
+    { value: 'theme-modern-professional', name: 'Modern & Professional', /* other theme-specific data if needed by theme-switcher.js */ },
     { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
     { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
     { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-    { value: 'theme-urban-grit', name: 'Urban Grit & Steel' }, // Make sure names match for display
+    { value: 'theme-urban-grit', name: 'Urban Grit & Steel' },
     { value: 'theme-playful-pop', name: 'Playful & Vibrant Pop' },
     { value: 'theme-tech-data', name: 'Tech & Data Driven' },
     { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
@@ -18,90 +17,70 @@ const themesForChunk1 = [
     { value: 'theme-retro-funk', name: 'Retro Funk' }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get DOM elements
-    const themeSwitcherElement = document.getElementById('theme-switcher');
-    const themedAreaElement = document.getElementById('themed-chunk-area'); // Main area to theme
-    const addClientModalElement = document.getElementById('addClientModal'); // Specific modal on this page
+// Make HTML generating functions global if theme-switcher.js relies on them for sidebar updates
+// This is a workaround; ideally, theme-switcher.js wouldn't re-render HTML, only apply classes.
+window.getSidebarHTML = (logoText = "FitApp", userName = "Trainer") => {
+    // ... your getSidebarHTML function content ...
+    return `
+    <aside class="pt-sidebar">
+        <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">${logoText}</h1></div>
+        <nav class="pt-sidebar__nav"><ul class="pt-sidebar__nav-list">
+            <li class="pt-sidebar__nav-item"><a href="#dashboard" class="pt-sidebar__nav-link is-active"><span class="pt-sidebar__nav-icon">D</span><span class="pt-sidebar__nav-text">Dashboard</span></a></li>
+            {/* ... other nav items ... */}
+        </ul></nav>
+        <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">${userName.charAt(0)}</span><span class="pt-sidebar__user-name">${userName}</span></a><a href="#logout" class="pt-sidebar__logout-link"><span class="pt-sidebar__nav-icon">→</span><span class="pt-sidebar__nav-text">Logout</span></a></div>
+    </aside>`;
+};
 
-    // Guard clauses for essential elements
-    if (!themedAreaElement) {
-        console.error("showcase-chunk1-onboarding.html: Critical element #themed-chunk-area not found. Script cannot proceed.");
+
+document.addEventListener('DOMContentLoaded', () => {
+    const themeSwitcherElement = document.getElementById('theme-switcher');
+    // For showcase-chunk1-onboarding.html, the main themed area is #themed-chunk-area
+    const themedAreaElement = document.getElementById('themed-chunk-area'); 
+    const addClientModalElement = document.getElementById('addClientModal');
+
+    if (!themedAreaElement || !themeSwitcherElement) {
+        console.error("showcase-chunk1-onboarding.html: Essential page elements for theme switching not found.");
         return;
     }
-    if (!themeSwitcherElement) {
-        console.warn("showcase-chunk1-onboarding.html: #theme-switcher element not found. Theme switching will not be available.");
-    }
 
-    // --- Theme Application Logic for this page ---
-    function applyChunk1PageTheme(themeValue) {
-        if (!themedAreaElement) return; // Should be caught by above guard, but good practice
-
-        // Apply to main themed area
-        themedAreaElement.className = ''; // Clear all existing classes from the main themed area
-        themedAreaElement.classList.add(themeValue); // Add the new theme class
-
-        // Force re-evaluation of CSS variables for the main themed area
-        themedAreaElement.style.backgroundColor = 'var(--background-color)';
-        themedAreaElement.style.color = 'var(--text-color)';
-
-        // Apply to the specific modal on this page
+    // Initialize the theme switcher using the imported function
+    const applyTheme = initializeThemeSwitcher(themesForChunk1, themeSwitcherElement, themedAreaElement, (newThemeValue) => {
+        // This is an onThemeChangeCallback, executed after the theme is applied by theme-switcher.js
+        // We need to additionally theme the specific modal on this page
         if (addClientModalElement) {
-            // Remove any of the known theme classes before adding the new one
-            themesForChunk1.forEach(t => {
-                if (addClientModalElement.classList.contains(t.value)) {
-                    addClientModalElement.classList.remove(t.value);
-                }
-            });
-            addClientModalElement.classList.add(themeValue);
+            themesForChunk1.forEach(t => addClientModalElement.classList.remove(t.value));
+            addClientModalElement.classList.add(newThemeValue);
         }
-    }
+        // If theme-switcher.js re-renders sidebar, active links need re-setup
+        // setupActiveLinkSwitcher(); // Assuming you have this function for active links
+    });
     
-    // --- Initialize Theme Switcher ---
-    if (themeSwitcherElement) {
-        themesForChunk1.forEach(theme => {
-            const option = document.createElement('option');
-            option.value = theme.value;
-            option.textContent = theme.name;
-            themeSwitcherElement.appendChild(option);
-        });
-
-        if (themesForChunk1.length > 0) {
-            applyChunk1PageTheme(themesForChunk1[0].value); // Apply the first theme by default
-            themeSwitcherElement.value = themesForChunk1[0].value; // Set dropdown to match
-        }
-        
-        themeSwitcherElement.addEventListener('change', (event) => {
-            applyChunk1PageTheme(event.target.value);
-        });
-    } else if (themesForChunk1.length > 0) {
-        // If no switcher, still apply the default theme
-        applyChunk1PageTheme(themesForChunk1[0].value);
+    // If the initial theme application by theme-switcher.js doesn't cover the modal, do it here
+    if (themesForChunk1.length > 0 && addClientModalElement) {
+        const initialTheme = themesForChunk1[0].value;
+        themesForChunk1.forEach(t => addClientModalElement.classList.remove(t.value));
+        addClientModalElement.classList.add(initialTheme);
     }
 
 
-    // --- Initialize Interactive Components ---
+    // Initialize other components specific to this page
     initializeStepper(); 
-    initializeModals();  // This will find and initialize #addClientModal based on its .pt-modal class
+    initializeModals();
 
-    // Specific event listener for the "Add New Client" button to open its modal
-    // This is needed if the button doesn't use data-modal-target, or for more control.
     const openAddClientModalBtn = document.getElementById('openAddClientModalBtn');
-    if (openAddClientModalBtn && addClientModalElement) { // Ensure modal element also exists
+    if (openAddClientModalBtn) {
         openAddClientModalBtn.addEventListener('click', () => {
-            openModal('addClientModal'); // Use the imported openModal function
+            openModal('addClientModal'); 
         });
     }
     
-    // Form submission logic for the "Add New Client" modal
     const adminAddClientForm = document.getElementById('adminAddClientForm');
     if (adminAddClientForm) {
         adminAddClientForm.addEventListener('submit', (e) => {
             e.preventDefault();
             alert('New Client Saved (Demo)! From modular JS on Chunk1 page.');
-            if (addClientModalElement) { // Ensure modal element exists before trying to close
-                closeModal('addClientModal'); // Use the imported closeModal function
-            }
+            closeModal('addClientModal');
             adminAddClientForm.reset();
         });
     }
