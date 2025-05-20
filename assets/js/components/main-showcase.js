@@ -31,7 +31,10 @@ const themesForIndex = [ // Duplicated here for now, or import from a shared con
     { value: 'theme-energetic-motivating', name: 'Energetic & Motivating', sidebarLogo: 'IgniteFit', sidebarUser: 'Max Power' },
     { value: 'theme-natural-grounded', name: 'Natural & Grounded', sidebarLogo: 'TerraFit', sidebarUser: 'Willow G.' },
     { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist', sidebarLogo: 'ELEVATE', sidebarUser: 'Kendall R.' },
-    { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' }
+    { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'GrooveFit', sidebarUser: 'DJ Flex' },
+    { value: 'theme-urban-grit', name: 'Urban Grit & Steel', svgFill: '#E53935', sidebarLogo: 'GRIT', sidebarUser: 'R. Boulder' },
+    { value: 'theme-tech-data', name: 'Tech & Data Driven', svgFill: '#00D1FF', sidebarLogo: 'D4TA', sidebarUser: 'Dr. Byte' },
+    { value: 'theme-playful-pop', name: 'Playful & Vibrant Pop', svgFill: '#FF6B6B', sidebarLogo: 'POPfit', sidebarUser: 'Zippy' }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
