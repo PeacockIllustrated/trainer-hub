@@ -1,7 +1,7 @@
 /* --- Theme: Playful & Vibrant Pop --- */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@400;600;700&display=swap');
 
-/* .theme-playful-pop { */
+.theme-playful-pop {
   /* Core Palette */
   --primary-brand-color: #FF6B6B;  /* Vibrant Coral */
   --primary-brand-dark: #E05252;
