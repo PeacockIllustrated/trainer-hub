@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
 
-
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Link all themes for the switcher -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
@@ -23,71 +22,29 @@
     <link rel="stylesheet" href="assets/css/themes/theme-tech-data.css">
     <link rel="stylesheet" href="assets/css/themes/theme-playful-pop.css">
 
-
     <style>
         body {
             margin: 0;
             display: flex; 
             font-family: var(--font-family-primary);
-            /* Theme class will be applied here by JS */
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: var(--background-color); /* Applied by JS */
+            color: var(--text-color); /* Applied by JS */
         }
-
-        .mvp-app-container { 
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
-        
-        .mvp-main-content {
-            flex-grow: 1;
-            padding: var(--spacing-lg);
-            overflow-y: auto; 
-        }
-
-        .mvp-page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .mvp-page-header h1 {
-            font-family: var(--font-family-headings);
-            color: var(--heading-color);
-            font-size: 2em;
-            margin: 0;
-        }
-        .mvp-page-header .theme-selector-container { /* Added for theme switcher */
-            display: flex;
-            align-items: center;
-        }
-        .mvp-page-header .theme-selector-container label {
-            margin-right: var(--spacing-sm);
-            font-size: 0.9em;
-            color: var(--text-color-muted);
-        }
-        .mvp-page-header #mvpThemeSwitcher {
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--border-radius-sm);
-            border: 1px solid var(--border-color);
-            font-size: 0.9em;
-            background-color: var(--surface-color);
-            color: var(--text-color-on-surface);
-        }
-
-
+        .mvp-app-container { display: flex; width: 100%; min-height: 100vh; }
+        .mvp-main-content { flex-grow: 1; padding: var(--spacing-lg); overflow-y: auto; }
+        .mvp-page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
+        .mvp-page-header h1 { font-family: var(--font-family-headings); color: var(--heading-color); font-size: 2em; margin: 0; }
+        .mvp-page-header .theme-selector-container { display: flex; align-items: center; }
+        .mvp-page-header .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
+        .mvp-page-header #mvpThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
         .view-section { display: none; animation: ptFadeIn 0.3s ease-out; }
         .view-section.is-active { display: block; }
         .text-small { font-size: 0.9em; }
         .text-muted { color: var(--text-color-muted); }
         .component-grid-halves { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: var(--spacing-lg); }
-
+        @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-            /* ... existing mobile styles ... */
             body, .mvp-app-container { flex-direction: column; }
             .pt-sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: var(--border-width) solid var(--border-color); }
             .mvp-main-content { padding: var(--spacing-md); }
@@ -95,16 +52,14 @@
             .mvp-page-header h1 { font-size: 1.6em; margin-bottom: var(--spacing-sm); }
             .mvp-page-header .theme-selector-container { width: 100%; }
             .mvp-page-header #mvpThemeSwitcher { width: 100%; }
-
             .pt-client-list-item { flex-direction: column; align-items: flex-start; }
-            .pt-client-list-item__actions { margin-top: var(--spacing-sm); width: 100%; }
-            .pt-client-list-item__actions .pt-button { width: 100%; margin-bottom: var(--spacing-xs); }
-            .pt-client-list-item__actions .pt-button:last-child { margin-bottom: 0; }
-            .component-grid-halves {grid-template-columns: 1fr;} /* Stack halves on mobile */
+            .pt-client-list-item__actions { margin-top: var(--spacing-sm); width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs); }
+            .pt-client-list-item__actions .pt-button { width: 100%; margin-right: 0 !important; }
+            .component-grid-halves {grid-template-columns: 1fr;}
         }
     </style>
 </head>
-<body class="theme-modern-professional"> <!-- Default theme applied to body -->
+<body class="theme-modern-professional"> <!-- Default theme, JS will manage this -->
 
     <div class="mvp-app-container">
         <aside class="pt-sidebar">
@@ -120,11 +75,10 @@
         </aside>
 
         <main class="mvp-main-content">
-            <!-- Dashboard View -->
             <section id="dashboardView" class="view-section is-active">
                 <div class="mvp-page-header">
                     <h1>Dashboard</h1>
-                    <div class="theme-selector-container"> <!-- THEME SWITCHER ADDED HERE -->
+                    <div class="theme-selector-container">
                         <label for="mvpThemeSwitcher">Theme:</label>
                         <select id="mvpThemeSwitcher"></select>
                     </div>
@@ -136,17 +90,14 @@
                 </div>
             </section>
 
-            <!-- Clients View -->
             <section id="clientsView" class="view-section">
                 <div class="mvp-page-header"><h1>Clients</h1><button class="pt-button pt-button--primary" id="openAddClientModalBtn">Add New Client</button></div>
                 <div id="clientListContainer"><p class="text-muted" id="noClientsMessage">No clients yet. Click "Add New Client" to get started!</p></div>
             </section>
 
-            <!-- Workouts View -->
             <section id="workoutsView" class="view-section">
                 <div class="mvp-page-header"><h1>Workouts</h1></div>
                 <div class="component-grid-halves">
-                    <!-- Exercise Library Column -->
                     <div class="pt-card">
                         <h3 class="pt-card-title">Exercise Library</h3>
                         <form id="exerciseForm" style="margin-bottom: var(--spacing-md);">
@@ -159,30 +110,18 @@
                         </form>
                         <div id="exerciseListContainer"><p class="text-muted" id="noExercisesMessage">No exercises defined yet.</p></div>
                     </div>
-
-                    <!-- Workout Templates Column -->
                     <div class="pt-card">
                         <h3 class="pt-card-title">Workout Templates</h3>
                         <button class="pt-button pt-button--primary pt-button--small" id="openCreateTemplateModalBtn" style="margin-bottom:var(--spacing-md);">Create New Template</button>
                         <div id="workoutTemplateListContainer"><p class="text-muted" id="noWorkoutTemplatesMessage">No templates created yet.</p></div>
                     </div>
                 </div>
-                 <!-- Assign Workout Section (Below Templates for now) -->
                 <div class="pt-card" style="margin-top:var(--spacing-lg);">
                     <h3 class="pt-card-title">Assign Workout to Client</h3>
                     <form id="assignWorkoutForm">
-                        <div class="pt-input-group">
-                            <label for="assignClientSelect">Client:</label>
-                            <select id="assignClientSelect" class="pt-input" required><option value="">-- Select Client --</option></select>
-                        </div>
-                        <div class="pt-input-group">
-                            <label for="assignTemplateSelect">Workout Template:</label>
-                            <select id="assignTemplateSelect" class="pt-input" required><option value="">-- Select Template --</option></select>
-                        </div>
-                        <div class="pt-input-group">
-                            <label for="assignDate">Date to Assign:</label>
-                            <input type="date" id="assignDate" class="pt-input" required>
-                        </div>
+                        <div class="pt-input-group"><label for="assignClientSelect">Client:</label><select id="assignClientSelect" class="pt-input" required><option value="">-- Select Client --</option></select></div>
+                        <div class="pt-input-group"><label for="assignTemplateSelect">Workout Template:</label><select id="assignTemplateSelect" class="pt-input" required><option value="">-- Select Template --</option></select></div>
+                        <div class="pt-input-group"><label for="assignDate">Date to Assign:</label><input type="date" id="assignDate" class="pt-input" required></div>
                         <button type="submit" class="pt-button pt-button--accent">Assign Workout</button>
                     </form>
                     <h4 style="margin-top:var(--spacing-lg); margin-bottom:var(--spacing-sm); color:var(--heading-color);">Assigned Workouts Log</h4>
@@ -192,41 +131,56 @@
         </main>
 
         <div id="modalsContainer">
-            <!-- Add/Edit Client Modal -->
-            <div class="pt-modal" id="addEditClientModal"> /* ... same content as before ... */ </div>
-            <!-- Confirmation Modal -->
-            <div class="pt-modal" id="confirmModal"> /* ... same content as before ... */ </div>
-
-            <!-- Create/Edit Workout Template Modal -->
+            <div class="pt-modal" id="addEditClientModal">
+                <div class="pt-modal__content">
+                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="clientModalTitle">Add New Client</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
+                    <form id="clientForm">
+                        <input type="hidden" id="clientId">
+                        <div class="pt-modal__body">
+                            <div class="pt-input-group"><label for="clientName">Full Name:</label><input type="text" id="clientName" class="pt-input" required></div>
+                            <div class="pt-input-group"><label for="clientEmail">Email:</label><input type="email" id="clientEmail" class="pt-input" required></div>
+                            <div class="pt-input-group"><label for="clientPhone">Phone:</label><input type="tel" id="clientPhone" class="pt-input"></div>
+                            <div class="pt-input-group"><label for="clientDob">Date of Birth:</label><input type="date" id="clientDob" class="pt-input"></div>
+                            <div class="pt-input-group"><label for="clientGoal">Primary Goal:</label><input type="text" id="clientGoal" class="pt-input" placeholder="e.g., Weight Loss, Muscle Gain"></div>
+                            <div class="pt-input-group"><label for="clientMedicalNotes">Medical Notes:</label><textarea id="clientMedicalNotes" class="pt-input" rows="3"></textarea></div>
+                        </div>
+                        <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Client</button></div>
+                    </form>
+                </div>
+            </div>
+            <div class="pt-modal" id="confirmModal">
+                <div class="pt-modal__content">
+                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="confirmModalTitle">Confirm Action</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
+                    <div class="pt-modal__body"><p id="confirmModalMessage">Are you sure?</p></div>
+                    <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close" id="confirmModalCancelBtn">Cancel</button><button type="button" class="pt-button pt-button--destructive" id="confirmModalConfirmBtn" style="margin-left:var(--spacing-sm);">Confirm</button></div>
+                </div>
+            </div>
             <div class="pt-modal" id="createEditTemplateModal">
-                <div class="pt-modal__content" style="max-width: 700px;"> <!-- Wider modal -->
-                    <div class="pt-modal__header">
-                        <h3 class="pt-modal__title" id="templateModalTitle">Create Workout Template</h3>
-                        <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
-                    </div>
+                <div class="pt-modal__content" style="max-width: 700px;">
+                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="templateModalTitle">Create Workout Template</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
                     <form id="workoutTemplateForm">
                         <input type="hidden" id="workoutTemplateId">
                         <div class="pt-modal__body">
+                            <div class="pt-input-group"><label for="templateName">Template Name:</label><input type="text" id="templateName" class="pt-input" required></div>
                             <div class="pt-input-group">
-                                <label for="templateName">Template Name:</label>
-                                <input type="text" id="templateName" class="pt-input" required>
-                            </div>
-                            <h4 style="margin-top:var(--spacing-md); margin-bottom:var(--spacing-sm); color:var(--heading-color);">Add Exercises:</h4>
-                            <div id="templateExerciseList" style="max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); padding: var(--spacing-sm); border-radius:var(--border-radius-sm); margin-bottom:var(--spacing-md);">
-                                <!-- Exercises available from library will be populated here by JS -->
-                                <p class="text-muted">Define exercises in the library first.</p>
+                                <label for="templateExerciseSelect">Add Exercise from Library:</label>
+                                <div style="display:flex; gap:var(--spacing-sm);">
+                                    <select id="templateExerciseSelect" class="pt-input" style="flex-grow:1;"><option value="">-- Select Exercise --</option></select>
+                                    <button type="button" class="pt-button pt-button--secondary" id="addExerciseToTemplateBtn">Add</button>
+                                </div>
                             </div>
                             <h4 style="margin-top:var(--spacing-md); margin-bottom:var(--spacing-sm); color:var(--heading-color);">Selected Exercises for Template:</h4>
-                            <div id="selectedExercisesForTemplateContainer">
-                                <!-- Dynamically added exercises with sets/reps inputs -->
-                                <p class="text-muted">No exercises added to template yet.</p>
-                            </div>
+                            <div id="selectedExercisesForTemplateContainer"><p class="text-muted">No exercises added to template yet.</p></div>
                         </div>
-                        <div class="pt-modal__footer">
-                            <button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button>
-                            <button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Template</button>
-                        </div>
+                        <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Template</button></div>
                     </form>
+                </div>
+            </div>
+            <div class="pt-modal" id="viewClientPlanModal"> <!-- NEW MODAL -->
+                <div class="pt-modal__content">
+                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="clientPlanModalTitle">Client Workout Plan</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
+                    <div class="pt-modal__body" id="clientPlanModalContent" style="max-height: 400px; overflow-y: auto;"><p class="text-muted">Loading plan...</p></div>
+                    <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Close</button></div>
                 </div>
             </div>
         </div> 
