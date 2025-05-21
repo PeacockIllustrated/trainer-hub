@@ -23,7 +23,7 @@
     <style>
         body { margin: 0; font-family: var(--font-family-primary); background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
         .client-app-container { max-width: 800px; margin: 0 auto; padding: var(--spacing-lg); }
-        .client-page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
+        .client-page-header { display: flex; justify-content: flex-direction; column: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
         .client-page-header h1 { font-family: var(--font-family-headings); color: var(--heading-color); font-size: 1.8em; margin: 0; }
         .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
         #clientThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
@@ -148,7 +148,7 @@
             </section>
         </main>
         
-        <div class="pt-modal" id="workoutSessionModal"> {/* Ensure this ID is unique and correct */}
+        <div class="pt-modal" id="workoutSessionModal">
             <div class="pt-modal__content" style="max-width: 750px;">
                 <div class="pt-modal__header">
                     <h3 class="pt-modal__title" id="workoutSessionModalTitle">Workout Session</h3>
