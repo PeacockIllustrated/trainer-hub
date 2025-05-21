@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitFlow PT Admin MVP</title>
+    <title>FitFlow Client Portal</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,207 +23,99 @@
     <link rel="stylesheet" href="assets/css/themes/theme-playful-pop.css">
 
     <style>
-        :root { /* Define sidebar width as a variable for easier sync */
-            --sidebar-width-val: 260px; 
-        }
-        body {
-            margin: 0;
-            display: flex; 
-            font-family: var(--font-family-primary);
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        .mvp-app-container { 
-            display: flex; 
-            width: 100%; 
-            min-height: 100vh; 
-        }
-        /* Main content area adjustments for fixed sidebar */
-        .mvp-main-content { 
-            flex-grow: 1; 
-            padding: var(--spacing-lg); 
-            overflow-y: auto; 
-            margin-left: var(--sidebar-width-val); /* MODIFIED - Push content to the right of fixed sidebar */
-            width: calc(100% - var(--sidebar-width-val)); /* MODIFIED - Ensure it takes remaining width */
-            transition: margin-left 0.3s ease, width 0.3s ease; /* MODIFIED - For smooth transition if sidebar width changes or on mobile */
-        }
-
-        .mvp-page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
-        .mvp-page-header h1 { font-family: var(--font-family-headings); color: var(--heading-color); font-size: 2em; margin: 0; }
-        .mvp-page-header .theme-selector-container { display: flex; align-items: center; }
-        .mvp-page-header .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
-        .mvp-page-header #mvpThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
-        
+        body { margin: 0; font-family: var(--font-family-primary); background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
+        .client-app-container { max-width: 800px; margin: 0 auto; padding: var(--spacing-lg); }
+        .client-page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
+        .client-page-header h1 { font-family: var(--font-family-headings); color: var(--heading-color); font-size: 1.8em; margin: 0; }
+        .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
+        #clientThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
         .view-section { display: none; animation: ptFadeIn 0.3s ease-out; }
         .view-section.is-active { display: block; }
-        .text-small { font-size: 0.9em; }
-        .text-muted { color: var(--text-color-muted); }
-        .component-grid-halves { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: var(--spacing-lg); }
         @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .text-muted { color: var(--text-color-muted); }
+        .assigned-workout-item .pt-card-footer { display: flex; justify-content: flex-end; gap: var(--spacing-sm); }
+        .assigned-workout-item .pt-card-title { font-size: 1.3em; }
 
-        @media (max-width: 768px) {
-            body, .mvp-app-container { flex-direction: column; }
-            /* Sidebar becomes static and full width on mobile */
-            .pt-sidebar { 
-                position: static; /* MODIFIED - Override fixed */
-                width: 100%; 
-                height: auto; 
-                border-right: none; 
-                border-bottom: var(--border-width) solid var(--border-color); 
-                z-index: auto; /* MODIFIED - Reset z-index */
-                overflow-y: visible; /* MODIFIED - Reset overflow */
-            }
-            /* Main content takes full width and no margin on mobile */
-            .mvp-main-content { 
-                padding: var(--spacing-md); 
-                margin-left: 0; /* MODIFIED - Remove margin */
-                width: 100%;    /* MODIFIED - Take full width */
-            }
-            .mvp-page-header { flex-direction: column; align-items: flex-start; }
-            .mvp-page-header h1 { font-size: 1.6em; margin-bottom: var(--spacing-sm); }
-            .mvp-page-header .theme-selector-container { width: 100%; }
-            .mvp-page-header #mvpThemeSwitcher { width: 100%; }
-            .pt-client-list-item { flex-direction: column; align-items: flex-start; }
-            .pt-client-list-item__actions { margin-top: var(--spacing-sm); width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs); }
-            .pt-client-list-item__actions .pt-button { width: 100%; margin-right: 0 !important; }
-            .component-grid-halves {grid-template-columns: 1fr;}
-        }
+        /* Workout Session Modal Styles */
+        #workoutSessionModalBody { max-height: 60vh; overflow-y: auto; }
+        .exercise-session-item { padding: var(--spacing-md) 0; border-bottom: 1px solid var(--border-color-light); display: none; }
+        .exercise-session-item.is-active { display: block; }
+        .exercise-session-item:last-child { border-bottom: none; }
+        .exercise-session-item h4 { font-family: var(--font-family-headings); color: var(--heading-color-on-surface); margin: 0 0 var(--spacing-sm) 0; font-size: 1.3em; }
+        .exercise-session-item .target-metrics { font-size: 0.9em; color: var(--text-color-muted); margin-bottom: var(--spacing-md); }
+        .set-tracking-row { display: grid; grid-template-columns: auto 1fr 1fr auto; gap: var(--spacing-sm); align-items: center; margin-bottom: var(--spacing-sm); padding-bottom: var(--spacing-xs); border-bottom: 1px dashed var(--border-color-light); }
+        .set-tracking-row:last-child { border-bottom: none; }
+        .set-tracking-row label { font-weight: 600; font-size: 0.9em; }
+        .set-tracking-row .pt-input { padding: var(--spacing-xs); font-size: 0.9em; }
+        .set-tracking-row input[type="checkbox"] { transform: scale(1.2); margin-left: var(--spacing-xs); }
+        
+        .workout-session-nav { display: flex; justify-content: space-between; margin-top: var(--spacing-md); }
+        .workout-timer { margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--border-color-light); text-align: center; }
+        .workout-timer #timerDisplay { font-size: 1.8em; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm); font-family: var(--font-family-mono, monospace); }
     </style>
 </head>
-<body class="theme-modern-professional"> 
+<body class="theme-modern-professional">
 
-    <div class="mvp-app-container">
-        <aside class="pt-sidebar">
-            <div class="pt-sidebar__header"><h1 class="pt-sidebar__logo">FitFlow MVP</h1></div>
-            <nav class="pt-sidebar__nav">
-                <ul class="pt-sidebar__nav-list">
-                    <li class="pt-sidebar__nav-item"><a href="#dashboard" class="pt-sidebar__nav-link is-active" data-view="dashboardView"><span class="pt-sidebar__nav-icon">D</span><span class="pt-sidebar__nav-text">Dashboard</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#clients" class="pt-sidebar__nav-link" data-view="clientsView"><span class="pt-sidebar__nav-icon">C</span><span class="pt-sidebar__nav-text">Clients</span></a></li>
-                    <li class="pt-sidebar__nav-item"><a href="#workouts" class="pt-sidebar__nav-link" data-view="workoutsView"><span class="pt-sidebar__nav-icon">W</span><span class="pt-sidebar__nav-text">Workouts</span></a></li>
-                </ul>
-            </nav>
-            <div class="pt-sidebar__footer"><a href="#profile" class="pt-sidebar__user-profile"><span class="pt-sidebar__user-avatar">PT</span><span class="pt-sidebar__user-name">Trainer MVP</span></a></div>
-        </aside>
+    <div class="client-app-container">
+        <header class="client-page-header">
+            <h1 id="pageTitle">Client Login</h1>
+            <div class="theme-selector-container">
+                <label for="clientThemeSwitcher">Theme:</label>
+                <select id="clientThemeSwitcher"></select>
+            </div>
+        </header>
 
-        <main class="mvp-main-content">
-            <!-- Dashboard View -->
-            <section id="dashboardView" class="view-section is-active">
-                <div class="mvp-page-header">
-                    <h1>Dashboard</h1>
-                    <div class="theme-selector-container">
-                        <label for="mvpThemeSwitcher">Theme:</label>
-                        <select id="mvpThemeSwitcher"></select>
-                    </div>
-                </div>
-                <p>Welcome to your FitFlow MVP Dashboard!</p>
-                <div class="component-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                    <div class="pt-card"><h3 class="pt-card-title">Total Clients</h3><p class="pt-card-content" style="font-size: 2em; font-weight: bold;" id="totalClientsStat">0</p></div>
-                    <div class="pt-card"><h3 class="pt-card-title">Workout Templates</h3><p class="pt-card-content" style="font-size: 2em; font-weight: bold;" id="totalWorkoutTemplatesStat">0</p></div>
-                </div>
-            </section>
-
-            <!-- Clients View -->
-            <section id="clientsView" class="view-section">
-                <div class="mvp-page-header"><h1>Clients</h1><button class="pt-button pt-button--primary" id="openAddClientModalBtn">Add New Client</button></div>
-                <div id="clientListContainer"><p class="text-muted" id="noClientsMessage">No clients yet. Click "Add New Client" to get started!</p></div>
-            </section>
-
-            <!-- Workouts View -->
-            <section id="workoutsView" class="view-section">
-                <div class="mvp-page-header"><h1>Workouts</h1></div>
-                <div class="component-grid-halves">
-                    <div class="pt-card">
-                        <h3 class="pt-card-title">Exercise Library</h3>
-                        <form id="exerciseForm" style="margin-bottom: var(--spacing-md);">
-                            <input type="hidden" id="exerciseId">
-                            <div class="pt-input-group"><label for="exerciseName">Exercise Name:</label><input type="text" id="exerciseName" class="pt-input" required></div>
-                            <div class="pt-input-group"><label for="exerciseDescription">Description (optional):</label><textarea id="exerciseDescription" class="pt-input" rows="2"></textarea></div>
-                            <div class="pt-input-group"><label for="exerciseMuscleGroup">Muscle Group (optional):</label><input type="text" id="exerciseMuscleGroup" class="pt-input"></div>
-                            <button type="submit" class="pt-button pt-button--primary pt-button--small">Save Exercise</button>
-                            <button type="button" class="pt-button pt-button--secondary pt-button--small" id="cancelEditExerciseBtn" style="display:none;">Cancel Edit</button>
-                        </form>
-                        <div id="exerciseListContainer">
-                            <!-- Exercises will be rendered here by JS as accordions -->
-                            <p class="text-muted" id="noExercisesMessage">No exercises defined yet.</p>
+        <main>
+            <section id="loginView" class="view-section is-active">
+                <div class="pt-card">
+                    <h2 class="pt-card-title">Welcome to FitFlow!</h2>
+                    <p>Please select your profile to view your workouts.</p>
+                    <form id="clientLoginForm">
+                        <div class="pt-input-group">
+                            <label for="clientSelect">Select Your Name:</label>
+                            <select id="clientSelect" class="pt-input" required><option value="">-- Please Select --</option></select>
                         </div>
-                    </div>
-                    <div class="pt-card">
-                        <h3 class="pt-card-title">Workout Templates</h3>
-                        <button class="pt-button pt-button--primary pt-button--small" id="openCreateTemplateModalBtn" style="margin-bottom:var(--spacing-md);">Create New Template</button>
-                        <div id="workoutTemplateListContainer"><p class="text-muted" id="noWorkoutTemplatesMessage">No templates created yet.</p></div>
-                    </div>
-                </div>
-                <div class="pt-card" style="margin-top:var(--spacing-lg);">
-                    <h3 class="pt-card-title">Assign Workout to Client</h3>
-                    <form id="assignWorkoutForm">
-                        <div class="pt-input-group"><label for="assignClientSelect">Client:</label><select id="assignClientSelect" class="pt-input" required><option value="">-- Select Client --</option></select></div>
-                        <div class="pt-input-group"><label for="assignTemplateSelect">Workout Template:</label><select id="assignTemplateSelect" class="pt-input" required><option value="">-- Select Template --</option></select></div>
-                        <div class="pt-input-group"><label for="assignDate">Date to Assign:</label><input type="date" id="assignDate" class="pt-input" required></div>
-                        <button type="submit" class="pt-button pt-button--accent">Assign Workout</button>
+                        <button type="submit" class="pt-button pt-button--primary">View My Workouts</button>
                     </form>
-                    <h4 style="margin-top:var(--spacing-lg); margin-bottom:var(--spacing-sm); color:var(--heading-color);">Assigned Workouts Log</h4>
-                    <div id="assignedWorkoutsLogContainer"><p class="text-muted">No workouts assigned yet.</p></div>
                 </div>
+            </section>
+
+            <section id="dashboardView" class="view-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                    <h2 id="welcomeMessage" style="font-family: var(--font-family-headings); color: var(--heading-color);">Your Workouts</h2>
+                    <button id="logoutBtn" class="pt-button pt-button--secondary pt-button--small">Logout</button>
+                </div>
+                <div id="assignedWorkoutsContainer"><p class="text-muted">Loading your assigned workouts...</p></div>
             </section>
         </main>
-
-        <!-- Modals Container -->
-        <div id="modalsContainer">
-            <div class="pt-modal" id="addEditClientModal">
-                <div class="pt-modal__content">
-                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="clientModalTitle">Add New Client</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
-                    <form id="clientForm">
-                        <input type="hidden" id="clientId">
-                        <div class="pt-modal__body">
-                            <div class="pt-input-group"><label for="clientName">Full Name:</label><input type="text" id="clientName" class="pt-input" required></div>
-                            <div class="pt-input-group"><label for="clientEmail">Email:</label><input type="email" id="clientEmail" class="pt-input" required></div>
-                            <div class="pt-input-group"><label for="clientPhone">Phone:</label><input type="tel" id="clientPhone" class="pt-input"></div>
-                            <div class="pt-input-group"><label for="clientDob">Date of Birth:</label><input type="date" id="clientDob" class="pt-input"></div>
-                            <div class="pt-input-group"><label for="clientGoal">Primary Goal:</label><input type="text" id="clientGoal" class="pt-input" placeholder="e.g., Weight Loss, Muscle Gain"></div>
-                            <div class="pt-input-group"><label for="clientMedicalNotes">Medical Notes:</label><textarea id="clientMedicalNotes" class="pt-input" rows="3"></textarea></div>
-                        </div>
-                        <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Client</button></div>
-                    </form>
+        
+        <div class="pt-modal" id="workoutSessionModal">
+            <div class="pt-modal__content" style="max-width: 750px;">
+                <div class="pt-modal__header">
+                    <h3 class="pt-modal__title" id="workoutSessionModalTitle">Workout Session</h3>
+                    <button type="button" class="pt-modal__close" aria-label="Close modal">×</button> 
+                </div>
+                <div class="pt-modal__body" id="workoutSessionModalBody">
+                    <!-- Dynamic exercise content -->
+                </div>
+                <div class="workout-session-nav" style="display:none;"> 
+                    <button id="prevExerciseBtn" class="pt-button pt-button--secondary">Previous Exercise</button>
+                    <span id="exerciseProgressIndicator" style="align-self: center; font-style: italic;"></span>
+                    <button id="nextExerciseBtn" class="pt-button pt-button--secondary">Next Exercise</button>
+                </div>
+                 <div class="workout-timer" style="display:none;"> 
+                    <div id="timerDisplay">00:00</div>
+                    <button id="timerStartBtn" class="pt-button pt-button--primary pt-button--small">Start Timer</button>
+                    <button id="timerPauseBtn" class="pt-button pt-button--secondary pt-button--small" style="display:none;">Pause</button>
+                    <button id="timerResetBtn" class="pt-button pt-button--destructive pt-button--small">Reset</button>
+                </div>
+                <div class="pt-modal__footer">
+                    <button type="button" class="pt-button pt-button--secondary pt-modal__close-footer">Close</button> 
+                    <button type="button" id="finishWorkoutBtn" class="pt-button pt-button--accent" style="display:none;">Finish Workout</button>
                 </div>
             </div>
-            <div class="pt-modal" id="confirmModal">
-                <div class="pt-modal__content">
-                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="confirmModalTitle">Confirm Action</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
-                    <div class="pt-modal__body"><p id="confirmModalMessage">Are you sure?</p></div>
-                    <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close" id="confirmModalCancelBtn">Cancel</button><button type="button" class="pt-button pt-button--destructive" id="confirmModalConfirmBtn" style="margin-left:var(--spacing-sm);">Confirm</button></div>
-                </div>
-            </div>
-            <div class="pt-modal" id="createEditTemplateModal">
-                <div class="pt-modal__content" style="max-width: 700px;">
-                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="templateModalTitle">Create Workout Template</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
-                    <form id="workoutTemplateForm">
-                        <input type="hidden" id="workoutTemplateId">
-                        <div class="pt-modal__body">
-                            <div class="pt-input-group"><label for="templateName">Template Name:</label><input type="text" id="templateName" class="pt-input" required></div>
-                            <div class="pt-input-group">
-                                <label for="templateExerciseSelect">Add Exercise from Library:</label>
-                                <div style="display:flex; gap:var(--spacing-sm);">
-                                    <select id="templateExerciseSelect" class="pt-input" style="flex-grow:1;"><option value="">-- Select Exercise --</option></select>
-                                    <button type="button" class="pt-button pt-button--secondary" id="addExerciseToTemplateBtn">Add</button>
-                                </div>
-                            </div>
-                            <h4 style="margin-top:var(--spacing-md); margin-bottom:var(--spacing-sm); color:var(--heading-color);">Selected Exercises for Template:</h4>
-                            <div id="selectedExercisesForTemplateContainer"><p class="text-muted">No exercises added to template yet.</p></div>
-                        </div>
-                        <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Cancel</button><button type="submit" class="pt-button pt-button--primary" style="margin-left:var(--spacing-sm);">Save Template</button></div>
-                    </form>
-                </div>
-            </div>
-            <div class="pt-modal" id="viewClientPlanModal"> 
-                <div class="pt-modal__content">
-                    <div class="pt-modal__header"><h3 class="pt-modal__title" id="clientPlanModalTitle">Client Workout Plan</h3><button type="button" class="pt-modal__close" aria-label="Close modal">×</button></div>
-                    <div class="pt-modal__body" id="clientPlanModalContent" style="max-height: 400px; overflow-y: auto;"><p class="text-muted">Loading plan...</p></div>
-                    <div class="pt-modal__footer"><button type="button" class="pt-button pt-button--secondary pt-modal__close">Close</button></div>
-                </div>
-            </div>
-        </div> 
-    </div> 
-
-    <script type="module" src="assets/js/mvp-app.js"></script>
+        </div>
+    </div>
+    <script type="module" src="assets/js/client-app.js"></script>
 </body>
 </html>
