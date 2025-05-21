@@ -154,6 +154,7 @@ function openWorkoutDetailModal(assignmentId) {
     }
 
     workoutDetailModalTitle.textContent = `${template.name} (Assigned: ${new Date(assignment.dateAssigned).toLocaleDateString()})`;
+    
     let bodyHtml = '';
     template.exercises.forEach((exDetail, index) => {
         const exerciseInfo = allExercises.find(ex => ex.id === exDetail.exerciseId);
@@ -173,9 +174,12 @@ function openWorkoutDetailModal(assignmentId) {
     });
     workoutDetailModalBody.innerHTML = bodyHtml;
     stopTimer(); resetTimerDisplay(); 
-    openModal(workoutDetailModal);
+    
+    // --- THIS IS THE FIX ---
+    // Pass the string ID of the modal, not the DOM element object
+    openModal('workoutDetailModal'); 
+    // --- END OF FIX ---
 }
-
 // --- Timer Functions ---
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60); const seconds = totalSeconds % 60;
