@@ -2,15 +2,24 @@
 
 /**
  * Initializes the theme switcher dropdown and handles theme changes.
- * @param {Array} themesArray - Array of theme objects {value, name, ... any other data needed by callback}
+ * @param {Array} themesArray - Array of theme objects {value, name, ...any other theme-specific data}.
  * @param {HTMLElement} themeSwitcherSelectElement - The <select> element for theme switching.
  * @param {HTMLElement} areaToThemeElement - The main DOM element to apply the theme class to.
- * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied, receives (themeValue, currentThemeObject).
+ * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied. 
+ *                                             Receives (newThemeValue: string, currentThemeObject: object).
  */
 export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement, areaToThemeElement, onThemeChangeCallback) {
-    if (!themesArray || !themeSwitcherSelectElement || !areaToThemeElement) {
-        console.error("Theme switcher initialization failed: Missing required elements or themes array.");
-        console.log("Debug Info:", { themesArray, themeSwitcherSelectElement, areaToThemeElement });
+    if (!themesArray || themesArray.length === 0) {
+        console.warn("Theme switcher: No themes provided.");
+        if(themeSwitcherSelectElement) themeSwitcherSelectElement.style.display = 'none';
+        return;
+    }
+    if (!themeSwitcherSelectElement) {
+        console.error("Theme switcher: Select element not provided.");
+        return;
+    }
+    if (!areaToThemeElement) {
+        console.error("Theme switcher: Area to theme element not provided.");
         return;
     }
 
@@ -22,35 +31,34 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         themeSwitcherSelectElement.appendChild(option);
     });
 
-    // Inner function to apply the actual theme
+    // Function to apply the theme
     function applyTheme(themeValue) {
-        if (!areaToThemeElement) {
-            console.error("applyTheme error: areaToThemeElement is undefined or null within applyTheme.");
-            return;
-        }
+        // Clear previous theme classes from the main area
+        themesArray.forEach(t => {
+            if (areaToThemeElement.classList.contains(t.value)) {
+                areaToThemeElement.classList.remove(t.value);
+            }
+        });
+        // Add the new theme class
+        areaToThemeElement.classList.add(themeValue);
 
-        // Apply theme to the main designated area
-        // Clear only known theme classes to preserve other structural classes if any
-        themesArray.forEach(t => areaToThemeElement.classList.remove(t.value));
-        areaToThemeElement.classList.add(themeValue); 
-
-        // Force re-evaluation of CSS variables from the new theme class for the main area
-        // This ensures the direct children and the element itself get the root variables applied.
+        // Apply root CSS variables for background and text color to the themed area
+        // This ensures the main container itself reflects the theme immediately.
         areaToThemeElement.style.backgroundColor = 'var(--background-color)';
         areaToThemeElement.style.color = 'var(--text-color)';
         
         const currentThemeObject = themesArray.find(t => t.value === themeValue);
 
-        // Call the optional callback if provided, passing the new theme value and object
+        // Call the optional callback for page-specific theme updates
         if (onThemeChangeCallback && typeof onThemeChangeCallback === 'function') {
-            onThemeChangeCallback(themeValue, currentThemeObject);
+            onThemeChangeCallback(themeValue, currentThemeObject || {}); // Pass empty obj if not found
         }
     }
 
-    // Apply the first theme initially if themes exist
+    // Apply the first theme by default
     if (themesArray.length > 0) {
+        themeSwitcherSelectElement.value = themesArray[0].value;
         applyTheme(themesArray[0].value);
-        themeSwitcherSelectElement.value = themesArray[0].value; // Set dropdown to current theme
     }
 
     // Add event listener to the select dropdown
@@ -58,5 +66,6 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         applyTheme(event.target.value);
     });
 
-    return applyTheme; // Optionally return the applyTheme function
+    // console.log("Theme switcher initialized for:", areaToThemeElement);
+    return applyTheme; // Optionally return the applyTheme function for direct use
 }
