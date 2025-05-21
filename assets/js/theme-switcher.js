@@ -1,14 +1,24 @@
 // assets/js/theme-switcher.js
 
+const THEME_STORAGE_KEY_PREFIX = 'fitflow_user_theme_preference_'; // Prefix for storage key
+
 /**
- * Initializes the theme switcher dropdown and handles theme changes.
+ * Initializes the theme switcher dropdown and handles theme changes,
+ * remembering the user's last selection via Local Storage.
  * @param {Array} themesArray - Array of theme objects {value, name, ...any other theme-specific data}.
  * @param {HTMLElement} themeSwitcherSelectElement - The <select> element for theme switching.
  * @param {HTMLElement} areaToThemeElement - The main DOM element to apply the theme class to.
  * @param {Function} [onThemeChangeCallback] - Optional callback function after a theme is applied. 
  *                                             Receives (newThemeValue: string, currentThemeObject: object).
+ * @param {string} [pageKey='default'] - A unique key for this page/context to store its theme preference separately.
  */
-export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement, areaToThemeElement, onThemeChangeCallback) {
+export function initializeThemeSwitcher(
+    themesArray, 
+    themeSwitcherSelectElement, 
+    areaToThemeElement, 
+    onThemeChangeCallback,
+    pageKey = 'default' // Unique key for storing this page's theme
+) {
     if (!themesArray || themesArray.length === 0) {
         console.warn("Theme switcher: No themes provided.");
         if(themeSwitcherSelectElement) themeSwitcherSelectElement.style.display = 'none';
@@ -23,6 +33,8 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
         return;
     }
 
+    const currentThemeStorageKey = THEME_STORAGE_KEY_PREFIX + pageKey;
+
     // Populate the select dropdown
     themesArray.forEach(theme => {
         const option = document.createElement('option');
@@ -33,39 +45,52 @@ export function initializeThemeSwitcher(themesArray, themeSwitcherSelectElement,
 
     // Function to apply the theme
     function applyTheme(themeValue) {
-        // Clear previous theme classes from the main area
         themesArray.forEach(t => {
             if (areaToThemeElement.classList.contains(t.value)) {
                 areaToThemeElement.classList.remove(t.value);
             }
         });
-        // Add the new theme class
         areaToThemeElement.classList.add(themeValue);
-
-        // Apply root CSS variables for background and text color to the themed area
-        // This ensures the main container itself reflects the theme immediately.
         areaToThemeElement.style.backgroundColor = 'var(--background-color)';
         areaToThemeElement.style.color = 'var(--text-color)';
         
+        // Save the selected theme to Local Storage for this pageKey
+        try {
+            localStorage.setItem(currentThemeStorageKey, themeValue);
+        } catch (e) {
+            console.warn("Could not save theme preference to Local Storage:", e);
+        }
+        
         const currentThemeObject = themesArray.find(t => t.value === themeValue);
-
-        // Call the optional callback for page-specific theme updates
         if (onThemeChangeCallback && typeof onThemeChangeCallback === 'function') {
-            onThemeChangeCallback(themeValue, currentThemeObject || {}); // Pass empty obj if not found
+            onThemeChangeCallback(themeValue, currentThemeObject || {});
         }
     }
 
-    // Apply the first theme by default
-    if (themesArray.length > 0) {
-        themeSwitcherSelectElement.value = themesArray[0].value;
-        applyTheme(themesArray[0].value);
+    // Determine the initial theme
+    let initialThemeValue = themesArray[0].value; // Default to the first theme
+    try {
+        const storedTheme = localStorage.getItem(currentThemeStorageKey);
+        if (storedTheme && themesArray.some(t => t.value === storedTheme)) {
+            initialThemeValue = storedTheme;
+            // console.log(`Theme switcher (${pageKey}): Loaded '${storedTheme}' from Local Storage.`);
+        } else {
+            // console.log(`Theme switcher (${pageKey}): No valid stored theme found, defaulting to '${initialThemeValue}'.`);
+        }
+    } catch (e) {
+        console.warn("Could not load theme preference from Local Storage:", e);
     }
+
+    // Apply the initial theme
+    themeSwitcherSelectElement.value = initialThemeValue;
+    applyTheme(initialThemeValue);
+
 
     // Add event listener to the select dropdown
     themeSwitcherSelectElement.addEventListener('change', (event) => {
         applyTheme(event.target.value);
     });
 
-    // console.log("Theme switcher initialized for:", areaToThemeElement);
-    return applyTheme; // Optionally return the applyTheme function for direct use
+    // console.log(`Theme switcher initialized for pageKey: '${pageKey}' on element:`, areaToThemeElement);
+    return applyTheme;
 }
