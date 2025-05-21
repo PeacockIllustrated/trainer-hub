@@ -4,19 +4,21 @@
 /* They will use the CSS variables provided by the *selected theme* */
 
 body.landing-enhanced {
-    /* Base font for this enhanced version - theme can still override --font-family-primary */
-    font-family: 'Open Sans', var(--font-family-sans); 
+    font-family: var(--font-family-primary); /* Uses theme's primary font for body text */
     background-color: var(--background-color); /* From theme */
     color: var(--text-color); /* From theme */
-    /* Optional: Add a very subtle common texture or gradient that works with most themes */
-    /* background-image: linear-gradient(rgba(255,255,255,0.02), rgba(0,0,0,0.02)); */
+    /* Subtle dot matrix or circuit board pattern using theme's neutral color */
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03), rgba(0,0,0,0.03)), /* Very subtle overlay to ensure readability, adjust as needed */
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-29c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm63 41c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM34 90c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm56-76c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM6 60c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm18-48c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='var(--neutral-medium)' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-attachment: fixed; /* Makes pattern stay in place during scroll */
     overflow-x: hidden;
 }
 
 .landing-header.enhanced {
-    background-color: color-mix(in srgb, var(--surface-color) 85%, transparent); /* Use surface color with transparency */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: color-mix(in srgb, var(--surface-color) 90%, transparent); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color-light);
     position: sticky;
     top: 0;
@@ -24,32 +26,33 @@ body.landing-enhanced {
 }
 
 .landing-header.enhanced .landing-logo {
-    color: var(--primary-color); /* Use theme's primary color */
-    /* Optional: text-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 50%, transparent); */
+    font-family: var(--font-family-headings); /* Use theme's heading font for logo */
+    color: var(--primary-color); 
+    text-shadow: 0 0 5px color-mix(in srgb, var(--primary-color) 30%, transparent);
 }
 .landing-header.enhanced .landing-nav a {
+    font-family: var(--font-family-primary); /* Ensure nav links use primary font */
     color: var(--text-color-muted);
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 .landing-header.enhanced .landing-nav a:hover,
 .landing-header.enhanced .landing-nav a.is-active {
     color: var(--primary-color);
-    /* Optional: text-shadow: 0 0 5px color-mix(in srgb, var(--primary-color) 30%, transparent); */
+    text-shadow: 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
-/* Ensure theme switcher in nav also gets themed correctly */
 .landing-header.enhanced .landing-nav #landingThemeSwitcher {
     background-color: var(--surface-color-alt);
     color: var(--text-color-on-surface);
     border: 1px solid var(--border-color);
+    font-family: var(--font-family-primary); /* Theme's primary font for switcher text */
 }
 
 
 .hero-section.enhanced {
-    background-color: var(--surface-main); /* Use theme's surface for hero */
-    /* Or make it transparent to take body background if desired: background-color: transparent; */
+    background-color: transparent; /* Let body background show through for layered effect */
     min-height: 70vh;
     padding: var(--spacing-xxl) var(--spacing-lg) var(--spacing-xxl);
-    color: var(--text-color-on-surface); /* Text color appropriate for surface */
+    color: var(--text-color); /* Text color suitable for body background */
     text-align: left; 
     display: flex; 
     align-items: center; 
@@ -58,8 +61,8 @@ body.landing-enhanced {
 .hero-section.enhanced .hero-content {
     max-width: 800px; 
     margin-left: 0; 
-    animation: fadeInFromLeft 0.8s ease-out 0.2s forwards; /* Added slight delay */
-    opacity: 0; /* Start hidden for animation */
+    animation: fadeInFromLeft 0.8s ease-out 0.2s forwards;
+    opacity: 0; 
 }
 
 @keyframes fadeInFromLeft {
@@ -68,22 +71,22 @@ body.landing-enhanced {
 }
 
 .hero-section.enhanced h1 {
-    font-family: var(--font-family-headings); /* Theme's heading font */
+    font-family: var(--font-family-headings); /* Uses theme's heading font */
     font-size: 3.2em; 
-    color: var(--heading-color-on-surface); /* Theme's heading color */
+    color: var(--heading-color); /* Theme's heading color */
     line-height: 1.15;
     margin-bottom: var(--spacing-lg);
-    /* Optional: text-shadow: 0 1px 3px rgba(0,0,0,0.1); Based on theme variables this might be too dark/light */
+    text-shadow: 0 2px 10px color-mix(in srgb, var(--heading-color) 15%, transparent);
 }
 .hero-section.enhanced h1 .highlight { 
-    color: var(--accent-color); /* Theme's accent color for highlight */
+    color: var(--accent-color); 
     display: inline-block; 
 }
 
 .hero-section.enhanced p.subtitle {
-    font-family: var(--font-family-primary); /* Theme's primary font */
+    font-family: var(--font-family-primary); /* Uses theme's primary font */
     font-size: 1.25em;
-    color: var(--text-color-muted); /* Theme's muted text color */
+    color: var(--text-color-muted); 
     max-width: 650px;
     margin-bottom: var(--spacing-xl);
 }
@@ -94,140 +97,121 @@ body.landing-enhanced {
     justify-content: flex-start; 
     align-items: center;
 }
-/* General Google button styling is in index.html's <style> block, 
-   but hover effects can be enhanced here if desired */
 .enhanced .g-signin2 { 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .enhanced .g-signin2:hover {
     transform: translateY(-2px);
-    /* box-shadow uses theme variables from pt-button potentially */
+    /* Google button shadow is harder to theme consistently, rely on its own theming or var(--shadow-md) */
 }
 
 .enhanced .admin-signin-link {
-    color: var(--link-color-hover); /* Use theme's link hover color */
+    color: var(--link-color-hover); 
     font-size: 0.9em;
     opacity: 0.9;
 }
 
 .cta-section.enhanced {
-    background-color: var(--surface-color-alt); /* Theme's alt surface */
+    background-color: var(--surface-color-alt); 
     padding: var(--spacing-xl) var(--spacing-lg);
     border-top: 1px solid var(--border-color-light);
 }
 .cta-section.enhanced h2 {
-    font-family: var(--font-family-headings);
+    font-family: var(--font-family-headings); /* Uses theme's heading font */
     color: var(--heading-color);
     margin-bottom: var(--spacing-md);
     font-size: 1.8em;
 }
 .cta-section.enhanced p {
+    font-family: var(--font-family-primary); /* Uses theme's primary font */
     color: var(--text-color-muted);
     max-width: 600px;
     margin: 0 auto var(--spacing-lg);
 }
-/* CTA buttons will pick up .pt-button styles which are themed */
 .cta-section.enhanced .cta-button { 
-    /* Additional specific styles if needed, e.g., for prominence */
     padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1.1em; /* Slightly larger than default small button */
+    font-size: 1.1em; 
     margin: var(--spacing-xs);
+    /* .pt-button styles from _components.css will provide themed bg, color, border */
 }
 
 
 .features-section.enhanced {
     background-color: var(--background-color); 
     padding: var(--spacing-xxl) var(--spacing-lg);
-    border-top: 1px solid var(--border-color); /* Use standard border color */
+    border-top: 1px solid var(--border-color);
 }
 .features-section.enhanced h2 {
+    font-family: var(--font-family-headings); /* Uses theme's heading font */
     color: var(--heading-color);
     text-align: center;
     margin-bottom: var(--spacing-xl);
 }
-.features-section.enhanced h2 .highlight { /* If you add a span for highlighting in "Why FitFlow for Trainers?" */
+.features-section.enhanced h2 .highlight { 
     color: var(--accent-color);
 }
 .features-section.enhanced .feature-item {
     background-color: var(--surface-color); 
     color: var(--text-color-on-surface);
-    border: 1px solid var(--border-color-light); /* Lighter border for cards */
-    box-shadow: var(--shadow-md); /* Theme's shadow */
+    border: 1px solid var(--border-color-light); 
+    box-shadow: var(--shadow-md); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .features-section.enhanced .feature-item:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: var(--shadow-lg); /* Theme's larger shadow */
+    box-shadow: var(--shadow-lg); 
 }
 .features-section.enhanced .feature-item .icon {
-    color: var(--primary-color); /* Theme's primary color for icons */
+    color: var(--primary-color); 
     font-size: 3em;
 }
 .features-section.enhanced .feature-item h3 {
-    color: var(--heading-color-on-surface); /* Theme's heading color on this surface */
+    font-family: var(--font-family-headings); /* Uses theme's heading font */
+    color: var(--heading-color-on-surface); 
+}
+.features-section.enhanced .feature-item p {
+    font-family: var(--font-family-primary); /* Uses theme's primary font */
 }
 
+
 #admin-login-section.enhanced { 
-    background-color: var(--surface-color-alt); /* Use alt surface */
+    background-color: var(--surface-color-alt); 
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
     margin: var(--spacing-xxl) auto;
-    box-shadow: var(--shadow-lg); /* Prominent shadow */
+    box-shadow: var(--shadow-lg); 
     border: 1px solid var(--border-color);
 }
-#admin-login-section.enhanced .chunk-section__title {
+#admin-login-section.enhanced .chunk-section__title { /* Assumes .chunk-section__title is an h2 or similar */
+    font-family: var(--font-family-headings); /* Uses theme's heading font */
     color: var(--heading-color);
     text-align: center;
 }
 #admin-login-section.enhanced p {
+    font-family: var(--font-family-primary); /* Uses theme's primary font */
     color: var(--text-color-muted);
 }
-#admin-login-section.enhanced a { /* Link inside admin login */
+#admin-login-section.enhanced a { 
     color: var(--link-color);
+    font-family: var(--font-family-primary);
 }
 
 
 .landing-footer.enhanced {
-    background-color: var(--neutral-dark); /* This can be a fixed dark footer if desired, or use surface color */
-    color: var(--neutral-light);           /* Or use --text-color-on-surface */
-    border-top: 1px solid var(--border-color); /* Use standard border for consistency */
+    /* Keep it dark for contrast usually, but uses theme variables if they define dark neutrals */
+    background-color: var(--neutral-dark, #222); /* Fallback to a generic dark if theme neutral-dark is light */
+    color: var(--neutral-light, #ccc); /* Fallback if theme neutral-light is dark */
+    border-top: 1px solid var(--border-color); 
+    font-family: var(--font-family-primary);
 }
 
 /* Mobile adjustments for enhanced landing page */
 @media (max-width: 768px) {
-    .hero-section.enhanced {
-        text-align: center;
-        padding-top: var(--spacing-xl);
-        padding-bottom: var(--spacing-xl);
-    }
-    .hero-section.enhanced .hero-content {
-        margin-left: auto;
-        margin-right: auto;
-        animation: none; 
-        opacity: 1; /* Ensure visible if animation is disabled */
-    }
-    .hero-section.enhanced h1 {
-        font-size: 2.2em; /* Adjusted from 2.5 for better fit */
-    }
-    .hero-section.enhanced p.subtitle {
-        font-size: 1.05em; /* Adjusted */
-    }
-    .enhanced .signin-options {
-        flex-direction: column;
-        align-items: center; 
-    }
-    .landing-header.enhanced { /* The header itself, not its children here for stacking */
-        /* flex-direction: column; is handled by original CSS */
-        /* gap: var(--spacing-sm); is handled by original CSS */
-    }
-    .cta-section.enhanced .cta-button {
-        display: block; /* Stack CTA buttons on mobile */
-        width: 100%;
-        max-width: 320px; /* Prevent them from being too wide */
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .cta-section.enhanced .cta-button:not(:last-child) {
-        margin-bottom: var(--spacing-md);
-    }
+    .hero-section.enhanced { text-align: center; padding-top: var(--spacing-xl); padding-bottom: var(--spacing-xl); }
+    .hero-section.enhanced .hero-content { margin-left: auto; margin-right: auto; animation: none; opacity: 1; }
+    .hero-section.enhanced h1 { font-size: 2.2em; }
+    .hero-section.enhanced p.subtitle { font-size: 1.05em; }
+    .enhanced .signin-options { flex-direction: column; align-items: center; }
+    .cta-section.enhanced .cta-button { display: block; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; }
+    .cta-section.enhanced .cta-button:not(:last-child) { margin-bottom: var(--spacing-md); }
 }
