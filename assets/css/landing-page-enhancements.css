@@ -1,0 +1,217 @@
+/* assets/css/landing-page-enhancements.css */
+
+/* Apply a specific theme by default for the enhanced landing page, e.g., Tech Data or a new custom one */
+/* This will be overridden by the theme switcher, but provides a strong default */
+body.landing-enhanced { /* Add this class to body in index.html if you want to scope these styles */
+    /* --- Assuming theme-tech-data as a base for "sexy admin" feel --- */
+    --primary-brand-color: #00D1FF;  /* Electric Cyan */
+    --accent-color-main: #39FF14;    /* Neon/Hacker Green */
+    --neutral-dark: #0A0F14;   /* Very Dark Blue/Black */
+    --neutral-medium: #1E2A3A; /* Dark Blue-Gray */
+    --background-main: var(--neutral-dark);
+    --surface-main: #121A23;
+    --text-color: #D0E0F0;
+    --heading-color: var(--primary-brand-color);
+    --link-color: var(--accent-color-main);
+    --font-family-primary: 'Roboto Mono', monospace;
+    --font-family-headings: 'Orbitron', sans-serif;
+    /* --- End of theme variable overrides for this specific enhanced look --- */
+
+    background-color: var(--background-main);
+    color: var(--text-color);
+    background-image: 
+        linear-gradient(rgba(10, 15, 20, 0.95), rgba(10, 15, 20, 0.95)),
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-29c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm63 41c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM34 90c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm56-76c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM6 60c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm18-48c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='%231E2A3A' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E"); /* Subtle dot matrix or circuit board pattern */
+    background-blend-mode: multiply;
+    overflow-x: hidden;
+}
+
+.landing-header.enhanced {
+    background-color: rgba(18, 26, 35, 0.85); /* Semi-transparent dark surface */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--neutral-medium);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.landing-header.enhanced .landing-logo {
+    color: var(--primary-brand-color);
+    text-shadow: 0 0 8px var(--primary-brand-color);
+}
+.landing-header.enhanced .landing-nav a {
+    color: var(--text-color-muted);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.landing-header.enhanced .landing-nav a:hover,
+.landing-header.enhanced .landing-nav a.is-active { /* Add .is-active if you implement active nav states */
+    color: var(--primary-brand-light);
+    text-shadow: 0 0 5px var(--primary-brand-light);
+}
+
+.hero-section.enhanced {
+    background-color: transparent; /* Take body background */
+    min-height: 70vh;
+    padding: var(--spacing-xxl) var(--spacing-lg) var(--spacing-xxl);
+    color: var(--text-color);
+    text-align: left; /* Shift from center for a more "dashboard intro" feel */
+    display: flex; /* Enable flex for alignment */
+    align-items: center; /* Vertically center content */
+}
+
+.hero-section.enhanced .hero-content {
+    max-width: 800px; /* Slightly wider */
+    margin-left: 0; /* Align left */
+    animation: fadeInFromLeft 1s ease-out forwards;
+}
+
+@keyframes fadeInFromLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+
+.hero-section.enhanced h1 {
+    font-size: 3.5em; /* Larger for impact */
+    color: var(--heading-color);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-lg);
+    text-shadow: 0 2px 15px rgba(0, 209, 255, 0.2);
+}
+.hero-section.enhanced h1 .highlight { /* For specific words */
+    color: var(--accent-color-main);
+    display: inline-block; /* keeps it on same line but allows animation */
+}
+
+.hero-section.enhanced p.subtitle {
+    font-size: 1.3em;
+    color: var(--text-color-muted);
+    max-width: 650px;
+    margin-bottom: var(--spacing-xl);
+}
+
+.enhanced .signin-options {
+    flex-direction: row; /* Sign in options side-by-side */
+    gap: var(--spacing-lg);
+    justify-content: flex-start; /* Align left */
+    align-items: center;
+}
+
+.enhanced .g-signin2 { /* Style the Google button wrapper */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.enhanced .g-signin2:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 209, 255, 0.25);
+}
+/* The actual Google button content can be styled further if needed, but it's tricky */
+
+.enhanced .admin-signin-link {
+    color: var(--accent-color-light);
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+.enhanced .admin-signin-link:hover { opacity: 1; }
+
+.cta-section.enhanced {
+    background-color: var(--surface-main);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-top: 1px solid var(--neutral-medium);
+}
+
+.cta-section.enhanced .cta-button {
+    background-color: var(--accent-color-main);
+    color: var(--neutral-dark); /* Dark text on neon green */
+    padding: var(--spacing-md) var(--spacing-xxl); /* Larger padding */
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px var(--accent-color-main), 0 0 20px color-mix(in srgb, var(--accent-color-main) 50%, transparent);
+}
+.cta-section.enhanced .cta-button:hover {
+    background-color: var(--accent-color-light);
+    color: var(--neutral-dark);
+    box-shadow: 0 0 15px var(--accent-color-main), 0 0 30px color-mix(in srgb, var(--accent-color-main) 70%, transparent);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.features-section.enhanced {
+    background-color: var(--background-main); /* Use main dark background */
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    border-top: 1px solid var(--neutral-medium);
+}
+.features-section.enhanced h2 {
+    color: var(--heading-color);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+.features-section.enhanced .feature-item {
+    background-color: var(--surface-main); /* Dark cards */
+    color: var(--text-color-on-surface);
+    border: 1px solid var(--neutral-medium);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.features-section.enhanced .feature-item:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 209, 255, 0.15);
+}
+.features-section.enhanced .feature-item .icon {
+    color: var(--accent-color-main); /* Neon green icons */
+    font-size: 3em;
+}
+.features-section.enhanced .feature-item h3 {
+    color: var(--primary-brand-color); /* Cyan headings in cards */
+}
+
+#admin-login-section.enhanced { /* Style the admin login section */
+    background-color: var(--surface-main);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    margin: var(--spacing-xxl) auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+#admin-login-section.enhanced .chunk-section__title {
+    color: var(--heading-color);
+    text-align: center;
+}
+
+.landing-footer.enhanced {
+    background-color: var(--neutral-dark);
+    color: var(--neutral-light);
+    border-top: 1px solid var(--neutral-medium);
+}
+
+/* Mobile adjustments for enhanced landing page */
+@media (max-width: 768px) {
+    .hero-section.enhanced {
+        text-align: center;
+        padding-top: var(--spacing-xl);
+        padding-bottom: var(--spacing-xl);
+    }
+    .hero-section.enhanced .hero-content {
+        margin-left: auto;
+        margin-right: auto;
+        animation: none; /* Disable animation on mobile for simplicity */
+    }
+    .hero-section.enhanced h1 {
+        font-size: 2.5em;
+    }
+    .hero-section.enhanced p.subtitle {
+        font-size: 1.1em;
+    }
+    .enhanced .signin-options {
+        flex-direction: column;
+        align-items: center; /* Center Google button on mobile */
+    }
+    .landing-header.enhanced {
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+    .landing-header.enhanced .landing-nav a { /* Ensure nav links in header are also visible */
+        color: var(--text-color-muted);
+    }
+}
