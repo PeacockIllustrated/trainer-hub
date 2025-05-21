@@ -4,6 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"; // Add serverTimestamp
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -27,4 +28,4 @@ const db = getFirestore(app); // Initialize Firestore
 // const analytics = getAnalytics(app);
 
 // Export the initialized services so they can be used in other modules
-export { app, auth, db /*, analytics (if enabled) */ };
+export { app, auth, db, serverTimestamp };
