@@ -1,74 +1,63 @@
 // assets/js/showcase-dashboard-init.js
-
 import { initializeThemeSwitcher } from './theme-switcher.js';
-import { initializeModals, openModal } from './components/modal.js'; // closeModal might not be used directly here
+import { initializeModals, openModal } from './components/modal.js';
 import { initializeTabs } from './components/tabs.js';
 import { initializeAccordions } from './components/accordion.js';
 import { initializeImageSliders } from './components/image-slider.js';
 import { initializeFileUploads } from './components/file-upload.js';
-
-const themesForDashboard = [ 
-    { value: 'theme-modern-professional', name: 'Modern & Professional' },
-    { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
-    { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' },
-    { value: 'theme-retro-funk', name: 'Retro Funk' }, 
-    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
-    { value: 'theme-urban-grit', name: 'Urban Grit' },
-    { value: 'theme-playful-pop', name: 'Playful Pop' },
-    { value: 'theme-tech-data', name: 'Tech Data' }
-];
+import { FITFLOW_THEMES_CONFIG } from './themes-config.js'; // Import shared themes
 
 document.addEventListener('DOMContentLoaded', () => {
     const themeSwitcherElement = document.getElementById('theme-switcher');
-    const themedAreaElement = document.getElementById('themed-showcase-area');
-    const modalElementForTheme = document.getElementById('sampleModalShowcase'); // Specific modal for this page
+    // For showcase pages, we might theme a specific area OR the whole body.
+    // If we want the page header (outside themed-showcase-area) to also reflect the theme,
+    // then document.body is the better target for the theme class.
+    // The 'themed-showcase-area' can still derive its styles from CSS vars on the body.
+    const themedAreaElement = document.getElementById('themed-showcase-area'); // Could be document.body
+    const bodyToTheme = document.body; // Let's target body for global consistency
+    const modalElementForTheme = document.getElementById('sampleModalShowcase');
 
-    if (!themedAreaElement) {
-        console.error("pt-showcase-dashboard.html: Essential page element #themed-showcase-area not found.");
-        return;
-    }
-    if (!themeSwitcherElement) { // If switcher isn't on the page, still try to apply a default theme to area + modal
-        console.warn("pt-showcase-dashboard.html: #theme-switcher element not found. Applying default theme if possible.");
-        if (themesForDashboard.length > 0) {
-            themedAreaElement.classList.add(themesForDashboard[0].value);
-            themedAreaElement.style.backgroundColor = 'var(--background-color)';
-            themedAreaElement.style.color = 'var(--text-color)';
+    if (!themeSwitcherElement) {
+        console.warn("Showcase Dashboard: #theme-switcher element not found. Applying default theme.");
+        if (FITFLOW_THEMES_CONFIG.length > 0) {
+            const defaultTheme = FITFLOW_THEMES_CONFIG[0];
+            bodyToTheme.classList.add(defaultTheme.value);
+            // themedAreaElement might not need direct class if body is themed and CSS vars are used
             if (modalElementForTheme) {
-                themesForDashboard.forEach(t => modalElementForTheme.classList.remove(t.value));
-                modalElementForTheme.classList.add(themesForDashboard[0].value);
+                FITFLOW_THEMES_CONFIG.forEach(t => modalElementForTheme.classList.remove(t.value));
+                modalElementForTheme.classList.add(defaultTheme.value);
             }
         }
     } else {
         initializeThemeSwitcher(
-            themesForDashboard,
+            FITFLOW_THEMES_CONFIG,
             themeSwitcherElement,
-            themedAreaElement,
-            (newThemeValue, currentThemeObject) => { // onThemeChangeCallback
-                // Theme the specific modal on this page
+            bodyToTheme, // Target document.body for theme class
+            (newThemeValue, currentThemeObject) => {
+                console.log(`Showcase Dashboard theme changed to ${newThemeValue}`);
                 if (modalElementForTheme) {
-                    themesForDashboard.forEach(t => { // Remove all known theme classes
+                    FITFLOW_THEMES_CONFIG.forEach(t => {
                         if (modalElementForTheme.classList.contains(t.value)) {
                             modalElementForTheme.classList.remove(t.value);
                         }
                     });
-                    modalElementForTheme.classList.add(newThemeValue); // Add current theme
+                    modalElementForTheme.classList.add(newThemeValue);
                 }
-            }
+                // If themedAreaElement is different from bodyToTheme and needs its own class (less common with CSS vars)
+                // you would handle it here too.
+            },
+            'fitflowGlobalTheme' // Use global key
         );
     }
 
-    // Initialize all interactive components used on this page
     initializeModals(); 
     initializeTabs();
     initializeAccordions();
     initializeImageSliders();
     initializeFileUploads();
 
-    // Specific button listener for the modal on this page, if not using data-modal-target
     const openModalBtnShowcase = document.getElementById('openModalBtnShowcase');
-    if (openModalBtnShowcase && modalElementForTheme) { // ensure modal exists too
+    if (openModalBtnShowcase && modalElementForTheme) {
         openModalBtnShowcase.addEventListener('click', () => openModal(modalElementForTheme.id));
     }
 });
