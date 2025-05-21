@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow Client Portal</title>
+    <!-- Google Fonts (same as pt-admin-mvp.html for consistency) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Link all themes for the switcher -->
+    <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-natural-grounded.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-luxe-minimalist.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-retro-funk.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-feminine-elegance.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-urban-grit.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-tech-data.css">
+    <link rel="stylesheet" href="assets/css/themes/theme-playful-pop.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: var(--font-family-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .client-app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+        .client-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .client-page-header h1 {
+            font-family: var(--font-family-headings);
+            color: var(--heading-color);
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
+        #clientThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
+        
+        .view-section { display: none; animation: ptFadeIn 0.3s ease-out; }
+        .view-section.is-active { display: block; }
+        @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .text-muted { color: var(--text-color-muted); }
+        .assigned-workout-item {
+            margin-bottom: var(--spacing-md);
+        }
+        .assigned-workout-item .pt-card-title { font-size: 1.3em; }
+        .exercise-list { list-style: none; padding-left: 0; }
+        .exercise-list li { 
+            padding: var(--spacing-xs) 0; 
+            border-bottom: 1px dashed var(--border-color-light); 
+        }
+        .exercise-list li:last-child { border-bottom: none; }
+    </style>
+</head>
+<body class="theme-modern-professional"> <!-- Default theme -->
+
+    <div class="client-app-container">
+        <header class="client-page-header">
+            <h1 id="pageTitle">Client Login</h1>
+            <div class="theme-selector-container">
+                <label for="clientThemeSwitcher">Theme:</label>
+                <select id="clientThemeSwitcher"></select>
+            </div>
+        </header>
+
+        <main>
+            <!-- Login View -->
+            <section id="loginView" class="view-section is-active">
+                <div class="pt-card">
+                    <h2 class="pt-card-title">Welcome to FitFlow!</h2>
+                    <p>Please select your profile to view your workouts.</p>
+                    <form id="clientLoginForm">
+                        <div class="pt-input-group">
+                            <label for="clientSelect">Select Your Name:</label>
+                            <select id="clientSelect" class="pt-input" required>
+                                <option value="">-- Please Select --</option>
+                                <!-- Client names will be populated here by JS -->
+                            </select>
+                        </div>
+                        <button type="submit" class="pt-button pt-button--primary">View My Workouts</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Dashboard View (for logged-in client) -->
+            <section id="dashboardView" class="view-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                    <h2 id="welcomeMessage" style="font-family: var(--font-family-headings); color: var(--heading-color);">Your Workouts</h2>
+                    <button id="logoutBtn" class="pt-button pt-button--secondary pt-button--small">Logout</button>
+                </div>
+                
+                <div id="assignedWorkoutsContainer">
+                    <p class="text-muted">Loading your assigned workouts...</p>
+                    <!-- Assigned workouts will be rendered here -->
+                </div>
+            </section>
+        </main>
+        
+        <!-- Modal for Workout Details (Optional - can expand items inline too) -->
+        <div class="pt-modal" id="workoutDetailModal">
+            <div class="pt-modal__content">
+                <div class="pt-modal__header">
+                    <h3 class="pt-modal__title" id="workoutDetailModalTitle">Workout Details</h3>
+                    <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
+                </div>
+                <div class="pt-modal__body" id="workoutDetailModalBody">
+                    <!-- Exercise details will be populated here -->
+                </div>
+                <div class="pt-modal__footer">
+                    <button type="button" class="pt-button pt-button--secondary pt-modal__close">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="assets/js/client-app.js"></script>
+</body>
+</html>
