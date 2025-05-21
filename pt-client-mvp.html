@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitFlow Client Portal</title>
-    <!-- Google Fonts (same as pt-admin-mvp.html for consistency) -->
+    <!-- Fonts and CSS links remain the same -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Link all themes for the switcher -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
     <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
     <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
@@ -57,19 +56,58 @@
         @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .text-muted { color: var(--text-color-muted); }
-        .assigned-workout-item {
-            margin-bottom: var(--spacing-md);
+        
+        .assigned-workout-item .pt-card-footer {
+            display: flex; /* MODIFIED for multiple buttons */
+            justify-content: flex-end; /* Align buttons to the right */
+            gap: var(--spacing-sm); /* Space between buttons */
         }
         .assigned-workout-item .pt-card-title { font-size: 1.3em; }
-        .exercise-list { list-style: none; padding-left: 0; }
-        .exercise-list li { 
-            padding: var(--spacing-xs) 0; 
-            border-bottom: 1px dashed var(--border-color-light); 
+
+        /* Styles for workout detail modal */
+        .exercise-detail-item {
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--border-color-light);
         }
-        .exercise-list li:last-child { border-bottom: none; }
+        .exercise-detail-item:last-child { border-bottom: none; }
+        .exercise-detail-item h4 { /* Exercise Name */
+            font-family: var(--font-family-headings);
+            color: var(--heading-color-on-surface);
+            margin: 0 0 var(--spacing-sm) 0;
+            font-size: 1.2em;
+        }
+        .exercise-detail-item .target-metrics {
+            font-size: 0.9em;
+            color: var(--text-color-muted);
+            margin-bottom: var(--spacing-md);
+        }
+        .exercise-set-tracking {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr; /* Label, Reps, Weight */
+            gap: var(--spacing-sm);
+            align-items: center;
+            margin-bottom: var(--spacing-xs);
+        }
+        .exercise-set-tracking label { font-weight: 600; font-size: 0.9em; }
+        .exercise-set-tracking .pt-input { padding: var(--spacing-xs); font-size: 0.9em; }
+        
+        .workout-timer {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color-light);
+            text-align: center;
+        }
+        .workout-timer #timerDisplay {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+            font-family: var(--font-family-mono, monospace);
+        }
+
     </style>
 </head>
-<body class="theme-modern-professional"> <!-- Default theme -->
+<body class="theme-modern-professional">
 
     <div class="client-app-container">
         <header class="client-page-header">
@@ -91,7 +129,6 @@
                             <label for="clientSelect">Select Your Name:</label>
                             <select id="clientSelect" class="pt-input" required>
                                 <option value="">-- Please Select --</option>
-                                <!-- Client names will be populated here by JS -->
                             </select>
                         </div>
                         <button type="submit" class="pt-button pt-button--primary">View My Workouts</button>
@@ -108,22 +145,27 @@
                 
                 <div id="assignedWorkoutsContainer">
                     <p class="text-muted">Loading your assigned workouts...</p>
-                    <!-- Assigned workouts will be rendered here -->
                 </div>
             </section>
         </main>
         
-        <!-- Modal for Workout Details (Optional - can expand items inline too) -->
         <div class="pt-modal" id="workoutDetailModal">
-            <div class="pt-modal__content">
+            <div class="pt-modal__content" style="max-width: 700px;"> <!-- Wider modal for details -->
                 <div class="pt-modal__header">
                     <h3 class="pt-modal__title" id="workoutDetailModalTitle">Workout Details</h3>
                     <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
                 </div>
                 <div class="pt-modal__body" id="workoutDetailModalBody">
-                    <!-- Exercise details will be populated here -->
+                    <!-- Exercise details and tracking inputs will be populated here -->
+                </div>
+                 <div class="workout-timer">
+                    <div id="timerDisplay">00:00</div>
+                    <button id="timerStartBtn" class="pt-button pt-button--primary pt-button--small">Start Timer</button>
+                    <button id="timerPauseBtn" class="pt-button pt-button--secondary pt-button--small" style="display:none;">Pause</button>
+                    <button id="timerResetBtn" class="pt-button pt-button--destructive pt-button--small">Reset</button>
                 </div>
                 <div class="pt-modal__footer">
+                    <!-- Removed "Confirm Action" type buttons, just a close button -->
                     <button type="button" class="pt-button pt-button--secondary pt-modal__close">Close</button>
                 </div>
             </div>
