@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitFlow - Your Personalized Fitness Journey</title>
+    <title>FitFlow - Elevate Your Training Business</title> <!-- More PT/Admin focused title -->
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="490908100618-a13gj712uu1d68ohlj2pk9pb6ndk0qlc.apps.googleusercontent.com">
 
     <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Link all theme CSS files -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css"> 
     <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
     <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
@@ -23,130 +24,45 @@
     <link rel="stylesheet" href="assets/css/themes/theme-playful-pop.css">
     <link rel="stylesheet" href="assets/css/themes/theme-tech-data.css">
     <link rel="stylesheet" href="assets/css/themes/theme-feminine-elegance.css">
+    
+    <!-- NEW: Link to landing page enhancements CSS -->
+    <link rel="stylesheet" href="assets/css/landing-page-enhancements.css">
 
     <style>
+        /* Original base styles for structure - these are still important */
+        /* but landing-page-enhancements.css will override visuals when .landing-enhanced is on body */
         body {
             margin: 0;
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Open Sans', sans-serif; /* Fallback font */
             line-height: 1.7;
-            background-color: var(--background-color, #f4f7f7);
-            color: var(--text-color, #333);
+            background-color: var(--background-color, #f4f7f7); /* Fallback bg */
+            color: var(--text-color, #333); /* Fallback text color */
             overflow-x: hidden; 
         }
 
-        #landing-page-wrapper {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        #landing-page-wrapper { min-height: 100vh; display: flex; flex-direction: column; }
+        .landing-header { padding: var(--spacing-md, 16px) var(--spacing-lg, 24px); background-color: var(--surface-color, #fff); box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.05)); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+        .landing-logo { font-family: 'Poppins', sans-serif; font-size: 1.8em; font-weight: 700; color: var(--primary-color, #005f73); text-decoration: none; }
+        .landing-nav { display:flex; align-items:center; gap: var(--spacing-sm); } /* Added gap for theme switcher */
+        .landing-nav a { margin-left: var(--spacing-lg, 24px); text-decoration: none; color: var(--text-color-muted, #555); font-weight: 600; font-size: 0.95em; }
+        .landing-nav a:hover { color: var(--primary-color, #005f73); }
+        .landing-nav #landingThemeSwitcher { font-size: 0.85em; padding: 4px 8px; margin-left: var(--spacing-lg); }
 
-        .landing-header {
-            padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
-            background-color: var(--surface-color, #fff); 
-            box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.05));
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative; 
-            z-index: 10; 
-        }
 
-        .landing-logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--primary-color, #005f73);
-            text-decoration: none;
-        }
-
-        .landing-nav a {
-            margin-left: var(--spacing-lg, 24px);
-            text-decoration: none;
-            color: var(--text-color-muted, #555);
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-        .landing-nav a:hover {
-            color: var(--primary-color, #005f73);
-        }
-
-        .hero-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: var(--spacing-xxl, 80px) var(--spacing-lg, 24px);
-            background-color: var(--surface-main, #ffffff); /* CHANGED: White/Surface background */
-            color: var(--text-color-on-surface, #333); /* Text color for light background */
-            min-height: 60vh; 
-            position: relative;
-            overflow: hidden; 
-        }
+        .hero-section { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--spacing-xxl, 80px) var(--spacing-lg, 24px); background-color: var(--surface-main, #ffffff); color: var(--text-color-on-surface, #333); min-height: 60vh; position: relative; overflow: hidden; }
+        .hero-content { position: relative; z-index: 2; max-width: 700px; }
+        .hero-section h1 { font-family: 'Poppins', sans-serif; font-size: 3em; font-weight: 700; margin-bottom: var(--spacing-md, 16px); color: var(--heading-color-on-surface); line-height: 1.2; }
+        .hero-section p.subtitle { font-size: 1.2em; margin-bottom: var(--spacing-lg, 24px); color: var(--text-color-on-surface); max-width: 600px; }
+        .signin-options { margin-top: var(--spacing-lg, 24px); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md, 16px); }
+        .g-signin2 { width: 240px !important; height: 50px !important; border-radius: var(--border-radius-md, 6px) !important; box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1)) !important; }
+        .admin-signin-link { font-size: 0.85em; color: var(--text-color-muted); text-decoration: underline; margin-top: var(--spacing-md, 16px); opacity: 0.8; }
+        .admin-signin-link:hover { opacity: 1; }
         
-        .hero-content {
-            position: relative;
-            z-index: 2; 
-            max-width: 700px;
-        }
+        .cta-section { padding: var(--spacing-lg, 24px) var(--spacing-lg, 24px) var(--spacing-xl, 32px); text-align: center; background-color: var(--surface-color-alt, #f9f9f9); }
+        .cta-button { display: inline-block; padding: var(--spacing-md) var(--spacing-xl); font-size: 1.1em; font-weight: 600; text-decoration: none; border-radius: var(--border-radius-pill); transition: transform 0.2s ease, box-shadow 0.2s ease; background-color: var(--primary-color); color: var(--text-color-on-primary); border: 1px solid var(--primary-color); }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); background-color: var(--primary-color-dark); border-color: var(--primary-color-dark); }
 
-        .hero-section h1 {
-            font-family: 'Poppins', sans-serif; font-size: 3em; font-weight: 700;
-            margin-bottom: var(--spacing-md, 16px); color: var(--heading-color-on-surface); line-height: 1.2;
-        }
-        .hero-section p.subtitle {
-             font-size: 1.2em; margin-bottom: var(--spacing-lg, 24px); 
-             color: var(--text-color-on-surface); max-width: 600px;
-        }
-        
-        .signin-options {
-            margin-top: var(--spacing-lg, 24px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-md, 16px);
-        }
-        .g-signin2 { 
-           width: 240px !important; 
-           height: 50px !important;
-           border-radius: var(--border-radius-md, 6px) !important;
-           box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1)) !important;
-        }
-
-        .admin-signin-link {
-            font-size: 0.85em;
-            color: var(--text-color-muted); 
-            text-decoration: underline;
-            margin-top: var(--spacing-md, 16px);
-            opacity: 0.8;
-        }
-         .admin-signin-link:hover { opacity: 1; }
-        
-        .cta-section { /* NEW SECTION FOR CTA BUTTON */
-            padding: var(--spacing-lg, 24px) var(--spacing-lg, 24px) var(--spacing-xl, 32px);
-            text-align: center;
-            background-color: var(--surface-color-alt, #f9f9f9); /* Light contrasting background */
-        }
-        .cta-button {
-            /* Use pt-button styles and make it prominent */
-            display: inline-block;
-            padding: var(--spacing-md) var(--spacing-xl);
-            font-size: 1.1em;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: var(--border-radius-pill);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-
-        .features-section { 
-            padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px); text-align: center;
-            background-color: var(--background-color); /* Or surface-color-alt if distinct from hero */
-        }
+        .features-section { padding: var(--spacing-xxl, 48px) var(--spacing-lg, 24px); text-align: center; background-color: var(--background-color); }
         .features-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.2em; margin-bottom: var(--spacing-xl, 32px); color: var(--heading-color); }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-lg, 24px); max-width: 1200px; margin: 0 auto; }
         .feature-item { background-color: var(--surface-color); padding: var(--spacing-lg, 24px); border-radius: var(--border-radius-lg, 8px); box-shadow: var(--shadow-md); }
@@ -154,115 +70,78 @@
         .feature-item h3 { font-family: 'Poppins', sans-serif; font-size: 1.3em; margin-bottom: var(--spacing-sm, 8px); color: var(--heading-color-on-surface); }
         .feature-item p { font-size: 0.95em; color: var(--text-color-on-surface); }
 
-        .landing-footer { 
-            text-align: center; padding: var(--spacing-lg, 24px); background-color: var(--neutral-dark, #333);
-            color: var(--neutral-light, #ccc); font-size: 0.9em; margin-top: auto;
-        }
+        .landing-footer { text-align: center; padding: var(--spacing-lg, 24px); background-color: var(--neutral-dark, #333); color: var(--neutral-light, #ccc); font-size: 0.9em; margin-top: auto; }
 
         @media (max-width: 768px) {
             .hero-section h1 { font-size: 2.2em; }
             .hero-section p.subtitle { font-size: 1em; }
             .landing-header { flex-direction: column; gap: var(--spacing-sm); }
-            .landing-nav { margin-top: var(--spacing-sm); }
+            .landing-nav { margin-top: var(--spacing-sm); flex-wrap: wrap; justify-content: center;}
+            .landing-nav a { margin-left: var(--spacing-md); } /* Keep consistent spacing */
+            .landing-nav #landingThemeSwitcher { margin-left: var(--spacing-md); width: 100%; max-width: 250px; margin-top: var(--spacing-sm); }
             .cta-button { font-size: 1em; padding: var(--spacing-sm) var(--spacing-lg); }
         }
     </style>
 </head>
-<body class="theme-modern-professional"> 
+<body class="landing-enhanced"> {/* Added class to trigger enhanced styles */}
 
     <div id="landing-page-wrapper"> 
-        <header class="landing-header">
+        <header class="landing-header enhanced">
             <a href="#" class="landing-logo">FitFlow</a>
             <nav class="landing-nav">
-                <a href="#features">Features</a>
-                <a href="pt-showcase-dashboard.html" class="pt-button pt-button--secondary pt-button--small" style="margin-left:var(--spacing-lg);">View Components</a> <!-- Link to Dashboard Showcase -->
-                <a href="#" id="adminLoginLinkPlaceholder" style="margin-left:var(--spacing-sm);">Trainer Login</a>
+                <a href="#features">Key Features</a>
+                <a href="pt-showcase-dashboard.html">Components</a>
+                <a href="#" id="adminLoginLinkPlaceholder">Trainer Portal</a>
+                <select id="landingThemeSwitcher" aria-label="Select Theme"></select>
             </nav>
         </header>
 
-        <section class="hero-section">
+        <section class="hero-section enhanced">
             <div class="hero-content">
-                <h1>Your Personalized Fitness Journey with FitFlow</h1>
+                <h1>The <span class="highlight">Future</span> of Personalized Training is Here.</h1>
                 <p class="subtitle">
-                    Achieve your goals with custom workout plans, progress tracking, and direct support from your dedicated trainer.
+                    FitFlow empowers Personal Trainers with cutting-edge tools to manage clients, design bespoke workout programs, and track progress like never before. Supercharge your business and deliver exceptional results.
                 </p>
-                <div class="signin-options">
-                    <p style="font-weight:600; font-size:1.1em; margin-bottom:var(--spacing-xs); color: var(--heading-color-on-surface);">Ready to start?</p>
-                    <div class="g-signin2" data-onsuccess="onClientSignIn" data-theme="light" data-width="240" data-height="50" data-longtitle="true"></div>
+                <div class="signin-options enhanced">
+                    <!-- For PTs to sign in/up for the FitFlow service itself -->
+                    <a href="#admin-login-section" id="conceptualTrainerSignUp" class="pt-button pt-button--accent cta-button" style="padding: var(--spacing-sm) var(--spacing-lg);">Get Started / Trainer Login</a>
+                    <!-- Client sign in can be a separate flow or page -->
                 </div>
-                 <a href="#admin-login-section" class="admin-signin-link" id="adminLoginLinkConceptual">Are you a trainer? Sign in here.</a>
+                 <a href="pt-admin-mvp.html" class="admin-signin-link enhanced" style="margin-top: var(--spacing-xl); font-size: 1em; display:inline-block;">Explore Admin Demo App →</a>
+
             </div>
         </section>
 
-        <section class="cta-section">
-            <a href="showcase-chunk1-onboarding.html" class="pt-button pt-button--primary cta-button">Explore Onboarding Demo →</a>
+        <section class="cta-section enhanced">
+            <h2 style="font-family: 'Poppins', sans-serif; color: var(--heading-color); margin-bottom: var(--spacing-md); font-size: 1.8em;">Ready to Transform Your Coaching?</h2>
+            <p style="color: var(--text-color-muted); max-width: 600px; margin: 0 auto var(--spacing-lg);">Join the waitlist or explore our interactive demos to see FitFlow in action.</p>
+            <a href="showcase-chunk1-onboarding.html" class="pt-button pt-button--primary cta-button" style="margin-right: var(--spacing-md);">Client Onboarding Demo</a>
+            <a href="pt-showcase-dashboard.html" class="pt-button pt-button--secondary cta-button">Full Component Library</a>
         </section>
 
-        <section class="features-section" id="features">
-            <h2>Why FitFlow?</h2>
+        <section class="features-section enhanced" id="features">
+            <h2>Why FitFlow for <span style="color:var(--accent-color-main);">Trainers</span>?</h2>
             <div class="features-grid">
-                 <div class="feature-item"><div class="icon">💪</div><h3>Custom Workouts</h3><p>Tailored plans designed by your expert trainer to meet your specific needs and goals.</p></div>
-                <div class="feature-item"><div class="icon">📊</div><h3>Progress Tracking</h3><p>Visually track your measurements, strength gains, and see how far you've come.</p></div>
-                <div class="feature-item"><div class="icon">💬</div><h3>Direct Communication</h3><p>Stay connected with your trainer for guidance, motivation, and feedback.</p></div>
+                 <div class="feature-item"><div class="icon">🚀</div><h3>Streamline Workflow</h3><p>Intuitive client management, workout template creation, and assignment. Spend less time on admin, more on coaching.</p></div>
+                <div class="feature-item"><div class="icon">📊</div><h3>Data-Driven Insights</h3><p>Visualize client progress, adherence, and performance. Make informed decisions to optimize training plans.</p></div>
+                <div class="feature-item"><div class="icon">🎨</div><h3>Brand & Customize</h3><p>Deliver a unique, professionally branded app experience to your clients. Stand out from the competition.</p></div>
             </div>
         </section>
         
-        <section class="chunk-section" id="admin-login-section" style="max-width: 400px; margin: 40px auto; display: none;">
-             <h2 class="chunk-section__title">Trainer Portal Login</h2>
-            <p style="text-align:center; margin-bottom:var(--spacing-md);">This area is for registered FitFlow trainers.</p>
-            <div style="display:flex; justify-content:center;">
-                 <div class="g-signin2" data-onsuccess="onAdminSignIn" data-theme="dark"></div>
+        <section class="chunk-section enhanced" id="admin-login-section" style="max-width: 450px; margin: var(--spacing-xxl) auto; display: none;">
+             <h2 class="chunk-section__title">Trainer Portal Access</h2>
+            <p style="text-align:center; margin-bottom:var(--spacing-lg); color: var(--text-color-muted);">Access your FitFlow trainer dashboard or create your account.</p>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:var(--spacing-md);">
+                 <div class="g-signin2" data-onsuccess="onAdminSignIn" data-theme="dark" data-width="260" data-height="50" data-longtitle="true"></div>
+                 <p style="font-size:0.9em; color: var(--text-color-muted);">Or, <a href="#create-account" style="color:var(--accent-color-light); text-decoration:underline;">create a new Trainer account</a>.</p>
             </div>
         </section>
 
-        <footer class="landing-footer">
-            <p>© <span id="currentYear"></span> FitFlow. All Rights Reserved.</p>
+        <footer class="landing-footer enhanced">
+            <p>© <span id="currentYear"></span> FitFlow. Powering Elite Personal Trainers.</p>
         </footer>
     </div>
 
-    <script>
-        // --- Google Sign-In Callbacks & Admin Toggle ---
-        function onClientSignIn(googleUser) { var id_token = googleUser.getAuthResponse().id_token; console.log("CLIENT Google ID Token: " + id_token); alert("Client Signed In (Demo)! Token: " + id_token.substring(0,30) + "..."); var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log('Client signed out for demo.'); }); }
-        function onAdminSignIn(googleUser) { var id_token = googleUser.getAuthResponse().id_token; console.log("ADMIN Google ID Token: " + id_token); alert("Admin Signed In (Demo)! Token: " + id_token.substring(0,30) + "...\nBackend would verify admin status."); var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log('Admin signed out for demo.'); }); }
-        const adminLoginLinkConceptual = document.getElementById('adminLoginLinkConceptual'); const adminLoginLinkPlaceholder = document.getElementById('adminLoginLinkPlaceholder'); const adminLoginSection = document.getElementById('admin-login-section');
-        function toggleAdminLogin(e) { e.preventDefault(); if (adminLoginSection) { adminLoginSection.style.display = adminLoginSection.style.display === 'none' ? 'block' : 'none'; if (adminLoginSection.style.display === 'block') { adminLoginSection.scrollIntoView({ behavior: 'smooth' });}}}
-        if(adminLoginLinkConceptual) adminLoginLinkConceptual.addEventListener('click', toggleAdminLogin); if(adminLoginLinkPlaceholder) adminLoginLinkPlaceholder.addEventListener('click', toggleAdminLogin);
-
-        // --- Theme Switcher Logic ---
-        const themes = [ 
-            { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-            { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-            { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' },
-            { value: 'theme-urban-grit', name: 'Urban Grit & Steel', svgFill: '#E53935', sidebarLogo: 'GRIT', sidebarUser: 'R. Boulder' },
-            { value: 'theme-tech-data', name: 'Tech & Data Driven', svgFill: '#00D1FF', sidebarLogo: 'D4TA', sidebarUser: 'Dr. Byte' },
-            { value: 'theme-playful-pop', name: 'Playful & Vibrant Pop', svgFill: '#FF6B6B', sidebarLogo: 'POPfit', sidebarUser: 'Zippy' }
-        ];
-        const themeSwitcher = document.getElementById('theme-switcher');
-        const bodyElement = document.body; 
-        const landingPageWrapper = document.getElementById('landing-page-wrapper'); 
-
-        if (themeSwitcher && themes.length > 0) {
-            themes.forEach(theme => {
-                const option = document.createElement('option'); option.value = theme.value; option.textContent = theme.name;
-                themeSwitcher.appendChild(option);
-            });
-            
-            function applyLandingTheme(themeValue) {
-                bodyElement.className = ''; 
-                bodyElement.classList.add(themeValue);
-                if(landingPageWrapper){
-                    landingPageWrapper.className = ''; 
-                    landingPageWrapper.classList.add(themeValue);
-                    landingPageWrapper.style.backgroundColor = 'var(--background-color)';
-                    landingPageWrapper.style.color = 'var(--text-color)';
-                }
-            }
-            applyLandingTheme(themes[0].value); 
-            themeSwitcher.value = themes[0].value;
-            themeSwitcher.addEventListener('change', (event) => { applyLandingTheme(event.target.value); });
-        }
-        
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-    </script>
+    <script type="module" src="assets/js/landing-page-init.js"></script>
 </body>
 </html>
