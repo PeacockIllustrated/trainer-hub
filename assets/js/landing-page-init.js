@@ -1,5 +1,5 @@
 // assets/js/landing-page-init.js
-import { initThemeSwitcher } from './theme-switcher.js';
+import { initializeThemeSwitcher } from './theme-switcher.js';
 import { auth } from './firebase-config.js'; // Import the initialized auth service
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Theme Switcher for the landing page
     const landingThemeSwitcher = document.getElementById('landingThemeSwitcher');
     if (landingThemeSwitcher) {
-        initThemeSwitcher(landingThemeSwitcher, 'landingPageTheme', document.body, (theme) => {
+        initializeThemeSwitcher(landingThemeSwitcher, 'landingPageTheme', document.body, (theme) => {
             // Optional: Add specific callbacks if parts of the landing page need manual theme updates
             // For example, if some elements are outside the main body or dynamically added
             console.log(`Landing page theme switched to: ${theme}`);
