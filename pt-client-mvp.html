@@ -23,10 +23,39 @@
     <style>
         body { margin: 0; font-family: var(--font-family-primary); background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
         .client-app-container { max-width: 800px; margin: 0 auto; padding: var(--spacing-lg); }
-        .client-page-header { display: flex; justify-content: flex-direction; column: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); }
+        
+        /* Page Header (My Workouts title & Theme Selector) */
+        .client-page-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: var(--spacing-lg); 
+            padding-bottom: var(--spacing-md); 
+            border-bottom: 1px solid var(--border-color); 
+        }
         .client-page-header h1 { font-family: var(--font-family-headings); color: var(--heading-color); font-size: 1.8em; margin: 0; }
-        .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
+        .client-page-header .theme-selector-container { /* Keep this to the right on desktop */
+            /* display: flex; align-items: center; already done by parent */
+        }
+        .client-page-header .theme-selector-container label { margin-right: var(--spacing-sm); font-size: 0.9em; color: var(--text-color-muted); }
         #clientThemeSwitcher { padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); font-size: 0.9em; background-color: var(--surface-color); color: var(--text-color-on-surface); }
+
+        /* Welcome Message & Logout Button Container */
+        /* Giving this div a class for easier targeting */
+        .dashboard-greeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+         .dashboard-greeting-header h2 { /* The "Welcome Thomas..." text */
+            font-family: var(--font-family-headings); 
+            color: var(--heading-color);
+            font-size: 1.4em; /* Slightly smaller than page title */
+            margin: 0; /* Remove default h2 margin */
+        }
+
+
         .view-section { display: none; animation: ptFadeIn 0.3s ease-out; }
         .view-section.is-active { display: block; }
         @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -46,54 +75,57 @@
         .set-tracking-row .pt-input { padding: var(--spacing-xs); font-size: 0.9em; }
         .set-tracking-row input[type="checkbox"] { transform: scale(1.2); margin-left: var(--spacing-xs); }
         
-        /* Default Desktop Styles for Modal Controls */
-        #workoutSessionModal .workout-session-nav { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            margin-top: var(--spacing-md); 
-        }
-        #workoutSessionModal .workout-timer { 
-            margin-top: var(--spacing-md); 
-            padding-top: var(--spacing-md); 
-            border-top: 1px solid var(--border-color-light); 
-            text-align: center; 
-        }
-        #workoutSessionModal .workout-timer #timerDisplay { 
-            font-size: 1.8em; 
-            font-weight: bold; 
-            color: var(--primary-color); 
-            margin-bottom: var(--spacing-sm); 
-            font-family: var(--font-family-mono, monospace); 
-        }
-        #workoutSessionModal .workout-timer .pt-button {
-            margin-top: var(--spacing-xs); /* Small gap if they wrap on slightly larger than mobile */
-        }
-        #workoutSessionModal .pt-modal__footer {
-            display: flex; /* Default for desktop: buttons side-by-side */
-            justify-content: flex-end; /* Align to the right */
-            gap: var(--spacing-sm);
-        }
+        #workoutSessionModal .workout-session-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-md); }
+        #workoutSessionModal .workout-timer { margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--border-color-light); text-align: center; }
+        #workoutSessionModal .workout-timer #timerDisplay { font-size: 1.8em; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm); font-family: var(--font-family-mono, monospace); }
+        #workoutSessionModal .workout-timer .pt-button { margin-top: var(--spacing-xs); }
+        #workoutSessionModal .pt-modal__footer { display: flex; justify-content: flex-end; gap: var(--spacing-sm); }
 
 
-        /* --- Mobile Adjustments for Modal Controls (Increased Specificity) --- */
-        @media (max-width: 600px) {
+        /* --- Mobile Adjustments --- */
+        @media (max-width: 600px) { 
+            /* Stack Page Header items */
+            .client-page-header {
+                flex-direction: column !important;
+                align-items: flex-start !important; /* Align items to the start of the column */
+                gap: var(--spacing-md) !important; /* Space between title and theme selector */
+            }
+            .client-page-header .theme-selector-container {
+                width: 100%; /* Make theme selector container full width */
+            }
+            #clientThemeSwitcher {
+                width: 100%; /* Make select dropdown full width */
+            }
+            
+            /* Stack Dashboard Greeting Header items */
+            .dashboard-greeting-header {
+                flex-direction: column !important;
+                align-items: flex-start !important; /* Align items to the start */
+                gap: var(--spacing-sm) !important; /* Space between welcome text and logout button */
+            }
+             .dashboard-greeting-header #logoutBtn { /* Optional: make logout button full width on mobile */
+                width: 100%;
+                max-width: 200px; /* Or a fixed max-width if you prefer */
+                align-self: flex-end; /* Or center, or stretch if width is 100% */
+            }
+
+
+            /* Modal Controls Stacking (from previous attempt - keep these) */
             #workoutSessionModal .workout-session-nav {
-                flex-direction: column !important; /* Force column stacking */
+                flex-direction: column !important; 
                 gap: var(--spacing-sm) !important;
             }
             #workoutSessionModal .workout-session-nav .pt-button {
-                width: 100% !important; /* Force full width */
+                width: 100% !important; 
             }
             #workoutSessionModal #exerciseProgressIndicator {
                 margin: var(--spacing-xs) 0 !important;
                 text-align: center !important;
                 width: 100% !important;
             }
-
             #workoutSessionModal .workout-timer {
-                display: flex !important; /* Ensure flex is applied */
-                flex-direction: column !important; /* Force column stacking */
+                display: flex !important; 
+                flex-direction: column !important; 
                 align-items: center !important; 
                 gap: var(--spacing-sm) !important;
             }
@@ -102,13 +134,13 @@
                 max-width: 250px !important;
             }
             #workoutSessionModal .pt-modal__footer {
-                display: flex !important; /* Ensure flex is applied */
-                flex-direction: column-reverse !important; /* Force column stacking */
+                display: flex !important; 
+                flex-direction: column-reverse !important; 
                 gap: var(--spacing-sm) !important;
             }
             #workoutSessionModal .pt-modal__footer .pt-button {
                 width: 100% !important;
-                 margin-right: 0 !important; /* Override any potential margin from general button rules */
+                 margin-right: 0 !important; 
             }
         }
     </style>
@@ -126,7 +158,8 @@
 
         <main>
             <section id="loginView" class="view-section is-active">
-                <div class="pt-card">
+                <!-- ... login form ... -->
+                 <div class="pt-card">
                     <h2 class="pt-card-title">Welcome to FitFlow!</h2>
                     <p>Please select your profile to view your workouts.</p>
                     <form id="clientLoginForm">
@@ -140,7 +173,8 @@
             </section>
 
             <section id="dashboardView" class="view-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                <!-- MODIFIED: Added a class to the div containing welcome message and logout -->
+                <div class="dashboard-greeting-header">
                     <h2 id="welcomeMessage" style="font-family: var(--font-family-headings); color: var(--heading-color);">Your Workouts</h2>
                     <button id="logoutBtn" class="pt-button pt-button--secondary pt-button--small">Logout</button>
                 </div>
@@ -148,15 +182,14 @@
             </section>
         </main>
         
+        <!-- Workout Session Modal (structure remains same as previous) -->
         <div class="pt-modal" id="workoutSessionModal">
             <div class="pt-modal__content" style="max-width: 750px;">
                 <div class="pt-modal__header">
                     <h3 class="pt-modal__title" id="workoutSessionModalTitle">Workout Session</h3>
                     <button type="button" class="pt-modal__close" aria-label="Close modal">×</button> 
                 </div>
-                <div class="pt-modal__body" id="workoutSessionModalBody">
-                    <!-- Dynamic exercise content -->
-                </div>
+                <div class="pt-modal__body" id="workoutSessionModalBody"></div>
                 <div class="workout-session-nav" style="display:none;"> 
                     <button id="prevExerciseBtn" class="pt-button pt-button--secondary">Previous Exercise</button>
                     <span id="exerciseProgressIndicator" style="align-self: center; font-style: italic;"></span>
