@@ -1,4 +1,4 @@
-/* --- Base Component Styles --- */
+/* assets/css/base/_components.css */
 
 /* General inherited styles (applied via body in main.css or theme wrappers) */
 /* .themed body provides the overall background, text color, and font */
@@ -70,7 +70,6 @@
   border-color: var(--secondary-color-dark);
   opacity: 1;
 }
-/* Secondary Outline Style (Example - can be a modifier) */
 .pt-button--secondary.pt-button--outline {
   background-color: transparent;
   color: var(--secondary-color);
@@ -78,7 +77,7 @@
 }
 .pt-button--secondary.pt-button--outline:hover {
   background-color: var(--secondary-color-light);
-  color: var(--text-color-on-secondary); /* Check contrast if secondary-color-light is very light */
+  color: var(--text-color-on-secondary); 
   border-color: var(--secondary-color);
 }
 
@@ -109,14 +108,14 @@
   display: block;
   margin-bottom: var(--spacing-xs);
   font-weight: bold;
-  color: var(--text-color-on-surface); /* Label color related to its background */
+  color: var(--text-color-on-surface); 
 }
 .pt-input {
   width: 100%;
   padding: var(--input-padding-y) var(--input-padding-x);
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-radius-sm);
-  background-color: var(--background-color); /* Or var(--surface-color-alt) for contrast */
+  background-color: var(--background-color); 
   color: var(--text-color);
   font-family: var(--font-family-primary);
   font-size: 1em;
@@ -126,23 +125,21 @@
 .pt-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 30%, transparent); /* Subtle focus ring */
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 30%, transparent); 
 }
 
 /* --- Alerts --- */
 .pt-alert {
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
-    border-left: var(--border-width-bold) solid transparent; /* Often a thicker left border */
+    border-left: var(--border-width-bold) solid transparent; 
     border-radius: var(--border-radius-md);
-    /* Default background and text, specific alerts will override */
     background-color: var(--surface-color-alt);
     color: var(--text-color-on-surface);
 }
 .pt-alert strong {
     font-weight: bold;
 }
-
 .pt-alert--success {
     background-color: var(--success-color-light);
     color: var(--text-color-on-success);
@@ -164,88 +161,86 @@
     border-left-color: var(--info-color);
 }
 
-/* --- Sidebar Navigation --- */
+/* --- Sidebar Navigation (MODIFIED for fixed positioning) --- */
 .pt-sidebar {
-    background-color: var(--surface-color); /* Or a specific --sidebar-bg-color if defined in themes */
-    color: var(--text-color-on-surface); /* Or --sidebar-text-color */
-    width: 260px; /* Example width, can be a CSS variable */
-    height: 100vh; /* Full viewport height */
+    background-color: var(--surface-color); 
+    color: var(--text-color-on-surface); 
+    width: var(--sidebar-width, 260px); /* Use a variable for width */
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     padding: var(--spacing-lg) 0;
     border-right: var(--border-width) solid var(--border-color);
-    box-shadow: var(--shadow-sm); /* Subtle shadow */
-    transition: width 0.3s ease; /* For potential collapse functionality */
+    box-shadow: var(--shadow-sm); 
+    transition: width 0.3s ease; 
+
+    position: fixed; /* MODIFIED */
+    top: 0;          /* MODIFIED */
+    left: 0;         /* MODIFIED */
+    z-index: 1000;   /* MODIFIED - ensure it's above typical page content */
+    overflow-y: auto; /* MODIFIED - allow sidebar itself to scroll if content exceeds height */
 }
 
 .pt-sidebar__header {
     padding: 0 var(--spacing-md) var(--spacing-lg);
-    text-align: center; /* Or left, depending on design */
+    text-align: center; 
     border-bottom: var(--border-width) solid var(--border-color-light);
     margin-bottom: var(--spacing-md);
+    flex-shrink: 0; /* Prevent header from shrinking if nav items overflow */
 }
-
 .pt-sidebar__logo {
     font-family: var(--font-family-headings);
-    font-size: 1.8em; /* Example size */
-    color: var(--heading-color); /* Or a specific --logo-color */
+    font-size: 1.8em; 
+    color: var(--heading-color); 
     margin: 0;
 }
 .pt-sidebar__logo-img {
-    max-height: 50px; /* Example */
+    max-height: 50px; 
     width: auto;
 }
 
 .pt-sidebar__nav {
     flex-grow: 1;
-    overflow-y: auto; /* If many nav items */
+    /* overflow-y: auto; REMOVED - moved to .pt-sidebar to allow whole sidebar scroll if header+footer+nav > 100vh */
 }
-
 .pt-sidebar__nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .pt-sidebar__nav-item {
     margin-bottom: var(--spacing-xs);
 }
-
 .pt-sidebar__nav-link {
     display: flex;
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
-    color: var(--text-color-muted); /* Default link color in sidebar */
+    color: var(--text-color-muted); 
     text-decoration: none;
-    border-radius: var(--border-radius-md); /* Rounded effect on hover/active */
-    margin: 0 var(--spacing-sm); /* Give some horizontal margin */
+    border-radius: var(--border-radius-md); 
+    margin: 0 var(--spacing-sm); 
     transition: background-color 0.2s ease, color 0.2s ease;
-    font-weight: 500; /* Slightly bolder than base text */
+    font-weight: 500; 
 }
-
 .pt-sidebar__nav-link:hover {
-    background-color: var(--surface-color-alt); /* Subtle hover */
-    color: var(--primary-color); /* Or specific --sidebar-link-hover-color */
+    background-color: var(--surface-color-alt); 
+    color: var(--primary-color); 
 }
-
 .pt-sidebar__nav-link.is-active {
-    background-color: var(--primary-color-light); /* Use theme's primary-light */
-    color: var(--primary-color-dark); /* Or --text-color-on-primary if primary-light is dark enough */
+    background-color: var(--primary-color-light); 
+    color: var(--primary-color-dark); 
     font-weight: 700;
 }
 .pt-sidebar__nav-link.is-active .pt-sidebar__nav-icon {
-    color: var(--primary-color); /* Or specific active icon color */
+    color: var(--primary-color); 
 }
-
-
 .pt-sidebar__nav-icon {
     margin-right: var(--spacing-sm);
     display: inline-block;
-    width: 24px; /* Fixed width for icon alignment */
+    width: 24px; 
     text-align: center;
-    font-style: normal; /* If using letter placeholders */
+    font-style: normal; 
 }
-
 .pt-sidebar__nav-text {
     flex-grow: 1;
 }
@@ -253,9 +248,9 @@
 .pt-sidebar__footer {
     padding: var(--spacing-md) var(--spacing-md) 0;
     border-top: var(--border-width) solid var(--border-color-light);
-    margin-top: auto; /* Pushes footer to the bottom */
+    margin-top: auto; 
+    flex-shrink: 0; /* Prevent footer from shrinking */
 }
-
 .pt-sidebar__user-profile {
     display: flex;
     align-items: center;
@@ -268,12 +263,11 @@
 .pt-sidebar__user-profile:hover {
     background-color: var(--surface-color-alt);
 }
-
 .pt-sidebar__user-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: var(--neutral-light); /* Placeholder background */
+    background-color: var(--neutral-light); 
     color: var(--neutral-dark);
     display: inline-flex;
     align-items: center;
@@ -281,13 +275,11 @@
     margin-right: var(--spacing-sm);
     font-weight: bold;
 }
-
 .pt-sidebar__user-name {
     font-weight: 600;
 }
-
 .pt-sidebar__logout-link {
-    display: flex; /* Same styling as nav links for consistency */
+    display: flex; 
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
     color: var(--text-color-muted);
@@ -297,7 +289,7 @@
 }
 .pt-sidebar__logout-link:hover {
     background-color: var(--surface-color-alt);
-    color: var(--error-color, #d00000); /* Typically red for logout/destructive */
+    color: var(--error-color, #d00000); 
 }
 
 /* --- Client List Item --- */
@@ -311,45 +303,38 @@
     margin-bottom: var(--spacing-sm);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
-
 .pt-client-list-item:hover {
     background-color: var(--surface-color-alt);
     box-shadow: var(--shadow-xs);
 }
-
-.pt-client-list-item--active { /* For a selected or highlighted item */
+.pt-client-list-item--active { 
     background-color: color-mix(in srgb, var(--primary-color) 10%, var(--surface-color));
     border-left: var(--border-width-bold) solid var(--primary-color);
 }
-
-
 .pt-client-list-item__avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: var(--primary-color-light); /* Themed background */
-    color: var(--primary-color-dark); /* Themed text for initial */
+    background-color: var(--primary-color-light); 
+    color: var(--primary-color-dark); 
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.2em; /* For initials */
+    font-size: 1.2em; 
     margin-right: var(--spacing-md);
     flex-shrink: 0;
 }
-/* You would replace the span with an <img> for actual images */
 .pt-client-list-item__avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
-
 .pt-client-list-item__info {
     flex-grow: 1;
     margin-right: var(--spacing-md);
 }
-
 .pt-client-list-item__name {
     font-family: var(--font-family-headings);
     font-size: 1.1em;
@@ -357,13 +342,11 @@
     margin: 0 0 var(--spacing-xs) 0;
     font-weight: 600;
 }
-
 .pt-client-list-item__meta {
     font-size: 0.9em;
     color: var(--text-color-muted);
     margin: 0;
 }
-
 .pt-client-list-item__actions {
     flex-shrink: 0;
 }
@@ -371,26 +354,22 @@
 /* --- Button Size Modifier --- */
 .pt-button--small {
     padding: calc(var(--button-padding-y) * 0.7) calc(var(--button-padding-x) * 0.8);
-    font-size: 0.9em; /* Adjust as needed */
-    /* Letter spacing might need to be reduced for smaller buttons if globally applied */
+    font-size: 0.9em; 
 }
-
 
 /* --- Mobile Navigation Banner --- */
 .pt-mobile-nav-banner {
-    display: none; /* Hidden by default, shown on mobile via media query */
-    position: fixed; /* MODIFIED: Always fixed to viewport bottom */
+    display: none; 
+    position: fixed; 
     bottom: 0;
     left: 0;
     right: 0;
     background-color: var(--surface-color);
     border-top: var(--border-width) solid var(--border-color);
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
+    z-index: 1000; /* Same as sidebar, ensure proper layering if both could exist */
     padding: 0 var(--spacing-sm);
 }
-
-/* ... rest of .pt-mobile-nav-banner styles remain the same ... */
 .pt-mobile-nav-banner__scroll-container {
     display: flex;
     overflow-x: auto;
@@ -425,43 +404,32 @@
     border-bottom-color: var(--primary-color);
 }
 
-
-/* --- MEDIA QUERY for showing mobile nav (can be in index.html or here) --- */
-@media (max-width: 768px) {
-    .pt-mobile-nav-banner {
-        display: block; /* Show the mobile banner */
-    }
-}
-/* ... other component styles below ... */
-
-/* --- ADD THESE TO _components.css --- */
-
-/* Profile Header (can be expanded from pt-card style) */
+/* Profile Header */
 .pt-profile-header {
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg, 24px); /* Use theme variable */
+    gap: var(--spacing-lg, 24px); 
     padding-bottom: var(--spacing-lg, 24px);
     border-bottom: var(--border-width) solid var(--border-color-light);
     margin-bottom: var(--spacing-lg, 24px);
 }
 .pt-profile-header__avatar {
-    width: 100px; height: 100px; /* Example size */
+    width: 100px; height: 100px; 
     border-radius: 50%;
     background-color: var(--primary-color-light);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5em; /* Larger initials */
+    font-size: 2.5em; 
     color: var(--primary-color-dark);
     font-weight: bold;
     flex-shrink: 0;
-    overflow: hidden; /* For actual images */
+    overflow: hidden; 
 }
 .pt-profile-header__avatar img { width: 100%; height: 100%; object-fit: cover; }
 .pt-profile-header__info h2 {
     margin: 0 0 var(--spacing-xs, 4px) 0;
-    font-size: 1.8em; /* Larger name */
+    font-size: 1.8em; 
     font-family: var(--font-family-headings);
     color: var(--heading-color);
 }
@@ -492,11 +460,11 @@
     padding: var(--spacing-sm) var(--spacing-md);
     cursor: pointer;
     color: var(--text-color-muted);
-    font-weight: 600; /* Bolder tab text */
+    font-weight: 600; 
     font-family: var(--font-family-primary);
     font-size: 1em;
     border-bottom: 3px solid transparent;
-    margin-bottom: calc(-1 * var(--border-width)); /* Overlap bottom border of .pt-tabs */
+    margin-bottom: calc(-1 * var(--border-width)); 
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 .pt-tabs__tab button:hover {
@@ -507,15 +475,18 @@
     border-bottom-color: var(--primary-color);
 }
 .pt-tabs__panel {
-    padding: var(--spacing-md) var(--spacing-xs); /* Add some padding to panels */
+    padding: var(--spacing-md) var(--spacing-xs); 
 }
-.pt-tabs__panel:not(.is-active) { /* Using class to show/hide for better transitions if needed */
+.pt-tabs__panel:not(.is-active) { 
     display: none;
 }
 
 /* Accordion */
+.pt-accordion__item { /* Added this wrapper class for easier targeting if needed */
+    margin-bottom: var(--spacing-xs); /* Default spacing, can be overridden */
+}
 .pt-accordion__item + .pt-accordion__item {
-    margin-top: var(--spacing-xs);
+    /* margin-top: var(--spacing-xs); Removed, using margin-bottom on .pt-accordion__item instead */
 }
 .pt-accordion__button {
     display: flex;
@@ -528,7 +499,7 @@
     border-radius: var(--border-radius-sm);
     text-align: left;
     font-weight: 600;
-    color: var(--text-color-on-surface); /* Ensure text color matches surface */
+    color: var(--text-color-on-surface); 
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.2s ease;
@@ -538,9 +509,9 @@
 }
 .pt-accordion__button::after {
     content: '+';
-    font-size: 1.4em; /* Larger icon */
+    font-size: 1.4em; 
     transition: transform 0.2s ease-out;
-    font-weight: normal; /* Avoid double bolding */
+    font-weight: normal; 
 }
 .pt-accordion__button[aria-expanded="true"]::after {
     transform: rotate(45deg);
@@ -552,13 +523,16 @@
     border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
     background-color: var(--surface-color);
 }
+.pt-accordion__item.is-open .pt-accordion__button { /* Style for when accordion is open */
+    /* Optional: background-color: var(--surface-color); */
+    /* Optional: border-bottom-left-radius: 0; border-bottom-right-radius: 0; */
+}
 .pt-accordion__content[hidden] { display:none; }
-
 
 /* Progress Bar */
 .pt-progress-bar {
     width: 100%;
-    height: 20px; /* Example height */
+    height: 20px; 
     background-color: var(--neutral-extralight);
     border-radius: var(--border-radius-pill);
     overflow: hidden;
@@ -567,12 +541,11 @@
 .pt-progress-bar__fill {
     height: 100%;
     background-color: var(--primary-color);
-    /* width: set by inline style or JS */
-    border-radius: var(--border-radius-pill); /* Match parent */
+    border-radius: var(--border-radius-pill); 
     text-align: center;
     color: var(--text-color-on-primary);
     font-size: 0.8em;
-    line-height: 20px; /* Match height */
+    line-height: 20px; 
     transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     white-space: nowrap;
 }
@@ -581,8 +554,8 @@
 .pt-modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6); /* Darker backdrop */
-    display: none; /* Hidden by default */
+    background-color: rgba(0,0,0,0.6); 
+    display: none; 
     align-items: center;
     justify-content: center;
     z-index: 2000;
@@ -592,8 +565,8 @@
 .pt-modal__content {
     background-color: var(--surface-color);
     padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg); /* Larger radius for modals */
-    max-width: 600px; /* Max width */
+    border-radius: var(--border-radius-lg); 
+    max-width: 600px; 
     width: 95%;
     box-shadow: var(--shadow-xl);
     max-height: 90vh;
@@ -608,14 +581,14 @@
     border-bottom: var(--border-width) solid var(--border-color-light);
 }
 .pt-modal__title {
-    font-size: 1.5em; /* Larger modal title */
+    font-size: 1.5em; 
     margin: 0;
     color: var(--heading-color);
     font-family: var(--font-family-headings);
 }
 .pt-modal__close {
     background: none; border: none;
-    font-size: 1.8em; /* Larger close button */
+    font-size: 1.8em; 
     cursor: pointer;
     color: var(--text-color-muted);
     padding: 0 var(--spacing-xs);
@@ -633,15 +606,14 @@
     margin-right: var(--spacing-sm);
 }
 
-
 /* Loading Spinner */
 .pt-loading-spinner {
     border: 4px solid var(--neutral-extralight);
-    border-top-color: var(--primary-color); /* Use top color for spinner effect */
+    border-top-color: var(--primary-color); 
     border-radius: 50%;
     width: 40px; height: 40px;
     animation: ptSpin 0.8s linear infinite;
-    margin: var(--spacing-lg) auto; /* Center if on its own */
+    margin: var(--spacing-lg) auto; 
 }
 @keyframes ptSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -650,12 +622,11 @@
     display: flex;
     align-items: center;
 }
-.pt-file-upload label.pt-button { /* Style the label like a button */
-    /* padding, background-color, color, border-radius, cursor are inherited from .pt-button */
-    display: inline-block; /* Ensure it behaves like a button */
+.pt-file-upload label.pt-button { 
+    display: inline-block; 
 }
 .pt-file-upload input[type="file"] {
-    display: none; /* Hide the actual input */
+    display: none; 
 }
 .pt-file-upload__name {
     margin-left: var(--spacing-md);
@@ -680,7 +651,7 @@ table.pt-table {
 .pt-table thead th {
     background-color: var(--surface-color-alt);
     font-weight: 600;
-    color: var(--heading-color-on-surface); /* Ensure heading color for th */
+    color: var(--heading-color-on-surface); 
     font-family: var(--font-family-headings);
 }
 .pt-table tbody tr:nth-child(even) {
@@ -689,21 +660,19 @@ table.pt-table {
 .pt-table tbody tr:hover {
     background-color: var(--border-color-light);
 }
-.pt-table .pt-input--small { /* For inputs inside tables */
+.pt-table .pt-input--small { 
     font-size: 0.9em;
     padding: var(--spacing-xs);
 }
 
-/* === APPEND TO YOUR EXISTING _components.css === */
-
-/* --- Stepper Component --- */
+/* Stepper Component */
 .pt-stepper {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to start for label below indicator */
+    align-items: flex-start; 
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color-light); /* Softer line */
+    border-bottom: 1px solid var(--border-color-light); 
 }
 .pt-stepper__step {
     display: flex;
@@ -711,21 +680,20 @@ table.pt-table {
     align-items: center;
     text-align: center;
     color: var(--text-color-muted);
-    flex: 1; /* Make steps take equal width */
-    position: relative; /* For the connector line */
-    padding: 0 var(--spacing-xs); /* Some space around step content */
+    flex: 1; 
+    position: relative; 
+    padding: 0 var(--spacing-xs); 
 }
-/* Connector line - improved */
 .pt-stepper__step:not(:first-child)::before {
     content: '';
     position: absolute;
-    top: 15px; /* Align with center of indicator */
-    right: 50%; /* Start from center of current step */
-    width: 100%; /* Span to the center of the previous step */
+    top: 15px; 
+    right: 50%; 
+    width: 100%; 
     height: 2px;
     background-color: var(--border-color-light);
-    z-index: 0; /* Behind indicator */
-    transform: translateX(-15px); /* Adjust to clear current indicator */
+    z-index: 0; 
+    transform: translateX(-15px); 
 }
 .pt-stepper__indicator {
     width: 30px;
@@ -738,8 +706,8 @@ table.pt-table {
     justify-content: center;
     font-weight: bold;
     margin-bottom: var(--spacing-xs);
-    z-index: 1; /* Above connector line */
-    position: relative; /* Ensure z-index works */
+    z-index: 1; 
+    position: relative; 
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .pt-stepper__label {
@@ -762,22 +730,17 @@ table.pt-table {
     border-color: var(--success-color);
 }
 .pt-stepper__step.is-complete .pt-stepper__label {
-    color: var(--text-color); /* Or --success-color if preferred */
+    color: var(--text-color); 
 }
-/* Connector line for completed steps */
 .pt-stepper__step.is-complete:not(:first-child)::before {
     background-color: var(--success-color);
 }
-.pt-stepper__step.is-active:not(:first-child)::before { /* Line leading to active step is also active */
-    background-color: var(--success-color); /* Or primary-color if preferred */
+.pt-stepper__step.is-active:not(:first-child)::before { 
+    background-color: var(--success-color); 
 }
-
-/* In _components.css */
-/* ... other button styles ... */
-
 .pt-button--destructive {
-  background-color: var(--error-color, #dc3545); /* Use error color from theme or a default red */
-  color: var(--text-color-on-error, #fff); /* Text color for error button */
+  background-color: var(--error-color, #dc3545); 
+  color: var(--text-color-on-error, #fff); 
   border-color: var(--error-color, #dc3545);
 }
 .pt-button--destructive:hover {
@@ -785,47 +748,12 @@ table.pt-table {
   border-color: var(--error-color-dark, #bd2130);
   opacity: 1;
 }
-
 .pt-form-step { display: none; }
 .pt-form-step.is-active { display: block; animation: ptFadeIn 0.5s ease-out; }
 .pt-form-navigation {
     margin-top: var(--spacing-lg);
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Align buttons if different heights */
+    align-items: center; 
 }
 @keyframes ptFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* --- Profile Header (if not already global, ensure it's here) --- */
-.pt-profile-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg, 24px); 
-    padding-bottom: var(--spacing-lg, 24px);
-    border-bottom: var(--border-width) solid var(--border-color-light);
-    margin-bottom: var(--spacing-lg, 24px);
-}
-.pt-profile-header__avatar {
-    width: 80px; height: 80px; /* Default size for this context */
-    border-radius: 50%;
-    background-color: var(--primary-color-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.8em; 
-    color: var(--primary-color-dark);
-    font-weight: bold; flex-shrink: 0; overflow: hidden; 
-}
-.pt-profile-header__avatar img { width: 100%; height: 100%; object-fit: cover; }
-.pt-profile-header__info h2 {
-    margin: 0 0 var(--spacing-xs, 4px) 0;
-    font-size: 1.5em; 
-    font-family: var(--font-family-headings);
-    color: var(--heading-color);
-}
-.pt-profile-header__info p {
-    margin: 0 0 var(--spacing-xs, 4px) 0;
-    font-size: 0.9em;
-    color: var(--text-color-muted);
-}
-.pt-profile-header__actions .pt-button:not(:last-child) {
-    margin-right: var(--spacing-sm, 8px);
-}
