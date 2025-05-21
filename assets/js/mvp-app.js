@@ -2,11 +2,41 @@
 
 import { initializeThemeSwitcher } from './theme-switcher.js';
 
-// --- Local Storage Database Helper ---
+// --- Local Storage Database Helper (More Robust Read) ---
 const DB_PREFIX = 'fitflow_mvp_';
 const db = {
-    read: (key) => { const data = localStorage.getItem(DB_PREFIX + key); return data ? JSON.parse(data) : []; },
-    write: (key, data) => { localStorage.setItem(DB_PREFIX + key, JSON.stringify(data)); },
+    read: (key) => {
+        const data = localStorage.getItem(DB_PREFIX + key);
+        if (!data) { // Key not found or data is null/undefined
+            console.log(`db.read: No data found for key "${DB_PREFIX + key}". Returning empty array.`);
+            return [];
+        }
+        try {
+            const parsedData = JSON.parse(data);
+            // Ensure it's an array, as expected by most of the app logic for lists
+            if (Array.isArray(parsedData)) {
+                // console.log(`db.read: Successfully parsed data for key "${DB_PREFIX + key}".`);
+                return parsedData;
+            } else {
+                console.warn(`db.read: Data for key "${DB_PREFIX + key}" is not an array after parsing. Value:`, parsedData, `Original data:`, data);
+                localStorage.removeItem(DB_PREFIX + key); // Remove malformed (but parsable) non-array data
+                return [];
+            }
+        } catch (error) {
+            console.error(`db.read: Error parsing localStorage for key "${DB_PREFIX + key}":`, error);
+            console.warn(`db.read: Removing corrupted localStorage item for key "${DB_PREFIX + key}". Value was:`, data);
+            localStorage.removeItem(DB_PREFIX + key); // Remove corrupted data
+            return []; // Return empty array to allow defaults to load
+        }
+    },
+    write: (key, data) => {
+        try {
+            localStorage.setItem(DB_PREFIX + key, JSON.stringify(data));
+            // console.log(`db.write: Successfully wrote data for key "${DB_PREFIX + key}".`);
+        } catch (error) {
+            console.error(`db.write: Error writing to localStorage for key "${DB_PREFIX + key}":`, error, "Data was:", data);
+        }
+    },
     generateId: () => '_' + Math.random().toString(36).substr(2, 9)
 };
 
@@ -36,16 +66,23 @@ const DEFAULT_EXERCISES = [
 
 // --- State & Initial Data Loading ---
 let clients = db.read('clients');
-let exercises = db.read('exercises');
+let exercises = db.read('exercises'); // Uses the new robust db.read
+
 if (exercises.length === 0) {
-    exercises = DEFAULT_EXERCISES.map(ex => ({...ex, id: db.generateId()})); // Ensure new IDs if loading defaults
+    console.log("No exercises found in localStorage or data was corrupted. Loading default exercises.");
+    // Ensure DEFAULT_EXERCISES have fresh IDs if being loaded now
+    exercises = DEFAULT_EXERCISES.map(ex => ({...ex, id: db.generateId()}));
     db.write('exercises', exercises);
+    console.log("Default exercises loaded and written to localStorage:", exercises);
+} else {
+    console.log("Exercises successfully loaded from localStorage. Count:", exercises.length);
 }
+
 let workoutTemplates = db.read('workoutTemplates');
 let assignedWorkouts = db.read('assignedWorkouts');
-let currentTemplateExercises = []; // For building/editing a template
+let currentTemplateExercises = [];
 
-// --- UI Elements (Declared here, assigned in DOMContentLoaded) ---
+// --- UI Elements (Declarations remain the same) ---
 let bodyElement, viewSections, navLinks, mvpThemeSwitcherElement;
 let addEditClientModal, confirmModal, createEditTemplateModal, viewClientPlanModal;
 let clientListContainer, noClientsMessage, clientModalTitle, clientForm, openAddClientModalBtn;
@@ -58,9 +95,9 @@ let workoutTemplateListContainer, noWorkoutTemplatesMessage;
 let assignWorkoutForm, assignClientSelect, assignTemplateSelect, assignDateInput, assignedWorkoutsLogContainer;
 let totalClientsStat, totalWorkoutTemplatesStat;
 let confirmModalTitleElem, confirmModalMessageElem, confirmModalConfirmBtnElem, confirmModalCancelBtnElem;
-let clientPlanModalTitleElem, clientPlanModalContentElem; // Renamed for clarity
+let clientPlanModalTitleElem, clientPlanModalContentElem;
 
-const themesForMvp = [
+const themesForMvp = [ // Theme array remains the same
     { value: 'theme-modern-professional', name: 'Modern & Professional', sidebarLogo: 'FitFlow MVP', sidebarUser: 'PT Admin' },
     { value: 'theme-friendly-supportive', name: 'Friendly & Supportive', sidebarLogo: 'FitFlow MVP', sidebarUser: 'PT Admin' },
     { value: 'theme-energetic-motivating', name: 'Energetic & Motivating', sidebarLogo: 'FitFlow MVP', sidebarUser: 'PT Admin' },
@@ -73,8 +110,7 @@ const themesForMvp = [
     { value: 'theme-retro-funk', name: 'Retro Funk', sidebarLogo: 'FUNK MVP', sidebarUser: 'PT Admin' }
 ];
 
-
-// --- MODAL HANDLING ---
+// --- MODAL HANDLING (remains the same) ---
 function openModal(modalElement) {
     if (modalElement) modalElement.classList.add('is-active');
     else console.warn("Attempted to open a null modal element.");
@@ -84,7 +120,7 @@ function closeModal(modalElement) {
     else console.warn("Attempted to close a null modal element.");
 }
 
-// --- VIEW SWITCHING ---
+// --- VIEW SWITCHING (remains the same) ---
 function switchView(viewId) {
     if (!viewSections) { console.error("switchView: viewSections not initialized."); return; }
     viewSections.forEach(section => section.classList.toggle('is-active', section.id === viewId));
@@ -94,7 +130,7 @@ function switchView(viewId) {
     window.location.hash = viewId.replace('View', '').toLowerCase();
 }
 
-// --- CLIENT MANAGEMENT ---
+// --- CLIENT MANAGEMENT (remains the same) ---
 function renderClients() {
     if (!clientListContainer || !noClientsMessage) {
         console.error("renderClients: clientListContainer or noClientsMessage not initialized.");
@@ -143,22 +179,17 @@ function handleClientFormSubmit(e) {
     renderClients();
     closeModal(addEditClientModal);
     clientForm.reset();
-    clientIdInput.value = ''; // Explicitly clear hidden ID field
+    clientIdInput.value = ''; 
 }
 
 function openClientModalForEdit(clientIdToEdit) {
     const client = clients.find(c => c.id === clientIdToEdit);
     if (!client) { console.error(`openClientModalForEdit: Client with ID ${clientIdToEdit} not found.`); return; }
     
-    // Check all required DOM elements for the modal
     if (!clientModalTitle || !clientForm || !clientIdInput || !clientNameInput || 
         !clientEmailInput || !clientPhoneInput || !clientDobInput || 
         !clientGoalInput || !clientMedicalNotesInput || !addEditClientModal) {
         console.error("openClientModalForEdit: Modal form elements not initialized. Cannot proceed.");
-        // Log which specific element is missing if possible
-        if (!clientModalTitle) console.error("clientModalTitle is null");
-        if (!clientForm) console.error("clientForm is null");
-        // ... and so on for other elements
         return;
     }
 
@@ -185,7 +216,6 @@ function handleDeleteClient(clientIdToDelete) {
     confirmModalTitleElem.textContent = 'Delete Client';
     confirmModalMessageElem.textContent = `Are you sure you want to delete ${client.name}? This action cannot be undone.`;
     
-    // Re-clone and re-attach event listener for the confirm button to avoid stale closures
     const newConfirmBtn = confirmModalConfirmBtnElem.cloneNode(true);
     confirmModalConfirmBtnElem.parentNode.replaceChild(newConfirmBtn, confirmModalConfirmBtnElem);
     confirmModalConfirmBtnElem = newConfirmBtn; 
@@ -193,7 +223,11 @@ function handleDeleteClient(clientIdToDelete) {
     confirmModalConfirmBtnElem.onclick = () => {
         clients = clients.filter(c => c.id !== clientIdToDelete);
         db.write('clients', clients);
+        // Also remove assignments for this client
+        assignedWorkouts = assignedWorkouts.filter(aw => aw.clientId !== clientIdToDelete);
+        db.write('assignedWorkouts', assignedWorkouts);
         renderClients();
+        renderAssignedWorkouts(); // Update assignments list
         closeModal(confirmModal);
     };
     openModal(confirmModal);
@@ -201,21 +235,39 @@ function handleDeleteClient(clientIdToDelete) {
 
 // --- EXERCISE MANAGEMENT ---
 function renderExercises() {
-    if (!exerciseListContainer || !noExercisesMessage || !templateExerciseSelect) {
-        console.error("renderExercises: Core elements not initialized.");
-        return;
+    if (!exerciseListContainer) {
+        console.error("renderExercises: exerciseListContainer not initialized.");
+        // Attempt to find it again, in case of timing issues (though unlikely with DOMContentLoaded)
+        exerciseListContainer = document.getElementById('exerciseListContainer');
+        if (!exerciseListContainer) return; // Still not found, abort
     }
+    if (!noExercisesMessage) {
+        noExercisesMessage = document.getElementById('noExercisesMessage'); // Attempt to find
+        if (!noExercisesMessage) {console.error("renderExercises: noExercisesMessage not initialized."); return;}
+    }
+     if (!templateExerciseSelect) {
+        templateExerciseSelect = document.getElementById('templateExerciseSelect'); // Attempt to find
+        if (!templateExerciseSelect) {console.error("renderExercises: templateExerciseSelect not initialized."); return;}
+    }
+
     exerciseListContainer.innerHTML = '';
-    templateExerciseSelect.innerHTML = '<option value="">-- Select Exercise --</option>'; // Keep default option
+    templateExerciseSelect.innerHTML = '<option value="">-- Select Exercise --</option>';
     noExercisesMessage.style.display = exercises.length === 0 ? 'block' : 'none';
 
+    if (exercises.length === 0) {
+        console.warn("renderExercises: No exercises in the 'exercises' array to render.");
+    } else {
+        console.log(`renderExercises: Attempting to render ${exercises.length} exercises.`);
+    }
+
     exercises.forEach(ex => {
-        const exItem = document.createElement('div'); exItem.className = 'pt-client-list-item'; // Reusing client list item style for consistency
+        const exItem = document.createElement('div'); 
+        exItem.className = 'pt-client-list-item';
         exItem.innerHTML = `
             <div class="pt-client-list-item__info">
                 <h5 class="pt-client-list-item__name" style="font-size:1em;">${ex.name}</h5>
                 ${ex.muscleGroup ? `<p class="pt-client-list-item__meta text-small">Group: ${ex.muscleGroup}</p>` : ''}
-                ${ex.description ? `<p class="pt-client-list-item__meta text-small">${ex.description.substring(0,50)}...</p>` : ''}
+                ${ex.description ? `<p class="pt-client-list-item__meta text-small">${ex.description.substring(0,50)}${ex.description.length > 50 ? '...' : ''}</p>` : ''}
             </div>
             <div class="pt-client-list-item__actions">
                 <button class="pt-button pt-button--secondary pt-button--small edit-exercise-btn" data-id="${ex.id}">Edit</button>
@@ -228,10 +280,10 @@ function renderExercises() {
         option.textContent = ex.name;
         templateExerciseSelect.appendChild(option);
     });
-    updateDashboardStats(); // Exercises also contribute to template creation possibility
+    updateDashboardStats();
 }
 
-function handleExerciseFormSubmit(e) {
+function handleExerciseFormSubmit(e) { // (remains mostly the same)
     e.preventDefault();
     if (!exerciseForm || !exerciseIdInput || !exerciseNameInput || !exerciseDescriptionInput || !exerciseMuscleGroupInput || !cancelEditExerciseBtn) {
         console.error("handleExerciseFormSubmit: Form elements not initialized.");
@@ -244,20 +296,20 @@ function handleExerciseFormSubmit(e) {
         muscleGroup: exerciseMuscleGroupInput.value 
     };
 
-    if (id) { // Editing existing
+    if (id) { 
         exercises = exercises.map(ex => ex.id === id ? { ...ex, ...exerciseData } : ex);
-    } else { // Adding new
+    } else { 
         exerciseData.id = db.generateId();
         exercises.push(exerciseData);
     }
     db.write('exercises', exercises);
-    renderExercises(); // Re-render list and select options
+    renderExercises(); 
     exerciseForm.reset();
     exerciseIdInput.value = '';
     cancelEditExerciseBtn.style.display = 'none';
 }
 
-function openExerciseFormForEdit(exerciseIdToEdit) {
+function openExerciseFormForEdit(exerciseIdToEdit) { // (remains mostly the same)
     const exercise = exercises.find(ex => ex.id === exerciseIdToEdit);
     if (!exercise) { console.error(`openExerciseFormForEdit: Exercise ID ${exerciseIdToEdit} not found.`); return; }
     if (!exerciseIdInput || !exerciseNameInput || !exerciseDescriptionInput || !exerciseMuscleGroupInput || !cancelEditExerciseBtn || !exerciseNameInput) {
@@ -272,11 +324,10 @@ function openExerciseFormForEdit(exerciseIdToEdit) {
     exerciseNameInput.focus();
 }
 
-function handleDeleteExercise(exerciseIdToDelete) {
+function handleDeleteExercise(exerciseIdToDelete) { // (remains mostly the same)
     const exercise = exercises.find(ex => ex.id === exerciseIdToDelete);
     if (!exercise) { console.error(`handleDeleteExercise: Exercise ID ${exerciseIdToDelete} not found.`); return; }
 
-    // Check if this exercise is used in any templates
     const isUsedInTemplate = workoutTemplates.some(template => 
         template.exercises.some(exInTpl => exInTpl.exerciseId === exerciseIdToDelete)
     );
@@ -292,7 +343,7 @@ function handleDeleteExercise(exerciseIdToDelete) {
     }
 
     confirmModalTitleElem.textContent = 'Delete Exercise';
-    confirmModalMessageElem.innerHTML = confirmMessage.replace(/\n/g, '<br>'); // For the warning message formatting
+    confirmModalMessageElem.innerHTML = confirmMessage.replace(/\n/g, '<br>');
     
     const newConfirmBtn = confirmModalConfirmBtnElem.cloneNode(true);
     confirmModalConfirmBtnElem.parentNode.replaceChild(newConfirmBtn, confirmModalConfirmBtnElem);
@@ -302,22 +353,20 @@ function handleDeleteExercise(exerciseIdToDelete) {
         exercises = exercises.filter(ex => ex.id !== exerciseIdToDelete);
         db.write('exercises', exercises);
 
-        // Also remove this exercise from any templates that use it
         workoutTemplates = workoutTemplates.map(template => ({
             ...template,
             exercises: template.exercises.filter(exInTpl => exInTpl.exerciseId !== exerciseIdToDelete)
         }));
         db.write('workoutTemplates', workoutTemplates);
 
-        renderExercises(); // Re-render exercise list & dropdowns
-        renderWorkoutTemplates(); // Re-render templates in case one was affected
+        renderExercises(); 
+        renderWorkoutTemplates(); 
         closeModal(confirmModal);
     };
     openModal(confirmModal);
 }
 
-
-// --- WORKOUT TEMPLATE MANAGEMENT ---
+// --- WORKOUT TEMPLATE MANAGEMENT (remains the same) ---
 function renderWorkoutTemplates() {
     if (!workoutTemplateListContainer || !noWorkoutTemplatesMessage || !assignTemplateSelect) {
         console.error("renderWorkoutTemplates: Core elements not initialized.");
@@ -329,7 +378,7 @@ function renderWorkoutTemplates() {
 
     workoutTemplates.forEach(template => {
         const templateItem = document.createElement('div');
-        templateItem.className = 'pt-client-list-item'; // Reusing styles
+        templateItem.className = 'pt-client-list-item'; 
         templateItem.innerHTML = `
             <div class="pt-client-list-item__info">
                 <h5 class="pt-client-list-item__name" style="font-size:1em;">${template.name}</h5>
@@ -363,7 +412,10 @@ function renderSelectedExercisesForTemplate() {
     list.style.listStyle = 'none'; list.style.paddingLeft = '0';
     currentTemplateExercises.forEach((exDetails, index) => {
         const exercise = exercises.find(e => e.id === exDetails.exerciseId);
-        if (!exercise) return; // Should not happen if data is consistent
+        if (!exercise) {
+            console.warn(`renderSelectedExercisesForTemplate: Exercise with ID ${exDetails.exerciseId} not found in main exercises list.`);
+            return; 
+        }
 
         const listItem = document.createElement('li');
         listItem.style.padding = 'var(--spacing-sm) 0';
@@ -391,7 +443,7 @@ function handleWorkoutTemplateFormSubmit(e) {
     const id = workoutTemplateIdInput.value;
     const templateData = { 
         name: templateNameInput.value, 
-        exercises: [...currentTemplateExercises] // Deep copy current state
+        exercises: [...currentTemplateExercises] 
     };
 
     if (templateData.exercises.length === 0) {
@@ -399,18 +451,18 @@ function handleWorkoutTemplateFormSubmit(e) {
         return;
     }
 
-    if (id) { // Editing
+    if (id) { 
         workoutTemplates = workoutTemplates.map(wt => wt.id === id ? { ...wt, ...templateData } : wt);
-    } else { // Adding new
+    } else { 
         templateData.id = db.generateId();
         workoutTemplates.push(templateData);
     }
     db.write('workoutTemplates', workoutTemplates);
-    renderWorkoutTemplates(); // Re-render template list and select options
+    renderWorkoutTemplates(); 
     closeModal(createEditTemplateModal);
     workoutTemplateForm.reset();
     workoutTemplateIdInput.value = '';
-    currentTemplateExercises = []; // Reset for next time
+    currentTemplateExercises = []; 
 }
 
 function openTemplateModalForEdit(templateIdToEdit) {
@@ -424,10 +476,10 @@ function openTemplateModalForEdit(templateIdToEdit) {
     templateModalTitle.textContent = 'Edit Workout Template';
     workoutTemplateIdInput.value = template.id;
     templateNameInput.value = template.name;
-    currentTemplateExercises = JSON.parse(JSON.stringify(template.exercises)); // Deep copy
+    currentTemplateExercises = JSON.parse(JSON.stringify(template.exercises)); 
     
-    renderExercises(); // Ensure exercise select is populated
-    renderSelectedExercisesForTemplate(); // Render the exercises already in the template
+    renderExercises(); 
+    renderSelectedExercisesForTemplate(); 
     openModal(createEditTemplateModal);
 }
 
@@ -450,7 +502,7 @@ function handleDeleteTemplate(templateIdToDelete) {
     confirmModalConfirmBtnElem.onclick = () => {
         workoutTemplates = workoutTemplates.filter(wt => wt.id !== templateIdToDelete);
         db.write('workoutTemplates', workoutTemplates);
-        // Also remove assignments of this template
+        
         assignedWorkouts = assignedWorkouts.filter(aw => aw.workoutTemplateId !== templateIdToDelete);
         db.write('assignedWorkouts', assignedWorkouts);
 
@@ -461,20 +513,20 @@ function handleDeleteTemplate(templateIdToDelete) {
     openModal(confirmModal);
 }
 
-// --- ASSIGN WORKOUT MANAGEMENT ---
+// --- ASSIGN WORKOUT MANAGEMENT (remains the same) ---
 function populateAssignWorkoutSelects() {
     if (!assignClientSelect || !assignTemplateSelect) {
         console.error("populateAssignWorkoutSelects: Select elements not initialized.");
         return;
     }
-    // Clients
+    
     assignClientSelect.innerHTML = '<option value="">-- Select Client --</option>';
     clients.forEach(client => {
         const option = document.createElement('option');
         option.value = client.id; option.textContent = client.name;
         assignClientSelect.appendChild(option);
     });
-    // Templates are populated by renderWorkoutTemplates
+    // Templates are populated by renderWorkoutTemplates, which also calls updateDashboardStats
 }
 
 function renderAssignedWorkouts() {
@@ -489,13 +541,16 @@ function renderAssignedWorkouts() {
     }
     const list = document.createElement('ul');
     list.style.listStyle = 'none'; list.style.paddingLeft = '0';
-    assignedWorkouts.slice().reverse().forEach(aw => { // Show newest first
+    assignedWorkouts.slice().reverse().forEach(aw => { 
         const client = clients.find(c => c.id === aw.clientId);
         const template = workoutTemplates.find(wt => wt.id === aw.workoutTemplateId);
-        if (!client || !template) return; // Data integrity issue
+        if (!client || !template) {
+            console.warn("renderAssignedWorkouts: Could not find client or template for assignment ID:", aw.id);
+            return; 
+        }
 
         const listItem = document.createElement('li');
-        listItem.className = 'pt-client-list-item'; // Re-use styling
+        listItem.className = 'pt-client-list-item'; 
         listItem.innerHTML = `
             <div class="pt-client-list-item__info">
                 <h5 class="pt-client-list-item__name" style="font-size:1em;">${client.name} - ${template.name}</h5>
@@ -523,7 +578,7 @@ function handleAssignWorkoutFormSubmit(e) {
         clientId: assignClientSelect.value, 
         workoutTemplateId: assignTemplateSelect.value, 
         dateAssigned: assignDateInput.value, 
-        status: 'pending' // Default status
+        status: 'pending' 
     };
     assignedWorkouts.push(assignment);
     db.write('assignedWorkouts', assignedWorkouts);
@@ -538,7 +593,7 @@ function handleDeleteAssignment(assignmentIdToDelete) {
     renderAssignedWorkouts();
 }
 
-// --- VIEW CLIENT'S PLAN ---
+// --- VIEW CLIENT'S PLAN (remains the same) ---
 function openViewClientPlanModal(clientId) {
     const client = clients.find(c => c.id === clientId);
     if (!client) { console.error(`openViewClientPlanModal: Client ID ${clientId} not found.`); return; }
@@ -547,11 +602,11 @@ function openViewClientPlanModal(clientId) {
     }
 
     clientPlanModalTitleElem.textContent = `${client.name}'s Workout Plan`;
-    clientPlanModalContentElem.innerHTML = '<p class="text-muted">Loading plan...</p>'; // Placeholder
+    clientPlanModalContentElem.innerHTML = '<p class="text-muted">Loading plan...</p>'; 
 
     const clientAssignments = assignedWorkouts
         .filter(aw => aw.clientId === clientId)
-        .sort((a, b) => new Date(a.dateAssigned) - new Date(b.dateAssigned)); // Sort by date
+        .sort((a, b) => new Date(a.dateAssigned) - new Date(b.dateAssigned)); 
 
     if (clientAssignments.length === 0) {
         clientPlanModalContentElem.innerHTML = '<p class="text-muted">This client has no workouts assigned yet.</p>';
@@ -584,30 +639,24 @@ function openViewClientPlanModal(clientId) {
     openModal(viewClientPlanModal);
 }
 
-// --- DASHBOARD STATS ---
+// --- DASHBOARD STATS (remains the same) ---
 function updateDashboardStats() {
     if(totalClientsStat) totalClientsStat.textContent = clients.length;
     if(totalWorkoutTemplatesStat) totalWorkoutTemplatesStat.textContent = workoutTemplates.length;
 }
 
-// --- INITIALIZE APP ---
+// --- INITIALIZE APP (Diagnostic logs remain the same as your last provided version) ---
 function initializeApp() {
     console.log("initializeApp: DOMContentLoaded fired. Document readyState:", document.readyState);
 
-    // Assign all global DOM element variables
     bodyElement = document.body;
     console.log("initializeApp: bodyElement found?", !!bodyElement);
-
     viewSections = document.querySelectorAll('.view-section');
     console.log("initializeApp: viewSections found count:", viewSections.length);
-
     navLinks = document.querySelectorAll('.pt-sidebar__nav-link');
     console.log("initializeApp: navLinks found count:", navLinks.length);
-
     mvpThemeSwitcherElement = document.getElementById('mvpThemeSwitcher');
     console.log("initializeApp: mvpThemeSwitcherElement found?", !!mvpThemeSwitcherElement);
-
-    // Modals
     addEditClientModal = document.getElementById('addEditClientModal');
     console.log("initializeApp: addEditClientModal found?", !!addEditClientModal);
     confirmModal = document.getElementById('confirmModal');
@@ -616,8 +665,6 @@ function initializeApp() {
     console.log("initializeApp: createEditTemplateModal found?", !!createEditTemplateModal);
     viewClientPlanModal = document.getElementById('viewClientPlanModal');
     console.log("initializeApp: viewClientPlanModal found?", !!viewClientPlanModal);
-
-    // Client Management Elements
     clientListContainer = document.getElementById('clientListContainer');
     console.log("initializeApp: clientListContainer found?", !!clientListContainer);
     noClientsMessage = document.getElementById('noClientsMessage');
@@ -642,8 +689,6 @@ function initializeApp() {
     console.log("initializeApp: clientGoalInput found?", !!clientGoalInput);
     clientMedicalNotesInput = document.getElementById('clientMedicalNotes');
     console.log("initializeApp: clientMedicalNotesInput found?", !!clientMedicalNotesInput);
-
-    // Exercise Management Elements
     exerciseForm = document.getElementById('exerciseForm');
     console.log("initializeApp: exerciseForm found?", !!exerciseForm);
     exerciseIdInput = document.getElementById('exerciseId');
@@ -660,8 +705,6 @@ function initializeApp() {
     console.log("initializeApp: noExercisesMessage found?", !!noExercisesMessage);
     cancelEditExerciseBtn = document.getElementById('cancelEditExerciseBtn');
     console.log("initializeApp: cancelEditExerciseBtn found?", !!cancelEditExerciseBtn);
-
-    // Workout Template Elements
     openCreateTemplateModalBtn = document.getElementById('openCreateTemplateModalBtn');
     console.log("initializeApp: openCreateTemplateModalBtn found?", !!openCreateTemplateModalBtn);
     templateModalTitle = document.getElementById('templateModalTitle');
@@ -682,8 +725,6 @@ function initializeApp() {
     console.log("initializeApp: workoutTemplateListContainer found?", !!workoutTemplateListContainer);
     noWorkoutTemplatesMessage = document.getElementById('noWorkoutTemplatesMessage');
     console.log("initializeApp: noWorkoutTemplatesMessage found?", !!noWorkoutTemplatesMessage);
-    
-    // Assign Workout Elements
     assignWorkoutForm = document.getElementById('assignWorkoutForm');
     console.log("initializeApp: assignWorkoutForm found?", !!assignWorkoutForm);
     assignClientSelect = document.getElementById('assignClientSelect');
@@ -694,85 +735,67 @@ function initializeApp() {
     console.log("initializeApp: assignDateInput found?", !!assignDateInput);
     assignedWorkoutsLogContainer = document.getElementById('assignedWorkoutsLogContainer');
     console.log("initializeApp: assignedWorkoutsLogContainer found?", !!assignedWorkoutsLogContainer);
-
-    // Dashboard Stats Elements
     totalClientsStat = document.getElementById('totalClientsStat');
     console.log("initializeApp: totalClientsStat found?", !!totalClientsStat);
     totalWorkoutTemplatesStat = document.getElementById('totalWorkoutTemplatesStat');
     console.log("initializeApp: totalWorkoutTemplatesStat found?", !!totalWorkoutTemplatesStat);
-
-    // Confirm Modal Specific Elements
     confirmModalTitleElem = document.getElementById('confirmModalTitle');
     console.log("initializeApp: confirmModalTitleElem found?", !!confirmModalTitleElem);
     confirmModalMessageElem = document.getElementById('confirmModalMessage');
     console.log("initializeApp: confirmModalMessageElem found?", !!confirmModalMessageElem);
     confirmModalConfirmBtnElem = document.getElementById('confirmModalConfirmBtn');
     console.log("initializeApp: confirmModalConfirmBtnElem found?", !!confirmModalConfirmBtnElem);
-    confirmModalCancelBtnElem = document.getElementById('confirmModalCancelBtn'); // Added for completeness
+    confirmModalCancelBtnElem = document.getElementById('confirmModalCancelBtn'); 
     console.log("initializeApp: confirmModalCancelBtnElem found?", !!confirmModalCancelBtnElem);
-
-
-    // Client Plan Modal Specific Elements
     clientPlanModalTitleElem = document.getElementById('clientPlanModalTitle');
     console.log("initializeApp: clientPlanModalTitleElem found?", !!clientPlanModalTitleElem);
     clientPlanModalContentElem = document.getElementById('clientPlanModalContent');
     console.log("initializeApp: clientPlanModalContentElem found?", !!clientPlanModalContentElem);
 
-
-    // Initialize Theme Switcher
     if (mvpThemeSwitcherElement && bodyElement) {
         initializeThemeSwitcher(themesForMvp, mvpThemeSwitcherElement, bodyElement, (themeValue, themeObject) => {
             const modalsToTheme = [addEditClientModal, confirmModal, createEditTemplateModal, viewClientPlanModal];
             modalsToTheme.forEach(modal => {
                 if (modal) {
-                    themesForMvp.forEach(t => modal.classList.remove(t.value)); // Remove all theme classes
-                    modal.classList.add(themeValue); // Add current theme class
+                    themesForMvp.forEach(t => modal.classList.remove(t.value)); 
+                    modal.classList.add(themeValue); 
                 }
             });
-            // Update sidebar logo/user based on theme object if they exist
             const sidebarLogoElem = document.querySelector('.pt-sidebar__logo');
             const sidebarUserElem = document.querySelector('.pt-sidebar__user-name');
             const sidebarAvatarElem = document.querySelector('.pt-sidebar__user-avatar');
             if(sidebarLogoElem && themeObject && themeObject.sidebarLogo) sidebarLogoElem.textContent = themeObject.sidebarLogo;
             if(sidebarUserElem && themeObject && themeObject.sidebarUser) sidebarUserElem.textContent = themeObject.sidebarUser;
             if(sidebarAvatarElem && themeObject && themeObject.sidebarUser) sidebarAvatarElem.textContent = themeObject.sidebarUser.match(/\b(\w)/g)?.join('').substr(0,2).toUpperCase() || 'PT';
-
         });
-    } else if (themesForMvp.length > 0 && bodyElement) { // Fallback if switcher element is missing but themes are defined
+    } else if (themesForMvp.length > 0 && bodyElement) { 
         bodyElement.className = ''; bodyElement.classList.add(themesForMvp[0].value);
         bodyElement.style.backgroundColor = 'var(--background-color)'; bodyElement.style.color = 'var(--text-color)';
     } else {
         console.warn("initializeApp: Theme switcher or body element not found. Theming might not work correctly.");
     }
 
-    // Setup Modal Close Listeners
     [addEditClientModal, confirmModal, createEditTemplateModal, viewClientPlanModal].forEach(modal => {
         if (modal) {
             modal.querySelectorAll('.pt-modal__close').forEach(btn => {
                 btn.addEventListener('click', () => closeModal(modal));
             });
-            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); }); // Backdrop click
-        } else {
-            // console.warn("initializeApp: One of the modal elements is null, cannot attach close listeners.");
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); }); 
         }
     });
-    if(confirmModalCancelBtnElem) { // Specific cancel button for confirm modal
+    if(confirmModalCancelBtnElem) { 
         confirmModalCancelBtnElem.addEventListener('click', () => closeModal(confirmModal));
     }
     
-    // --- Attach Event Listeners (with null checks for elements) ---
-
-    // Navigation
     if(navLinks) navLinks.forEach(link => {
         link.addEventListener('click', (e) => { e.preventDefault(); switchView(link.dataset.view); });
     });
 
-    // Client Management
     if (openAddClientModalBtn) {
         openAddClientModalBtn.addEventListener('click', () => {
             if(clientModalTitle) clientModalTitle.textContent = 'Add New Client'; 
             if(clientForm) clientForm.reset(); 
-            if(clientIdInput) clientIdInput.value = ''; // Clear hidden ID
+            if(clientIdInput) clientIdInput.value = ''; 
             openModal(addEditClientModal);
         });
     } else { console.warn("initializeApp: openAddClientModalBtn not found."); }
@@ -789,7 +812,6 @@ function initializeApp() {
         });
     } else { console.warn("initializeApp: clientListContainer not found. Client list interactions will fail."); }
 
-    // Exercise Management
     if (exerciseForm) {
         exerciseForm.addEventListener('submit', handleExerciseFormSubmit);
     } else { console.warn("initializeApp: exerciseForm not found."); }
@@ -809,14 +831,13 @@ function initializeApp() {
         });
     } else { console.warn("initializeApp: exerciseListContainer not found. Exercise list interactions will fail."); }
 
-    // Workout Template Management
     if (openCreateTemplateModalBtn) {
         openCreateTemplateModalBtn.addEventListener('click', () => {
             if(templateModalTitle) templateModalTitle.textContent = 'Create Workout Template';
             if(workoutTemplateForm) workoutTemplateForm.reset();
             if(workoutTemplateIdInput) workoutTemplateIdInput.value = '';
             currentTemplateExercises = [];
-            renderExercises(); // Ensure fresh exercise list in dropdown
+            renderExercises(); 
             renderSelectedExercisesForTemplate();
             openModal(createEditTemplateModal);
         });
@@ -838,12 +859,12 @@ function initializeApp() {
                     alert("This exercise is already in the template.");
                 }
             }
-            templateExerciseSelect.value = ""; // Reset select
+            templateExerciseSelect.value = ""; 
         });
     } else { console.warn("initializeApp: addExerciseToTemplateBtn not found."); }
 
     if (selectedExercisesForTemplateContainer) {
-        selectedExercisesForTemplateContainer.addEventListener('click', (e) => { // For remove button
+        selectedExercisesForTemplateContainer.addEventListener('click', (e) => { 
             if (e.target.classList.contains('remove-exercise-from-template-btn')) {
                 const indexToRemove = parseInt(e.target.dataset.index);
                 if (!isNaN(indexToRemove) && indexToRemove >= 0 && indexToRemove < currentTemplateExercises.length) {
@@ -852,13 +873,12 @@ function initializeApp() {
                 }
             }
         });
-        selectedExercisesForTemplateContainer.addEventListener('input', (e) => { // For sets/reps/rest inputs
+        selectedExercisesForTemplateContainer.addEventListener('input', (e) => { 
             if(e.target.classList.contains('template-exercise-detail')) {
                 const index = parseInt(e.target.dataset.index); 
                 const prop = e.target.dataset.prop;
                 if(currentTemplateExercises[index] && prop) {
                     currentTemplateExercises[index][prop] = e.target.value;
-                    // No need to db.write here, only on template save
                 }
             }
         });
@@ -871,7 +891,6 @@ function initializeApp() {
         });
     } else { console.warn("initializeApp: workoutTemplateListContainer not found."); }
     
-    // Assign Workout
     if (assignWorkoutForm) {
         assignWorkoutForm.addEventListener('submit', handleAssignWorkoutFormSubmit);
     } else { console.warn("initializeApp: assignWorkoutForm not found."); }
@@ -883,13 +902,15 @@ function initializeApp() {
     } else { console.warn("initializeApp: assignedWorkoutsLogContainer not found."); }
 
     // Initial Renders & View Setup
+    console.log("initializeApp: Calling initial render functions.");
     renderClients(); 
     renderExercises(); 
     renderWorkoutTemplates(); 
     renderAssignedWorkouts(); 
     
     const initialViewId = window.location.hash ? window.location.hash.substring(1).toLowerCase() + 'View' : 'dashboardView';
-    const validView = document.getElementById(initialViewId) ? initialViewId : 'dashboardView'; // Fallback to dashboard
+    const validView = document.getElementById(initialViewId) ? initialViewId : 'dashboardView'; 
+    console.log("initializeApp: Initial view to switch to:", validView);
     switchView(validView);
     
     console.log("MVP App Initialized Successfully.");
