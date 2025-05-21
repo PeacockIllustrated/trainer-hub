@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitFlow Client Portal</title>
-    <!-- Fonts and CSS links (ensure all themes are linked) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Link all themes for the switcher -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
     <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
     <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
@@ -35,7 +37,7 @@
         .assigned-workout-item .pt-card-title { font-size: 1.3em; }
 
         /* Workout Session Modal Styles */
-        #workoutDetailModalBody { max-height: 60vh; overflow-y: auto; } /* Allow scrolling for long workouts */
+        #workoutSessionModalBody { max-height: 60vh; overflow-y: auto; }
         .exercise-session-item { padding: var(--spacing-md) 0; border-bottom: 1px solid var(--border-color-light); display: none; }
         .exercise-session-item.is-active { display: block; }
         .exercise-session-item:last-child { border-bottom: none; }
@@ -87,29 +89,29 @@
             </section>
         </main>
         
-        <div class="pt-modal" id="workoutSessionModal"> {/* Renamed for clarity */}
+        <div class="pt-modal" id="workoutSessionModal">
             <div class="pt-modal__content" style="max-width: 750px;">
                 <div class="pt-modal__header">
                     <h3 class="pt-modal__title" id="workoutSessionModalTitle">Workout Session</h3>
-                    <button type="button" class="pt-modal__close" aria-label="Close modal">×</button>
+                    <button type="button" class="pt-modal__close" aria-label="Close modal">×</button> 
                 </div>
                 <div class="pt-modal__body" id="workoutSessionModalBody">
-                    <!-- Dynamic exercise content will go here -->
+                    <!-- Dynamic exercise content -->
                 </div>
-                <div class="workout-session-nav">
+                <div class="workout-session-nav" style="display:none;"> 
                     <button id="prevExerciseBtn" class="pt-button pt-button--secondary">Previous Exercise</button>
                     <span id="exerciseProgressIndicator" style="align-self: center; font-style: italic;"></span>
                     <button id="nextExerciseBtn" class="pt-button pt-button--secondary">Next Exercise</button>
                 </div>
-                 <div class="workout-timer">
+                 <div class="workout-timer" style="display:none;"> 
                     <div id="timerDisplay">00:00</div>
                     <button id="timerStartBtn" class="pt-button pt-button--primary pt-button--small">Start Timer</button>
                     <button id="timerPauseBtn" class="pt-button pt-button--secondary pt-button--small" style="display:none;">Pause</button>
                     <button id="timerResetBtn" class="pt-button pt-button--destructive pt-button--small">Reset</button>
                 </div>
                 <div class="pt-modal__footer">
-                    <button type="button" class="pt-button pt-button--secondary pt-modal__close">Save & Close Later</button>
-                    <button type="button" id="finishWorkoutBtn" class="pt-button pt-button--accent">Finish Workout</button>
+                    <button type="button" class="pt-button pt-button--secondary pt-modal__close-footer">Close</button> 
+                    <button type="button" id="finishWorkoutBtn" class="pt-button pt-button--accent" style="display:none;">Finish Workout</button>
                 </div>
             </div>
         </div>
