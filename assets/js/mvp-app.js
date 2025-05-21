@@ -478,7 +478,7 @@ function initializeApp() {
 
     if (mvpThemeSwitcherElement && bodyElement) {
         initializeThemeSwitcher(
-            themesForMvp, 
+            themesForMvp,
             mvpThemeSwitcherElement, 
             bodyElement,
             (newThemeValue, currentThemeObject) => {
