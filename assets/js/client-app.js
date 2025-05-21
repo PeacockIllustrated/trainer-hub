@@ -1,33 +1,27 @@
 // assets/js/client-app.js
-
 import { initializeThemeSwitcher } from './theme-switcher.js';
-import { initializeModals, openModal, closeModal } from './components/modal.js'; 
+import { initializeModals, openModal, closeModal } from './components/modal.js';
+import { FITFLOW_THEMES_CONFIG } from './themes-config.js'; // Import shared themes
 
 // --- Local Storage Database Helper ---
 const DB_PREFIX = 'fitflow_mvp_';
 const db = {
-    read: (key) => { 
-        const data = localStorage.getItem(DB_PREFIX + key);
-        if (!data) { return []; }
-        try { const parsedData = JSON.parse(data); return Array.isArray(parsedData) ? parsedData : []; }
-        catch (error) { console.error(`db.read error for ${key}:`, error); return []; }
+    read: (key) => {
+        const data = localStorage.getItem(DB_PREFIX + key); if (!data) return [];
+        try { const parsed = JSON.parse(data); return Array.isArray(parsed) ? parsed : []; }
+        catch (e) { console.error(`db.read ${key}:`, e); return []; }
     },
     write: (key, data) => {
         try { localStorage.setItem(DB_PREFIX + key, JSON.stringify(data)); }
-        catch (error) { console.error(`db.write error for ${key}:`, error); }
+        catch (e) { console.error(`db.write ${key}:`, e); }
     }
 };
 
 // --- State ---
-let allClients = [];
-let allExercises = [];
-let allTemplates = [];
-let allAssignedWorkouts = [];
-let currentClientId = null;
-let currentClientName = '';
+let allClients = [], allExercises = [], allTemplates = [], allAssignedWorkouts = [];
+let currentClientId = null, currentClientName = '';
 let currentWorkoutSession = { assignmentId: null, template: null, currentExerciseIndex: 0, exerciseData: [] };
-let timerInterval = null;
-let timerSeconds = 0;
+let timerInterval = null, timerSeconds = 0;
 
 // --- UI Elements ---
 let bodyElement, clientThemeSwitcher, pageTitleElement;
@@ -36,240 +30,87 @@ let welcomeMessageElement, assignedWorkoutsContainer, logoutBtn;
 let workoutSessionModal, workoutSessionModalTitle, workoutSessionModalBody;
 let prevExerciseBtn, nextExerciseBtn, exerciseProgressIndicator, finishWorkoutBtn;
 let timerDisplay, timerStartBtn, timerPauseBtn, timerResetBtn;
-let workoutSessionModalCloseFooterBtn; // For the specific footer close button
-
-const themesForClientApp = [ 
-    { value: 'theme-modern-professional', name: 'Modern & Professional' }, { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' }, { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' }, { value: 'theme-retro-funk', name: 'Retro Funk' }, 
-    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' }, { value: 'theme-urban-grit', name: 'Urban Grit' },
-    { value: 'theme-playful-pop', name: 'Playful Pop' }, { value: 'theme-tech-data', name: 'Tech Data' }
-];
+let workoutSessionModalCloseFooterBtn;
 
 // --- FUNCTIONS ---
-function loadDataFromStorage() {
-    allClients = db.read('clients'); allExercises = db.read('exercises');
-    allTemplates = db.read('workoutTemplates'); allAssignedWorkouts = db.read('assignedWorkouts');
-}
-
-function populateClientSelect() {
-    if (!clientSelect) return; clientSelect.innerHTML = '<option value="">-- Please Select --</option>';
-    allClients.forEach(client => { const option = document.createElement('option'); option.value = client.id; option.textContent = client.name; clientSelect.appendChild(option);});
-}
-
-function handleClientLogin(e) {
-    e.preventDefault(); if (!clientSelect) return; const selectedId = clientSelect.value; if (!selectedId) { alert("Please select your profile."); return; }
-    const client = allClients.find(c => c.id === selectedId);
-    if (client) { currentClientId = client.id; currentClientName = client.name; localStorage.setItem('fitflow_current_client_id', currentClientId); localStorage.setItem('fitflow_current_client_name', currentClientName); showDashboardView(); } 
-    else { alert("Selected client profile not found."); }
-}
-
-function handleLogout() {
-    currentClientId = null; currentClientName = ''; localStorage.removeItem('fitflow_current_client_id'); localStorage.removeItem('fitflow_current_client_name');
-    stopTimer(); resetTimerDisplay(); showLoginView();
-}
-
-function showLoginView() {
-    if(loginView) loginView.classList.add('is-active'); if(dashboardView) dashboardView.classList.remove('is-active');
-    if(pageTitleElement) pageTitleElement.textContent = "Client Login"; if(clientSelect) clientSelect.value = "";
-}
-
-function showDashboardView() {
-    if(loginView) loginView.classList.remove('is-active'); if(dashboardView) dashboardView.classList.add('is-active');
-    if(pageTitleElement) pageTitleElement.textContent = "My Workouts"; if(welcomeMessageElement) welcomeMessageElement.textContent = `Welcome, ${currentClientName}! Here are your workouts:`;
-    renderAssignedWorkoutsForClient();
-}
-
+function loadDataFromStorage() { allClients = db.read('clients'); allExercises = db.read('exercises'); allTemplates = db.read('workoutTemplates'); allAssignedWorkouts = db.read('assignedWorkouts'); }
+function populateClientSelect() { if (!clientSelect) return; clientSelect.innerHTML = '<option value="">-- Select --</option>'; allClients.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; clientSelect.appendChild(o); }); }
+function handleClientLogin(e) { e.preventDefault(); if (!clientSelect) return; const id = clientSelect.value; if (!id) { alert("Select profile."); return; } const c = allClients.find(cl => cl.id === id); if (c) { currentClientId = c.id; currentClientName = c.name; localStorage.setItem('fitflow_current_client_id', currentClientId); localStorage.setItem('fitflow_current_client_name', currentClientName); showDashboardView(); } else { alert("Profile not found."); } }
+function handleLogout() { currentClientId = null; currentClientName = ''; localStorage.removeItem('fitflow_current_client_id'); localStorage.removeItem('fitflow_current_client_name'); stopTimer(); resetTimerDisplay(); showLoginView(); }
+function showLoginView() { if (loginView) loginView.classList.add('is-active'); if (dashboardView) dashboardView.classList.remove('is-active'); if (pageTitleElement) pageTitleElement.textContent = "Client Login"; if (clientSelect) clientSelect.value = ""; }
+function showDashboardView() { if (loginView) loginView.classList.remove('is-active'); if (dashboardView) dashboardView.classList.add('is-active'); if (pageTitleElement) pageTitleElement.textContent = "My Workouts"; if (welcomeMessageElement) welcomeMessageElement.textContent = `Welcome, ${currentClientName}!`; renderAssignedWorkoutsForClient(); }
 function renderAssignedWorkoutsForClient() {
-    if (!assignedWorkoutsContainer || !currentClientId) { if (assignedWorkoutsContainer) assignedWorkoutsContainer.innerHTML = '<p class="text-muted">Could not load workouts.</p>'; return; }
-    const clientAssignments = allAssignedWorkouts.filter(aw => aw.clientId === currentClientId).sort((a, b) => new Date(b.dateAssigned) - new Date(a.dateAssigned)); // Newest first
-    
-    if (clientAssignments.length === 0) { assignedWorkoutsContainer.innerHTML = '<p class="text-muted">You have no workouts assigned yet.</p>'; return; }
+    if (!assignedWorkoutsContainer || !currentClientId) { if (assignedWorkoutsContainer) assignedWorkoutsContainer.innerHTML = '<p class="text-muted">No workouts.</p>'; return; }
+    const assignments = allAssignedWorkouts.filter(aw => aw.clientId === currentClientId).sort((a, b) => new Date(b.dateAssigned) - new Date(a.dateAssigned));
+    if (assignments.length === 0) { assignedWorkoutsContainer.innerHTML = '<p class="text-muted">No workouts assigned.</p>'; return; }
     assignedWorkoutsContainer.innerHTML = '';
-    clientAssignments.forEach(aw => {
-        const template = allTemplates.find(t => t.id === aw.workoutTemplateId);
-        if (!template) { return; }
-        const workoutCard = document.createElement('div');
-        workoutCard.className = 'pt-card assigned-workout-item';
-        
-        let actionButtonHTML = '';
-        if (aw.status === 'completed') {
-            actionButtonHTML = `<button class="pt-button pt-button--secondary pt-button--small view-completed-workout-btn" data-assignment-id="${aw.id}">View Completed</button>`;
-        } else if (aw.status === 'in progress') {
-            actionButtonHTML = `<button class="pt-button pt-button--primary resume-workout-btn" data-assignment-id="${aw.id}">Resume Workout</button>`;
-        } else { // pending
-            actionButtonHTML = `<button class="pt-button pt-button--primary start-workout-btn" data-assignment-id="${aw.id}">Start Workout</button>`;
-        }
-
-        workoutCard.innerHTML = `
-            <h3 class="pt-card-title">${template.name} - Assigned: ${new Date(aw.dateAssigned).toLocaleDateString()}</h3>
-            <p class="text-muted">Status: <span style="font-weight:bold; text-transform: capitalize;">${aw.status}</span></p>
-            <div class="pt-card-footer">
-                ${actionButtonHTML}
-            </div>
-        `;
-        assignedWorkoutsContainer.appendChild(workoutCard);
+    assignments.forEach(aw => {
+        const template = allTemplates.find(t => t.id === aw.workoutTemplateId); if (!template) return;
+        const card = document.createElement('div'); card.className = 'pt-card assigned-workout-item';
+        let btnHTML = '';
+        if (aw.status === 'completed') btnHTML = `<button class="pt-button pt-button--secondary pt-button--small view-completed-workout-btn" data-assignment-id="${aw.id}">View</button>`;
+        else if (aw.status === 'in progress') btnHTML = `<button class="pt-button pt-button--primary resume-workout-btn" data-assignment-id="${aw.id}">Resume</button>`;
+        else btnHTML = `<button class="pt-button pt-button--primary start-workout-btn" data-assignment-id="${aw.id}">Start</button>`;
+        card.innerHTML = `<h3 class="pt-card-title">${template.name} - ${new Date(aw.dateAssigned).toLocaleDateString()}</h3><p class="text-muted">Status: <span style="text-transform:capitalize;">${aw.status}</span></p><div class="pt-card-footer">${btnHTML}</div>`;
+        assignedWorkoutsContainer.appendChild(card);
     });
 }
-
-function startOrResumeWorkoutSession(assignmentId) {
-    const assignment = allAssignedWorkouts.find(aw => aw.id === assignmentId); if (!assignment) { console.error("Assignment not found:", assignmentId); return; }
-    const template = allTemplates.find(t => t.id === assignment.workoutTemplateId); if (!template) { console.error("Template not found for assignment:", assignment.workoutTemplateId); return; }
-
-    currentWorkoutSession.assignmentId = assignmentId;
-    currentWorkoutSession.template = template;
-    currentWorkoutSession.currentExerciseIndex = 0;
-    
-    const progressKey = `fitflow_client_progress_${assignmentId}`;
-    const savedProgress = db.read(progressKey);
-
-    if (savedProgress && savedProgress.length > 0 && assignment.status === 'in progress') {
-        currentWorkoutSession.exerciseData = savedProgress;
-    } else {
-        currentWorkoutSession.exerciseData = template.exercises.map(exDetail => {
-            const numSets = parseInt(exDetail.sets) || 1;
-            return {
-                exerciseId: exDetail.exerciseId,
-                targetSets: exDetail.sets, targetReps: exDetail.reps, targetRest: exDetail.rest,
-                setsData: Array(numSets).fill(null).map(() => ({ reps: '', weight: '', done: false }))
-            };
-        });
-        if (assignment.status === 'pending') {
-            const assignmentIndex = allAssignedWorkouts.findIndex(aw => aw.id === assignmentId);
-            if (assignmentIndex > -1) {
-                allAssignedWorkouts[assignmentIndex].status = 'in progress';
-                db.write('assignedWorkouts', allAssignedWorkouts);
-                renderAssignedWorkoutsForClient(); 
-            }
-        }
+function startOrResumeWorkoutSession(id) {
+    const assignment = allAssignedWorkouts.find(aw => aw.id === id); if (!assignment) return;
+    const template = allTemplates.find(t => t.id === assignment.workoutTemplateId); if (!template) return;
+    currentWorkoutSession.assignmentId = id; currentWorkoutSession.template = template; currentWorkoutSession.currentExerciseIndex = 0;
+    const progress = db.read(`fitflow_client_progress_${id}`);
+    if (progress.length > 0 && assignment.status === 'in progress') { currentWorkoutSession.exerciseData = progress; }
+    else {
+        currentWorkoutSession.exerciseData = template.exercises.map(exD => ({ exerciseId: exD.exerciseId, targetSets: exD.sets, targetReps: exD.reps, targetRest: exD.rest, setsData: Array(parseInt(exD.sets) || 1).fill(null).map(() => ({ reps: '', weight: '', done: false })) }));
+        if (assignment.status === 'pending') { const idx = allAssignedWorkouts.findIndex(aw => aw.id === id); if (idx > -1) { allAssignedWorkouts[idx].status = 'in progress'; db.write('assignedWorkouts', allAssignedWorkouts); renderAssignedWorkoutsForClient(); } }
     }
-    
-    if (!workoutSessionModalTitle || !workoutSessionModalBody || !workoutSessionModal) { return; }
+    if (!workoutSessionModalTitle || !workoutSessionModalBody || !workoutSessionModal) return;
     workoutSessionModalTitle.textContent = `${template.name} - In Progress`;
-    
-    const sessionNav = workoutSessionModal.querySelector('.workout-session-nav');
-    const timerDiv = workoutSessionModal.querySelector('.workout-timer');
-    if(sessionNav) sessionNav.style.display = 'flex';
-    if(timerDiv) timerDiv.style.display = 'block';
-    if(finishWorkoutBtn) finishWorkoutBtn.style.display = 'inline-block';
-    if(workoutSessionModalCloseFooterBtn) workoutSessionModalCloseFooterBtn.textContent = 'Save & Close Later';
-
-    renderCurrentExerciseInModal();
-    stopTimer(); resetTimerDisplay();
-    openModal('workoutSessionModal');
+    const nav = workoutSessionModal.querySelector('.workout-session-nav'), timer = workoutSessionModal.querySelector('.workout-timer');
+    if (nav) nav.style.display = 'flex'; if (timer) timer.style.display = 'block'; if (finishWorkoutBtn) finishWorkoutBtn.style.display = 'inline-block'; if (workoutSessionModalCloseFooterBtn) workoutSessionModalCloseFooterBtn.textContent = 'Save & Close';
+    renderCurrentExerciseInModal(); stopTimer(); resetTimerDisplay(); openModal('workoutSessionModal');
 }
-
 function renderCurrentExerciseInModal() {
-    if (!currentWorkoutSession.template || !workoutSessionModalBody) {console.error("renderCurrentExerciseInModal: Missing data."); return;}
-    const exerciseDetail = currentWorkoutSession.template.exercises[currentWorkoutSession.currentExerciseIndex];
-    const exerciseInfo = allExercises.find(ex => ex.id === exerciseDetail.exerciseId);
-    const sessionExerciseData = currentWorkoutSession.exerciseData[currentWorkoutSession.currentExerciseIndex];
-
-    if (!exerciseInfo || !sessionExerciseData) { workoutSessionModalBody.innerHTML = "<p class=\"text-muted\">Error loading exercise details.</p>"; return; }
-
-    const targetSets = exerciseDetail.sets || 'N/A'; const targetReps = exerciseDetail.reps || 'N/A'; const targetRest = exerciseDetail.rest ? `${exerciseDetail.rest}s` : 'N/A';
-    let bodyHtml = `<div class="exercise-session-item is-active" data-exercise-id="${exerciseInfo.id}">
-        <h4>${exerciseInfo.name}</h4>
-        <p class="target-metrics">Target: ${targetSets} sets of ${targetReps} reps. Rest: ${targetRest}</p>`;
-    sessionExerciseData.setsData.forEach((setData, setIndex) => {
-        bodyHtml += `<div class="set-tracking-row">
-            <label for="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIndex}-reps">Set ${setIndex + 1}:</label>
-            <input type="number" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIndex}-reps" class="pt-input actual-reps-input" data-set-index="${setIndex}" value="${setData.reps || ''}" placeholder="Reps">
-            <input type="number" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIndex}-weight" class="pt-input actual-weight-input" data-set-index="${setIndex}" value="${setData.weight || ''}" placeholder="Weight">
-            <input type="checkbox" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIndex}-done" class="set-done-checkbox" data-set-index="${setIndex}" ${setData.done ? 'checked' : ''}>
-        </div>`;
-    });
-    bodyHtml += `</div>`;
-    workoutSessionModalBody.innerHTML = bodyHtml;
-    updateWorkoutSessionNav();
+    if (!currentWorkoutSession.template || !workoutSessionModalBody) return;
+    const exDetail = currentWorkoutSession.template.exercises[currentWorkoutSession.currentExerciseIndex];
+    const exInfo = allExercises.find(ex => ex.id === exDetail.exerciseId);
+    const sessionExData = currentWorkoutSession.exerciseData[currentWorkoutSession.currentExerciseIndex];
+    if (!exInfo || !sessionExData) { workoutSessionModalBody.innerHTML = "<p class=\"text-muted\">Error.</p>"; return; }
+    let html = `<div class="exercise-session-item is-active" data-exercise-id="${exInfo.id}"><h4>${exInfo.name}</h4><p class="target-metrics">Target: ${exDetail.sets||'N/A'} sets x ${exDetail.reps||'N/A'} reps. Rest: ${exDetail.rest?`${exDetail.rest}s`:'N/A'}</p>`;
+    sessionExData.setsData.forEach((setD, setIdx) => { html += `<div class="set-tracking-row"><label for="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIdx}-reps">Set ${setIdx+1}:</label><input type="number" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIdx}-reps" class="pt-input actual-reps-input" data-set-index="${setIdx}" value="${setD.reps||''}" placeholder="Reps"><input type="number" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIdx}-weight" class="pt-input actual-weight-input" data-set-index="${setIdx}" value="${setD.weight||''}" placeholder="Weight"><input type="checkbox" id="ex-${currentWorkoutSession.currentExerciseIndex}-set-${setIdx}-done" class="set-done-checkbox" data-set-index="${setIdx}" ${setD.done?'checked':''}></div>`; });
+    html += `</div>`; workoutSessionModalBody.innerHTML = html; updateWorkoutSessionNav();
 }
-
-function updateWorkoutSessionNav() {
-    if (!prevExerciseBtn || !nextExerciseBtn || !exerciseProgressIndicator || !currentWorkoutSession.template) return;
-    const totalExercises = currentWorkoutSession.template.exercises.length;
-    prevExerciseBtn.disabled = currentWorkoutSession.currentExerciseIndex === 0;
-    nextExerciseBtn.disabled = currentWorkoutSession.currentExerciseIndex >= totalExercises - 1;
-    exerciseProgressIndicator.textContent = `Exercise ${currentWorkoutSession.currentExerciseIndex + 1} of ${totalExercises}`;
-}
-
+function updateWorkoutSessionNav() { if (!prevExerciseBtn || !nextExerciseBtn || !exerciseProgressIndicator || !currentWorkoutSession.template) return; const total = currentWorkoutSession.template.exercises.length; prevExerciseBtn.disabled = currentWorkoutSession.currentExerciseIndex === 0; nextExerciseBtn.disabled = currentWorkoutSession.currentExerciseIndex >= total - 1; exerciseProgressIndicator.textContent = `Ex ${currentWorkoutSession.currentExerciseIndex+1} of ${total}`; }
 function handleWorkoutSessionDataChange(e) {
-    if (!e.target.matches('.actual-reps-input, .actual-weight-input, .set-done-checkbox')) return;
-    const setIndex = parseInt(e.target.dataset.setIndex);
-    const currentExData = currentWorkoutSession.exerciseData[currentWorkoutSession.currentExerciseIndex];
-    if(!currentExData || !currentExData.setsData[setIndex]) { return; }
-    if (e.target.classList.contains('actual-reps-input')) { currentExData.setsData[setIndex].reps = e.target.value; } 
-    else if (e.target.classList.contains('actual-weight-input')) { currentExData.setsData[setIndex].weight = e.target.value; } 
-    else if (e.target.classList.contains('set-done-checkbox')) { currentExData.setsData[setIndex].done = e.target.checked; }
-    const progressKey = `fitflow_client_progress_${currentWorkoutSession.assignmentId}`;
-    db.write(progressKey, currentWorkoutSession.exerciseData);
+    if (!e.target.matches('.actual-reps-input,.actual-weight-input,.set-done-checkbox')) return;
+    const setIdx = parseInt(e.target.dataset.setIndex); const exData = currentWorkoutSession.exerciseData[currentWorkoutSession.currentExerciseIndex]; if (!exData || !exData.setsData[setIdx]) return;
+    if (e.target.classList.contains('actual-reps-input')) exData.setsData[setIdx].reps = e.target.value;
+    else if (e.target.classList.contains('actual-weight-input')) exData.setsData[setIdx].weight = e.target.value;
+    else if (e.target.classList.contains('set-done-checkbox')) exData.setsData[setIdx].done = e.target.checked;
+    db.write(`fitflow_client_progress_${currentWorkoutSession.assignmentId}`, currentWorkoutSession.exerciseData);
 }
-
-function navigateExercise(direction) {
-    const totalExercises = currentWorkoutSession.template.exercises.length;
-    if (direction === 'next' && currentWorkoutSession.currentExerciseIndex < totalExercises - 1) { currentWorkoutSession.currentExerciseIndex++;} 
-    else if (direction === 'prev' && currentWorkoutSession.currentExerciseIndex > 0) { currentWorkoutSession.currentExerciseIndex--; }
-    renderCurrentExerciseInModal();
-}
-
-function finishWorkout() {
-    if (!currentWorkoutSession.assignmentId) return;
-    const assignmentIndex = allAssignedWorkouts.findIndex(aw => aw.id === currentWorkoutSession.assignmentId);
-    if (assignmentIndex > -1) {
-        allAssignedWorkouts[assignmentIndex].status = 'completed';
-        db.write('assignedWorkouts', allAssignedWorkouts);
-        const progressKey = `fitflow_client_progress_${currentWorkoutSession.assignmentId}`;
-        localStorage.removeItem(DB_PREFIX + progressKey); 
-        renderAssignedWorkoutsForClient();
-        closeModal('workoutSessionModal');
-        alert("Workout Finished and Marked as Completed!");
-    }
-    currentWorkoutSession = { assignmentId: null, template: null, currentExerciseIndex: 0, exerciseData: [] };
-}
-
-function viewCompletedWorkoutDetails(assignmentId) {
-    const assignment = allAssignedWorkouts.find(aw => aw.id === assignmentId); if (!assignment) return;
+function navigateExercise(dir) { const total = currentWorkoutSession.template.exercises.length; if (dir === 'next' && currentWorkoutSession.currentExerciseIndex < total - 1) currentWorkoutSession.currentExerciseIndex++; else if (dir === 'prev' && currentWorkoutSession.currentExerciseIndex > 0) currentWorkoutSession.currentExerciseIndex--; renderCurrentExerciseInModal(); }
+function finishWorkout() { if (!currentWorkoutSession.assignmentId) return; const idx = allAssignedWorkouts.findIndex(aw => aw.id === currentWorkoutSession.assignmentId); if (idx > -1) { allAssignedWorkouts[idx].status = 'completed'; db.write('assignedWorkouts', allAssignedWorkouts); localStorage.removeItem(DB_PREFIX + `fitflow_client_progress_${currentWorkoutSession.assignmentId}`); renderAssignedWorkoutsForClient(); closeModal('workoutSessionModal'); alert("Workout Finished!"); } currentWorkoutSession = { assignmentId: null, template: null, currentExerciseIndex: 0, exerciseData: [] }; }
+function viewCompletedWorkoutDetails(id) {
+    const assignment = allAssignedWorkouts.find(aw => aw.id === id); if (!assignment) return;
     const template = allTemplates.find(t => t.id === assignment.workoutTemplateId); if (!template) return;
     if (!workoutSessionModalTitle || !workoutSessionModalBody || !workoutSessionModal) return;
-
-    workoutSessionModalTitle.textContent = `${template.name} - Completed Details`;
-    let bodyHtml = '';
-    template.exercises.forEach((exDetail) => {
-        const exerciseInfo = allExercises.find(ex => ex.id === exDetail.exerciseId);
-        if (exerciseInfo) {
-            bodyHtml += `<div class="exercise-detail-item"><h4>${exerciseInfo.name}</h4>
-                <p class="target-metrics">Target: ${exDetail.sets || 'N/A'} sets of ${exDetail.reps || 'N/A'} reps. Rest: ${exDetail.rest ? exDetail.rest + 's' : 'N/A'}</p>
-            </div>`;
-        }
-    });
-    workoutSessionModalBody.innerHTML = bodyHtml;
-
-    const sessionNav = workoutSessionModal.querySelector('.workout-session-nav');
-    const timerDiv = workoutSessionModal.querySelector('.workout-timer');
-    if(sessionNav) sessionNav.style.display = 'none';
-    if(timerDiv) timerDiv.style.display = 'none';
-    if(finishWorkoutBtn) finishWorkoutBtn.style.display = 'none';
-    if(workoutSessionModalCloseFooterBtn) workoutSessionModalCloseFooterBtn.textContent = 'Close';
-
+    workoutSessionModalTitle.textContent = `${template.name} - Completed`; let html = '';
+    template.exercises.forEach(exD => { const exInfo = allExercises.find(ex => ex.id === exD.exerciseId); if (exInfo) html += `<div class="exercise-detail-item"><h4>${exInfo.name}</h4><p class="target-metrics">Target: ${exD.sets||'N/A'} sets x ${exD.reps||'N/A'} reps. Rest: ${exD.rest?exD.rest+'s':'N/A'}</p></div>`; });
+    workoutSessionModalBody.innerHTML = html;
+    const nav = workoutSessionModal.querySelector('.workout-session-nav'), timer = workoutSessionModal.querySelector('.workout-timer');
+    if (nav) nav.style.display = 'none'; if (timer) timer.style.display = 'none'; if (finishWorkoutBtn) finishWorkoutBtn.style.display = 'none'; if (workoutSessionModalCloseFooterBtn) workoutSessionModalCloseFooterBtn.textContent = 'Close';
     openModal('workoutSessionModal');
 }
-
-function formatTime(totalSeconds) { const m = Math.floor(totalSeconds / 60); const s = totalSeconds % 60; return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }
+function formatTime(s) { const m = Math.floor(s / 60); const sec = s % 60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
 function updateTimerDisplay() { if (timerDisplay) timerDisplay.textContent = formatTime(timerSeconds); }
 function startTimer() { if (timerInterval) return; if (timerStartBtn) timerStartBtn.style.display = 'none'; if (timerPauseBtn) timerPauseBtn.style.display = 'inline-block'; timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000); }
 function pauseTimer() { clearInterval(timerInterval); timerInterval = null; if (timerStartBtn) timerStartBtn.style.display = 'inline-block'; if (timerPauseBtn) timerPauseBtn.style.display = 'none'; }
 function stopTimer() { clearInterval(timerInterval); timerInterval = null; if (timerStartBtn) timerStartBtn.style.display = 'inline-block'; if (timerPauseBtn) timerPauseBtn.style.display = 'none'; }
 function resetTimerDisplay() { timerSeconds = 0; updateTimerDisplay(); }
-function checkPersistedLogin() {
-    const persistedId = localStorage.getItem('fitflow_current_client_id'); const persistedName = localStorage.getItem('fitflow_current_client_name');
-    if (persistedId && persistedName) { currentClientId = persistedId; currentClientName = persistedName; showDashboardView(); } else { showLoginView(); }
-}
-function handleDashboardClicks(e) {
-    const startButton = e.target.closest('.start-workout-btn'); const resumeButton = e.target.closest('.resume-workout-btn');
-    const viewCompletedButton = e.target.closest('.view-completed-workout-btn');
-    if (startButton) { startOrResumeWorkoutSession(startButton.dataset.assignmentId); }
-    else if (resumeButton) { startOrResumeWorkoutSession(resumeButton.dataset.assignmentId); }
-    else if (viewCompletedButton) { viewCompletedWorkoutDetails(viewCompletedButton.dataset.assignmentId); }
-}
+function checkPersistedLogin() { const id = localStorage.getItem('fitflow_current_client_id'), name = localStorage.getItem('fitflow_current_client_name'); if (id && name) { currentClientId = id; currentClientName = name; showDashboardView(); } else { showLoginView(); } }
+function handleDashboardClicks(e) { const startBtn = e.target.closest('.start-workout-btn'), resumeBtn = e.target.closest('.resume-workout-btn'), viewBtn = e.target.closest('.view-completed-workout-btn'); if (startBtn) startOrResumeWorkoutSession(startBtn.dataset.assignmentId); else if (resumeBtn) startOrResumeWorkoutSession(resumeBtn.dataset.assignmentId); else if (viewBtn) viewCompletedWorkoutDetails(viewBtn.dataset.assignmentId); }
 
 function initializeClientApp() {
     bodyElement = document.body; clientThemeSwitcher = document.getElementById('clientThemeSwitcher'); pageTitleElement = document.getElementById('pageTitle');
@@ -283,35 +124,40 @@ function initializeClientApp() {
     loadDataFromStorage(); populateClientSelect();
 
     if (clientThemeSwitcher && bodyElement) {
-        initializeThemeSwitcher( themesForClientApp, clientThemeSwitcher, bodyElement,
-            (newThemeValue) => { if (workoutSessionModal) { themesForClientApp.forEach(t => { if (workoutSessionModal.classList.contains(t.value)) { workoutSessionModal.classList.remove(t.value); }}); workoutSessionModal.classList.add(newThemeValue);}}
+        initializeThemeSwitcher(
+            FITFLOW_THEMES_CONFIG, // Use imported shared config
+            clientThemeSwitcher,
+            document.body, // Apply to body for global effect
+            (newThemeValue) => {
+                if (workoutSessionModal) {
+                    FITFLOW_THEMES_CONFIG.forEach(t => { if (workoutSessionModal.classList.contains(t.value)) { workoutSessionModal.classList.remove(t.value); } });
+                    workoutSessionModal.classList.add(newThemeValue);
+                }
+            },
+            'fitflowGlobalTheme' // Use global key
         );
-    } else if (themesForClientApp.length > 0 && bodyElement) { 
-        bodyElement.className = ''; bodyElement.classList.add(themesForClientApp[0].value); bodyElement.style.backgroundColor = 'var(--background-color)'; bodyElement.style.color = 'var(--text-color)';
-        if (workoutSessionModal) workoutSessionModal.classList.add(themesForClientApp[0].value);
+    } else if (FITFLOW_THEMES_CONFIG.length > 0 && bodyElement) { // Fallback if switcher not found
+        const defaultTheme = FITFLOW_THEMES_CONFIG[0];
+        bodyElement.className = ''; bodyElement.classList.add(defaultTheme.value);
+        bodyElement.style.backgroundColor = 'var(--background-color)'; bodyElement.style.color = 'var(--text-color)';
+        if (workoutSessionModal) workoutSessionModal.classList.add(defaultTheme.value);
     }
     
-    initializeModals(); 
-
-    if (workoutSessionModalCloseFooterBtn) {
-        workoutSessionModalCloseFooterBtn.addEventListener('click', () => {
-            if (workoutSessionModal) closeModal(workoutSessionModal.id); // Close the main session modal
-        });
-    }
-
+    initializeModals();
+    if (workoutSessionModalCloseFooterBtn) workoutSessionModalCloseFooterBtn.addEventListener('click', () => { if (workoutSessionModal) closeModal(workoutSessionModal.id); });
     if (clientLoginForm) clientLoginForm.addEventListener('submit', handleClientLogin);
     if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
     if (assignedWorkoutsContainer) assignedWorkoutsContainer.addEventListener('click', handleDashboardClicks);
-    if(workoutSessionModalBody) workoutSessionModalBody.addEventListener('input', handleWorkoutSessionDataChange);
-    if(prevExerciseBtn) prevExerciseBtn.addEventListener('click', () => navigateExercise('prev'));
-    if(nextExerciseBtn) nextExerciseBtn.addEventListener('click', () => navigateExercise('next'));
-    if(finishWorkoutBtn) finishWorkoutBtn.addEventListener('click', finishWorkout);
-    if(timerStartBtn) timerStartBtn.addEventListener('click', startTimer);
-    if(timerPauseBtn) timerPauseBtn.addEventListener('click', pauseTimer);
-    if(timerResetBtn) timerResetBtn.addEventListener('click', () => { stopTimer(); resetTimerDisplay(); });
+    if (workoutSessionModalBody) workoutSessionModalBody.addEventListener('input', handleWorkoutSessionDataChange);
+    if (prevExerciseBtn) prevExerciseBtn.addEventListener('click', () => navigateExercise('prev'));
+    if (nextExerciseBtn) nextExerciseBtn.addEventListener('click', () => navigateExercise('next'));
+    if (finishWorkoutBtn) finishWorkoutBtn.addEventListener('click', finishWorkout);
+    if (timerStartBtn) timerStartBtn.addEventListener('click', startTimer);
+    if (timerPauseBtn) timerPauseBtn.addEventListener('click', pauseTimer);
+    if (timerResetBtn) timerResetBtn.addEventListener('click', () => { stopTimer(); resetTimerDisplay(); });
 
     checkPersistedLogin();
-    console.log("FitFlow Client App Initialized (MVP Expanded - Full).");
+    console.log("FitFlow Client App Initialized.");
 }
 
 document.addEventListener('DOMContentLoaded', initializeClientApp);
