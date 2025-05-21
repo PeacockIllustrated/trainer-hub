@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitFlow Client Portal</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts and CSS links (same as before) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Comfortaa:wght@400;600;700&family=Karla:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;700;900&family=Anton&family=Barlow:wght@400;600;700;800&family=Merriweather:wght@300;400;700&family=Lato:wght@300;400;700&family=Montserrat:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&family=Bungee&family=Righteous&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700&family=Fredoka+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Link all themes for the switcher -->
     <link rel="stylesheet" href="assets/css/themes/theme-modern-professional.css">
     <link rel="stylesheet" href="assets/css/themes/theme-friendly-supportive.css">
     <link rel="stylesheet" href="assets/css/themes/theme-energetic-motivating.css">
@@ -36,7 +34,6 @@
         .assigned-workout-item .pt-card-footer { display: flex; justify-content: flex-end; gap: var(--spacing-sm); }
         .assigned-workout-item .pt-card-title { font-size: 1.3em; }
 
-        /* Workout Session Modal Styles */
         #workoutSessionModalBody { max-height: 60vh; overflow-y: auto; }
         .exercise-session-item { padding: var(--spacing-md) 0; border-bottom: 1px solid var(--border-color-light); display: none; }
         .exercise-session-item.is-active { display: block; }
@@ -49,9 +46,64 @@
         .set-tracking-row .pt-input { padding: var(--spacing-xs); font-size: 0.9em; }
         .set-tracking-row input[type="checkbox"] { transform: scale(1.2); margin-left: var(--spacing-xs); }
         
-        .workout-session-nav { display: flex; justify-content: space-between; margin-top: var(--spacing-md); }
-        .workout-timer { margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--border-color-light); text-align: center; }
-        .workout-timer #timerDisplay { font-size: 1.8em; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm); font-family: var(--font-family-mono, monospace); }
+        .workout-session-nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; /* Vertically align items if heights differ */
+            margin-top: var(--spacing-md); 
+        }
+        .workout-timer { 
+            margin-top: var(--spacing-md); 
+            padding-top: var(--spacing-md); 
+            border-top: 1px solid var(--border-color-light); 
+            text-align: center; 
+        }
+        .workout-timer #timerDisplay { 
+            font-size: 1.8em; 
+            font-weight: bold; 
+            color: var(--primary-color); 
+            margin-bottom: var(--spacing-sm); 
+            font-family: var(--font-family-mono, monospace); 
+        }
+        .workout-timer .pt-button { /* Ensure timer buttons have some margin on mobile */
+            margin-top: var(--spacing-xs);
+        }
+
+
+        /* --- Mobile Adjustments for Modal Controls --- */
+        @media (max-width: 600px) { /* Adjust breakpoint as needed */
+            .workout-session-nav {
+                flex-direction: column; /* Stack navigation items vertically */
+                gap: var(--spacing-sm); /* Add space between stacked items */
+            }
+            .workout-session-nav .pt-button {
+                width: 100%; /* Make nav buttons full width */
+            }
+            #exerciseProgressIndicator {
+                margin: var(--spacing-xs) 0; /* Add some vertical margin when stacked */
+                text-align: center;
+                width: 100%;
+            }
+
+            .workout-timer {
+                display: flex;
+                flex-direction: column; /* Stack timer elements vertically */
+                align-items: center; /* Center them */
+                gap: var(--spacing-sm);
+            }
+            .workout-timer .pt-button {
+                width: 80%; /* Make timer buttons mostly full width but not edge-to-edge */
+                max-width: 250px; /* Max width for very small screens */
+            }
+            .pt-modal__footer { /* Stack modal footer buttons on mobile */
+                display: flex;
+                flex-direction: column-reverse; /* Puts primary action (Finish) visually lower */
+                gap: var(--spacing-sm);
+            }
+            .pt-modal__footer .pt-button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body class="theme-modern-professional">
