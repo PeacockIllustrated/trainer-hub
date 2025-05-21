@@ -32,14 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (landingThemeSwitcherEl) {
         if (typeof FITFLOW_THEMES !== 'undefined' && FITFLOW_THEMES !== null && Array.isArray(FITFLOW_THEMES) && FITFLOW_THEMES.length > 0) {
-            initializeThemeSwitcher(
+                 initializeThemeSwitcher(
                 FITFLOW_THEMES,
                 landingThemeSwitcherEl,
                 document.body,
                 (themeValue, themeObject) => {
                     console.log(`Landing page theme switched to: ${themeValue}`);
                 },
-                'landingPageTheme'
+                'fitflowGlobalTheme' // <<< Use the global key
             );
         } else {
             console.error("Landing Page Init: FITFLOW_THEMES is undefined, null, not an array, or empty. Cannot initialize theme switcher.");
