@@ -182,42 +182,41 @@
         }
     </style>
 </head>
-<body class="landing-enhanced"> {/* Applies the new enhanced look and makes it themeable */}
+<body class="landing-enhanced">
 
     <div id="landing-page-wrapper"> 
-        <header class="landing-header enhanced"> {/* .enhanced class for new CSS */}
+        <header class="landing-header enhanced">
             <a href="#" class="landing-logo">FitFlow</a>
             <nav class="landing-nav">
                 <a href="#features">Key Features</a>
                 <a href="pt-showcase-dashboard.html">Components</a>
                 <a href="#" id="adminLoginLinkPlaceholder">Trainer Portal</a>
-                <select id="landingThemeSwitcher" aria-label="Select Theme"></select> {/* Changed ID */}
+                <select id="landingThemeSwitcher" aria-label="Select Theme"></select>
             </nav>
         </header>
 
-        <section class="hero-section enhanced">  {/* .enhanced class */}
+        <section class="hero-section enhanced">
             <div class="hero-content">
                 <h1>The <span class="highlight">Future</span> of Personalized Training is Here.</h1>
                 <p class="subtitle">
                     FitFlow empowers Personal Trainers with cutting-edge tools to manage clients, design bespoke workout programs, and track progress like never before. Supercharge your business and deliver exceptional results.
                 </p>
-                <div class="signin-options enhanced"> {/* .enhanced class */}
+                <div class="signin-options enhanced">
                     <a href="#admin-login-section" id="conceptualTrainerSignUp" class="pt-button pt-button--accent cta-button">Get Started / Trainer Login</a>
                 </div>
                  <a href="pt-admin-mvp.html" class="admin-signin-link enhanced" style="margin-top: var(--spacing-xl); font-size: 1em; display:inline-block;">Explore Admin Demo App →</a>
             </div>
         </section>
 
-        <section class="cta-section enhanced"> {/* .enhanced class */}
+        <section class="cta-section enhanced">
             <h2 style="font-family: 'Poppins', sans-serif; color: var(--heading-color); margin-bottom: var(--spacing-md); font-size: 1.8em;">Ready to Transform Your Coaching?</h2>
             <p style="color: var(--text-color-muted); max-width: 600px; margin: 0 auto var(--spacing-lg);">Join the waitlist or explore our interactive demos to see FitFlow in action.</p>
-            {/* These buttons will use .pt-button styles, which are themed */}
             <a href="showcase-chunk1-onboarding.html" class="pt-button pt-button--primary cta-button" style="margin-right: var(--spacing-md);">Client Onboarding Demo</a>
             <a href="pt-showcase-dashboard.html" class="pt-button pt-button--secondary cta-button">Full Component Library</a>
         </section>
 
-        <section class="features-section enhanced" id="features"> {/* .enhanced class */}
-            <h2>Why FitFlow for <span class="highlight">Trainers</span>?</h2> {/* Highlight class for accent color */}
+        <section class="features-section enhanced" id="features">
+            <h2>Why FitFlow for <span class="highlight">Trainers</span>?</h2>
             <div class="features-grid">
                  <div class="feature-item"><div class="icon">🚀</div><h3>Streamline Workflow</h3><p>Intuitive client management, workout template creation, and assignment. Spend less time on admin, more on coaching.</p></div>
                 <div class="feature-item"><div class="icon">📊</div><h3>Data-Driven Insights</h3><p>Visualize client progress, adherence, and performance. Make informed decisions to optimize training plans.</p></div>
@@ -225,23 +224,20 @@
             </div>
         </section>
         
-        <section class="chunk-section enhanced" id="admin-login-section" style="max-width: 450px; margin: var(--spacing-xxl) auto; display: none;"> {/* .enhanced class */}
+        <section class="chunk-section enhanced" id="admin-login-section" style="max-width: 450px; margin: var(--spacing-xxl) auto; display: none;">
              <h2 class="chunk-section__title">Trainer Portal Access</h2>
             <p style="text-align:center; margin-bottom:var(--spacing-lg); color: var(--text-color-muted);">Access your FitFlow trainer dashboard or create your account.</p>
             <div style="display:flex; flex-direction:column; align-items:center; gap:var(--spacing-md);">
-                 {/* data-theme="dark" on g-signin2 can be kept, or let the theme control its appearance if possible */}
                  <div class="g-signin2" data-onsuccess="onAdminSignIn" data-theme="dark" data-width="260" data-height="50" data-longtitle="true"></div>
                  <p style="font-size:0.9em; color: var(--text-color-muted);">Or, <a href="#create-account" style="color:var(--link-color); text-decoration:underline;">create a new Trainer account</a>.</p>
             </div>
         </section>
 
-        <footer class="landing-footer enhanced"> {/* .enhanced class */}
+        <footer class="landing-footer enhanced">
             <p>© <span id="currentYear"></span> FitFlow. Powering Elite Personal Trainers.</p>
         </footer>
     </div>
-
-    {/* NEW: Link to the dedicated JS file for this page */}
+    
     <script type="module" src="assets/js/landing-page-init.js"></script>
-    {/* REMOVED INLINE SCRIPT that handled themes and Google Sign-in, as it's moved to landing-page-init.js */}
 </body>
 </html>
