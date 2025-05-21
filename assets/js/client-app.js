@@ -161,19 +161,27 @@ function startOrResumeWorkoutSession(assignmentId) {
 }
 
 function renderCurrentExerciseInModal() {
-    if (!currentWorkoutSession.template || !workoutSessionModalBody) return;
+    if (!currentWorkoutSession.template || !workoutSessionModalBody) {
+        console.error("renderCurrentExerciseInModal: Missing current workout session template or modal body element.");
+        return;
+    }
     const exerciseDetail = currentWorkoutSession.template.exercises[currentWorkoutSession.currentExerciseIndex];
     const exerciseInfo = allExercises.find(ex => ex.id === exerciseDetail.exerciseId);
     const sessionExerciseData = currentWorkoutSession.exerciseData[currentWorkoutSession.currentExerciseIndex];
 
     if (!exerciseInfo || !sessionExerciseData) {
-        workoutSessionModalBody.innerHTML = "<p class="text-muted">Error loading exercise details.</p>";
+        workoutSessionModalBody.innerHTML = "<p class=\"text-muted\">Error loading exercise details.</p>"; // Escaped quote for class
         return;
     }
 
+    // Safer string construction for target metrics
+    const targetSets = exerciseDetail.sets || 'N/A';
+    const targetReps = exerciseDetail.reps || 'N/A';
+    const targetRest = exerciseDetail.rest ? `${exerciseDetail.rest}s` : 'N/A'; // Added curly braces for clarity
+
     let bodyHtml = `<div class="exercise-session-item is-active" data-exercise-id="${exerciseInfo.id}">
         <h4>${exerciseInfo.name}</h4>
-        <p class="target-metrics">Target: ${exerciseDetail.sets || 'N/A'} sets of ${exerciseDetail.reps || 'N/A'} reps. Rest: ${exerciseDetail.rest ? exerciseDetail.rest + 's' : 'N/A'}</p>`;
+        <p class="target-metrics">Target: ${targetSets} sets of ${targetReps} reps. Rest: ${targetRest}</p>`; // Using the new variables
 
     sessionExerciseData.setsData.forEach((setData, setIndex) => {
         bodyHtml += `<div class="set-tracking-row">
@@ -187,7 +195,6 @@ function renderCurrentExerciseInModal() {
     workoutSessionModalBody.innerHTML = bodyHtml;
     updateWorkoutSessionNav();
 }
-
 function updateWorkoutSessionNav() {
     if (!prevExerciseBtn || !nextExerciseBtn || !exerciseProgressIndicator || !currentWorkoutSession.template) return;
     const totalExercises = currentWorkoutSession.template.exercises.length;
