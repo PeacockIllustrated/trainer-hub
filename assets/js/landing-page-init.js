@@ -1,43 +1,69 @@
 // assets/js/landing-page-init.js
 import { initializeThemeSwitcher } from './theme-switcher.js';
-import { auth } from './firebase-config.js'; // Import the initialized auth service
+import { auth } from './firebase-config.js';
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Theme Switcher for the landing page
-    const landingThemeSwitcher = document.getElementById('landingThemeSwitcher');
-    if (landingThemeSwitcher) {
-        initializeThemeSwitcher(landingThemeSwitcher, 'landingPageTheme', document.body, (theme) => {
-            // Optional: Add specific callbacks if parts of the landing page need manual theme updates
-            // For example, if some elements are outside the main body or dynamically added
-            console.log(`Landing page theme switched to: ${theme}`);
-            // If using enhanced classes on header/footer for theming:
-            const header = document.querySelector('.landing-header.enhanced');
-            const hero = document.querySelector('.hero-section.enhanced');
-            const ctaSection = document.querySelector('.cta-section.enhanced');
-            const featuresSection = document.querySelector('.features-section.enhanced');
-            const adminLoginChunk = document.querySelector('.chunk-section.enhanced#admin-login-section');
-            const footer = document.querySelector('.landing-footer.enhanced');
-            const adminSigninLink = document.querySelector('.admin-signin-link.enhanced');
+const FITFLOW_THEMES = [
+    { value: 'theme-modern-professional', name: 'Modern Professional' },
+    { value: 'theme-friendly-supportive', name: 'Friendly Supportive' },
+    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
+    { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
+    { value: 'theme-luxe-minimalist', name: 'Luxe & Minimalist' },
+    { value: 'theme-retro-funk', name: 'Retro Funk' },
+    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
+    { value: 'theme-urban-grit', name: 'Urban Grit' },
+    { value: 'theme-tech-data', name: 'Tech & Data' },
+    { value: 'theme-playful-pop', name: 'Playful Pop' }
+];
 
-            // This assumes your theme CSS files directly target .landing-enhanced or its children
-            // with theme-specific variables. If they rely on a class on body, this is fine.
-            // If specific elements need a theme class *added/removed*, you'd do that here.
-            // For now, assuming CSS variables cascade correctly.
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Theme Switcher Initialization ---
+    const landingThemeSwitcherEl = document.getElementById('landingThemeSwitcher');
+    
+    // Debugging logs for theme switcher elements and data
+    console.log("[ThemeDebug] landingThemeSwitcherEl:", landingThemeSwitcherEl);
+    console.log("[ThemeDebug] FITFLOW_THEMES:", FITFLOW_THEMES);
+    if (typeof FITFLOW_THEMES !== 'undefined' && FITFLOW_THEMES !== null) {
+        console.log("[ThemeDebug] Type of FITFLOW_THEMES:", Array.isArray(FITFLOW_THEMES) ? 'Array' : typeof FITFLOW_THEMES);
+        console.log("[ThemeDebug] Length of FITFLOW_THEMES:", Array.isArray(FITFLOW_THEMES) ? FITFLOW_THEMES.length : 'N/A');
+    } else {
+        console.log("[ThemeDebug] FITFLOW_THEMES is undefined or null.");
     }
 
-    // Set current year in footer
+    if (landingThemeSwitcherEl) {
+        if (typeof FITFLOW_THEMES !== 'undefined' && FITFLOW_THEMES !== null && Array.isArray(FITFLOW_THEMES) && FITFLOW_THEMES.length > 0) {
+            initializeThemeSwitcher(
+                FITFLOW_THEMES,
+                landingThemeSwitcherEl,
+                document.body,
+                (themeValue, themeObject) => {
+                    console.log(`Landing page theme switched to: ${themeValue}`);
+                },
+                'landingPageTheme'
+            );
+        } else {
+            console.error("Landing Page Init: FITFLOW_THEMES is undefined, null, not an array, or empty. Cannot initialize theme switcher.");
+            if (landingThemeSwitcherEl) { // Hide selector if themes are missing
+                landingThemeSwitcherEl.style.display = 'none';
+                const label = document.querySelector('label[for="landingThemeSwitcher"]');
+                if (label) label.style.display = 'none';
+            }
+        }
+    } else {
+        console.warn("Landing Page Init: Theme switcher select element #landingThemeSwitcher not found.");
+    }
+
+    // --- Set current year in footer ---
     const currentYearSpan = document.getElementById('currentYear');
     if (currentYearSpan) {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
     // --- Firebase Authentication Logic ---
-    const conceptualTrainerSignUp = document.getElementById('conceptualTrainerSignUp'); // Main "Get Started" CTA
-    const adminLoginSection = document.getElementById('admin-login-section'); // Section with Google Sign-in button
-    const adminLoginLinkPlaceholder = document.getElementById('adminLoginLinkPlaceholder'); // Nav link "Trainer Portal"
-    const adminDemoAppLink = document.querySelector('a[href="pt-admin-mvp.html"]'); // "Explore Admin Demo App" link
+    const conceptualTrainerSignUp = document.getElementById('conceptualTrainerSignUp');
+    const adminLoginSection = document.getElementById('admin-login-section');
+    const adminLoginLinkPlaceholder = document.getElementById('adminLoginLinkPlaceholder');
+    const adminDemoAppLink = document.querySelector('a[href="pt-admin-mvp.html"]');
 
     async function signInAdminWithGoogle() {
         const provider = new GoogleAuthProvider();
@@ -46,61 +72,62 @@ document.addEventListener('DOMContentLoaded', () => {
             const user = result.user;
             console.log("Firebase Google Sign-In Success for Admin!");
             console.log("User:", user);
-
-            // UI updates will be handled by onAuthStateChanged, but we can log success here.
-            alert(`Welcome, ${user.displayName}! You are signed in. (Admin flow)`);
-            // No direct redirect here; onAuthStateChanged will handle UI and potentially app state.
-
+            // UI updates are primarily handled by onAuthStateChanged
+            // alert(`Welcome, ${user.displayName}! You are signed in. (Admin flow)`); // Optional: Can be removed if onAuthStateChanged handles UI promptly
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.error("Firebase Google Sign-In Error:", errorCode, errorMessage);
+            console.error("Firebase Google Sign-In Error:", errorCode, errorMessage, error);
+            
             if (errorCode === 'auth/popup-closed-by-user') {
-                alert('Sign-in popup was closed. Please try again if you wish to sign in.');
-            } else {
-                alert(`Error during sign-in: ${errorMessage}`);
+                console.log('Sign-in popup was closed by the user.'); // No alert needed
+            } else if (errorCode === 'auth/cancelled-popup-request') {
+                console.log('Multiple popups were opened. Sign-in cancelled.'); // No alert
+            } else if (errorCode === 'auth/operation-not-allowed') {
+                 alert('Error: Sign-in with Google is not enabled for this Firebase project. Please check your Firebase console (Authentication -> Sign-in method).');
+            } else if (errorCode === 'auth/popup-blocked-by-browser'){
+                alert('Error: Sign-in popup was blocked by your browser. Please disable your popup blocker for this site and try again.');
+            } else if (errorCode === 'auth/unauthorized-domain') {
+                alert('Error: This domain is not authorized for OAuth operations. Please check your Firebase console (Authentication -> Settings -> Authorized domains).');
+            }
+            else {
+                alert(`Error during sign-in: ${errorMessage} (Code: ${errorCode})`);
             }
         }
     }
 
-    // Event listener for the main "Get Started / Trainer Login" CTA button
     if (conceptualTrainerSignUp) {
         conceptualTrainerSignUp.addEventListener('click', (e) => {
             e.preventDefault();
             if (auth.currentUser) {
-                // If user is already signed in, this button acts as "Go to Admin Dashboard"
-                // TODO: Check if user is 'trainer' role from Firestore
+                // TODO: Eventually, check if user has 'trainer' role from Firestore before redirecting
                 window.location.href = 'pt-admin-mvp.html';
             } else {
-                // If user is not signed in, trigger Google Sign-In
                 signInAdminWithGoogle();
             }
         });
     }
 
-    // Handle Auth State Changes (Login/Logout)
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in
             console.log("Auth state changed: User is signed in", user);
-
             if (conceptualTrainerSignUp) {
                 conceptualTrainerSignUp.textContent = 'Go to Admin Dashboard';
-                conceptualTrainerSignUp.href = 'pt-admin-mvp.html'; // Update href for direct navigation
+                conceptualTrainerSignUp.href = 'pt-admin-mvp.html';
             }
-            if (adminLoginSection) {
-                adminLoginSection.style.display = 'none'; // Hide the Google Sign-In button section
+            if (adminLoginSection) { // Hide the separate login section if user is logged in
+                adminLoginSection.style.display = 'none';
             }
             if (adminLoginLinkPlaceholder) {
                 adminLoginLinkPlaceholder.innerHTML = `<a href="#" id="trainerLogoutLink" class="nav-link-like">${user.displayName} (Logout)</a>`;
                 const logoutLink = document.getElementById('trainerLogoutLink');
                 if (logoutLink) {
-                    logoutLink.addEventListener('click', async (e) => {
-                        e.preventDefault();
+                    logoutLink.addEventListener('click', async (eL) => { // Renamed 'e' to 'eL' to avoid conflict
+                        eL.preventDefault();
                         try {
                             await signOut(auth);
                             console.log("User signed out successfully.");
-                            alert("You have been signed out.");
                             // UI will be updated by this onAuthStateChanged listener firing again with user = null
                         } catch (error) {
                             console.error("Sign out error", error);
@@ -112,33 +139,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminDemoAppLink) {
                 adminDemoAppLink.textContent = `Welcome ${user.displayName}! Go to Admin App →`;
             }
-
         } else {
             // User is signed out
             console.log("Auth state changed: User is signed out");
-
             if (conceptualTrainerSignUp) {
                 conceptualTrainerSignUp.textContent = 'Get Started / Trainer Login';
-                conceptualTrainerSignUp.href = '#admin-login-section'; // Reset href
-            }
-            if (adminLoginSection) {
-                 // Make the section visible again if it was hidden,
-                 // or set its default display state if you want it always visible when logged out.
-                 // For now, let's ensure it's accessible if the CTA links to it.
-                 // The CTA click might show it, or the nav link might.
+                conceptualTrainerSignUp.href = '#admin-login-section'; // Link to the section
             }
             if (adminLoginLinkPlaceholder) {
                 adminLoginLinkPlaceholder.innerHTML = `<a href="#" id="navTrainerLoginTrigger" class="nav-link-like">Trainer Portal</a>`;
                 const navTrainerLoginTrigger = document.getElementById('navTrainerLoginTrigger');
                 if (navTrainerLoginTrigger) {
-                    navTrainerLoginTrigger.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (adminLoginSection) { // Show the section with the Google button if it exists
+                    navTrainerLoginTrigger.addEventListener('click', (eN) => { // Renamed 'e' to 'eN'
+                        eN.preventDefault();
+                        // If adminLoginSection exists and is hidden, show it. Otherwise, trigger sign-in.
+                        if (adminLoginSection && (adminLoginSection.style.display === 'none' || adminLoginSection.style.display === '')) {
                             adminLoginSection.style.display = 'block';
                             adminLoginSection.scrollIntoView({ behavior: 'smooth' });
-                            // Optionally, directly trigger sign-in:
-                            // signInAdminWithGoogle();
-                        } else { // Fallback if the section is removed, directly trigger sign-in
+                        } else { 
+                            // If section doesn't exist or is already visible, directly attempt sign-in
                             signInAdminWithGoogle();
                         }
                     });
@@ -150,45 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Legacy Google Sign-In (g-signin2) - can be phased out
-    // This function needs to be globally available if the g-signin2 button is still in HTML
+    // Legacy Google Sign-In (g-signin2 button) - can be phased out
     window.onAdminSignIn = function(googleUser) {
-        // This is for the <div class="g-signin2"></div> button if it's still used.
-        // It's better to use our custom button and the Firebase SDK's signInWithPopup.
-        console.log("Legacy g-signin2 button clicked. User details:", googleUser.getBasicProfile().getName());
-        alert("Please use the 'Get Started / Trainer Login' button for the new Firebase sign-in experience.");
-        // To integrate this properly, you'd get the ID token and use signInWithCredential with Firebase.
+        console.log("Legacy g-signin2 button clicked. User:", googleUser.getBasicProfile().getName());
+        alert("Please use the 'Get Started / Trainer Login' button for the main Firebase sign-in experience.");
+        // To properly integrate, you would get the ID token and use signInWithCredential with Firebase.
         // const id_token = googleUser.getAuthResponse().id_token;
         // const credential = GoogleAuthProvider.credential(id_token);
         // auth.signInWithCredential(credential).then(...).catch(...);
-        // For simplicity, we're focusing on signInWithPopup for now.
     };
-
-    // Initial setup for the conceptualTrainerSignUp button's behavior
-    // (if it's also meant to toggle the adminLoginSection visibility when not logged in)
-    if (conceptualTrainerSignUp && adminLoginSection && !auth.currentUser) {
-        const oldConceptualSignUpBehavior = (e) => {
-            // This listener is for the case where the button should *also* show the section
-            // before sign-in is attempted by a click on the g-signin2 button within that section.
-            // Since our main CTA now directly triggers Firebase sign-in, this might be redundant
-            // or only needed if we want to explicitly show the section first.
-            if (!auth.currentUser) { // Only toggle if not logged in
-                 e.preventDefault(); // Prevent #admin-login-section in URL
-                adminLoginSection.style.display = adminLoginSection.style.display === 'none' || adminLoginSection.style.display === '' ? 'block' : 'none';
-                if (adminLoginSection.style.display === 'block') {
-                    adminLoginSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-            // If logged in, the other event listener on conceptualTrainerSignUp handles navigation.
-        };
-        // If #conceptualTrainerSignUp should ONLY trigger Firebase sign-in,
-        // then this specific toggle logic is not needed on it.
-        // The current setup is: #conceptualTrainerSignUp directly calls signInAdminWithGoogle() if logged out.
-        // The #adminLoginSection visibility can be handled by the #navTrainerLoginTrigger instead.
-    }
-
-
-    // Ensure scripts from platform.js (for g-signin2) are loaded if that button is still present.
-    // The <script src="https://apis.google.com/js/platform.js" async defer></script> in index.html handles this.
-
 });
