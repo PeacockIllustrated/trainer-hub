@@ -46,62 +46,69 @@
         .set-tracking-row .pt-input { padding: var(--spacing-xs); font-size: 0.9em; }
         .set-tracking-row input[type="checkbox"] { transform: scale(1.2); margin-left: var(--spacing-xs); }
         
-        .workout-session-nav { 
+        /* Default Desktop Styles for Modal Controls */
+        #workoutSessionModal .workout-session-nav { 
             display: flex; 
             justify-content: space-between; 
-            align-items: center; /* Vertically align items if heights differ */
+            align-items: center;
             margin-top: var(--spacing-md); 
         }
-        .workout-timer { 
+        #workoutSessionModal .workout-timer { 
             margin-top: var(--spacing-md); 
             padding-top: var(--spacing-md); 
             border-top: 1px solid var(--border-color-light); 
             text-align: center; 
         }
-        .workout-timer #timerDisplay { 
+        #workoutSessionModal .workout-timer #timerDisplay { 
             font-size: 1.8em; 
             font-weight: bold; 
             color: var(--primary-color); 
             margin-bottom: var(--spacing-sm); 
             font-family: var(--font-family-mono, monospace); 
         }
-        .workout-timer .pt-button { /* Ensure timer buttons have some margin on mobile */
-            margin-top: var(--spacing-xs);
+        #workoutSessionModal .workout-timer .pt-button {
+            margin-top: var(--spacing-xs); /* Small gap if they wrap on slightly larger than mobile */
+        }
+        #workoutSessionModal .pt-modal__footer {
+            display: flex; /* Default for desktop: buttons side-by-side */
+            justify-content: flex-end; /* Align to the right */
+            gap: var(--spacing-sm);
         }
 
 
-        /* --- Mobile Adjustments for Modal Controls --- */
-        @media (max-width: 600px) { /* Adjust breakpoint as needed */
-            .workout-session-nav {
-                flex-direction: column; /* Stack navigation items vertically */
-                gap: var(--spacing-sm); /* Add space between stacked items */
+        /* --- Mobile Adjustments for Modal Controls (Increased Specificity) --- */
+        @media (max-width: 600px) {
+            #workoutSessionModal .workout-session-nav {
+                flex-direction: column !important; /* Force column stacking */
+                gap: var(--spacing-sm) !important;
             }
-            .workout-session-nav .pt-button {
-                width: 100%; /* Make nav buttons full width */
+            #workoutSessionModal .workout-session-nav .pt-button {
+                width: 100% !important; /* Force full width */
             }
-            #exerciseProgressIndicator {
-                margin: var(--spacing-xs) 0; /* Add some vertical margin when stacked */
-                text-align: center;
-                width: 100%;
+            #workoutSessionModal #exerciseProgressIndicator {
+                margin: var(--spacing-xs) 0 !important;
+                text-align: center !important;
+                width: 100% !important;
             }
 
-            .workout-timer {
-                display: flex;
-                flex-direction: column; /* Stack timer elements vertically */
-                align-items: center; /* Center them */
-                gap: var(--spacing-sm);
+            #workoutSessionModal .workout-timer {
+                display: flex !important; /* Ensure flex is applied */
+                flex-direction: column !important; /* Force column stacking */
+                align-items: center !important; 
+                gap: var(--spacing-sm) !important;
             }
-            .workout-timer .pt-button {
-                width: 80%; /* Make timer buttons mostly full width but not edge-to-edge */
-                max-width: 250px; /* Max width for very small screens */
+            #workoutSessionModal .workout-timer .pt-button {
+                width: 80% !important; 
+                max-width: 250px !important;
             }
-            .pt-modal__footer { /* Stack modal footer buttons on mobile */
-                display: flex;
-                flex-direction: column-reverse; /* Puts primary action (Finish) visually lower */
-                gap: var(--spacing-sm);
+            #workoutSessionModal .pt-modal__footer {
+                display: flex !important; /* Ensure flex is applied */
+                flex-direction: column-reverse !important; /* Force column stacking */
+                gap: var(--spacing-sm) !important;
             }
-            .pt-modal__footer .pt-button {
-                width: 100%;
+            #workoutSessionModal .pt-modal__footer .pt-button {
+                width: 100% !important;
+                 margin-right: 0 !important; /* Override any potential margin from general button rules */
             }
         }
     </style>
@@ -141,7 +148,7 @@
             </section>
         </main>
         
-        <div class="pt-modal" id="workoutSessionModal">
+        <div class="pt-modal" id="workoutSessionModal"> {/* Ensure this ID is unique and correct */}
             <div class="pt-modal__content" style="max-width: 750px;">
                 <div class="pt-modal__header">
                     <h3 class="pt-modal__title" id="workoutSessionModalTitle">Workout Session</h3>
