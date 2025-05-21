@@ -1,59 +1,43 @@
 // assets/js/showcase-chunk1-init.js
-
 import { initializeThemeSwitcher } from './theme-switcher.js';
 import { initializeModals, openModal, closeModal } from './components/modal.js';
 import { initializeStepper } from './components/stepper.js';
-
-const themesForChunk1 = [
-    { value: 'theme-modern-professional', name: 'Modern & Professional' },
-    { value: 'theme-friendly-supportive', name: 'Friendly & Supportive' },
-    { value: 'theme-energetic-motivating', name: 'Energetic & Motivating' },
-    { value: 'theme-natural-grounded', name: 'Natural & Grounded' },
-    { value: 'theme-urban-grit', name: 'Urban Grit & Steel' },
-    { value: 'theme-playful-pop', name: 'Playful & Vibrant Pop' },
-    { value: 'theme-tech-data', name: 'Tech & Data Driven' },
-    { value: 'theme-feminine-elegance', name: 'Feminine Elegance' },
-    { value: 'theme-luxe-minimalist', name: 'Luxe Minimalist' },
-    { value: 'theme-retro-funk', name: 'Retro Funk' }
-];
+import { FITFLOW_THEMES_CONFIG } from './themes-config.js'; // Import shared themes
 
 document.addEventListener('DOMContentLoaded', () => {
     const themeSwitcherElement = document.getElementById('theme-switcher');
-    const themedAreaElement = document.getElementById('themed-chunk-area'); 
+    // Similar to showcase-dashboard, target body for global consistency.
+    const themedAreaElement = document.getElementById('themed-chunk-area'); // Could be document.body
+    const bodyToTheme = document.body; // Target body
     const addClientModalElement = document.getElementById('addClientModal'); 
 
-    if (!themedAreaElement) {
-        console.error("showcase-chunk1-onboarding.html: Critical element #themed-chunk-area not found.");
-        return;
-    }
-
     if (!themeSwitcherElement) {
-        console.warn("showcase-chunk1-onboarding.html: #theme-switcher element not found. Applying default theme if possible.");
-        if (themesForChunk1.length > 0) {
-            themedAreaElement.classList.add(themesForChunk1[0].value);
-            themedAreaElement.style.backgroundColor = 'var(--background-color)';
-            themedAreaElement.style.color = 'var(--text-color)';
+        console.warn("Showcase Chunk1: #theme-switcher element not found. Applying default theme.");
+        if (FITFLOW_THEMES_CONFIG.length > 0) {
+            const defaultTheme = FITFLOW_THEMES_CONFIG[0];
+            bodyToTheme.classList.add(defaultTheme.value);
             if (addClientModalElement) {
-                themesForChunk1.forEach(t => addClientModalElement.classList.remove(t.value));
-                addClientModalElement.classList.add(themesForChunk1[0].value);
+                FITFLOW_THEMES_CONFIG.forEach(t => addClientModalElement.classList.remove(t.value));
+                addClientModalElement.classList.add(defaultTheme.value);
             }
         }
     } else {
         initializeThemeSwitcher(
-            themesForChunk1, 
+            FITFLOW_THEMES_CONFIG, 
             themeSwitcherElement, 
-            themedAreaElement,
-            (newThemeValue, currentThemeObject) => { // onThemeChangeCallback
-                // Theme the specific modal on this page
+            bodyToTheme, // Target document.body
+            (newThemeValue, currentThemeObject) => {
+                console.log(`Showcase Chunk1 theme changed to ${newThemeValue}`);
                 if (addClientModalElement) {
-                    themesForChunk1.forEach(t => {
+                    FITFLOW_THEMES_CONFIG.forEach(t => {
                         if (addClientModalElement.classList.contains(t.value)) {
                             addClientModalElement.classList.remove(t.value);
                         }
                     });
                     addClientModalElement.classList.add(newThemeValue);
                 }
-            }
+            },
+            'fitflowGlobalTheme' // Use global key
         );
     }
     
